@@ -1,0 +1,20 @@
+{
+  "name": "app-meteo",
+  "version": "1.0.0",
+  "description": "App-méteo",
+  "main": "main.js",
+  "scripts": {
+    "start": "set NODE_ENV=development&&electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"  
+  },
+  "author": "Dylan Ayache",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^38.2.1",
+    "electron-reload": "^2.0.0-alpha.1"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.14",
+    "tailwindcss": "^4.1.14"
+  }
+}
