@@ -1,5 +1,13 @@
+// main.js
+require('dotenv').config(); 
+
 const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
+
+const service = require('./weatherService');
+const API_KEY_VALUE = process.env.API_KEY; 
+
+service.initializeService(API_KEY_VALUE);
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -36,17 +44,16 @@ app.on('window-all-closed', () => {
 })
 
 const { ipcMain } = require('electron');
-const { fetchCoordinates, fetchCurrentWeather } = require('./weatherService');
 
 ipcMain.handle('get-current-weather-by-city', async (event, city) => {
   console.log('Ville reçue dans le handler:', city);
   try {
-    const { lat, lon } = await fetchCoordinates(city);
-    const currentCityWeather = await fetchCurrentWeather(lat, lon);
+    const { lat, lon } = await service.fetchCoordinates(city);
+    const currentCityWeather = await service.fetchCurrentWeather(lat, lon);
     return currentCityWeather;
 
   } catch (error) {
-    console.error('Erreur get-weather-by-city:', error);
+    console.error('Erreur get-current-weather-by-city:', error);
     throw error;
   }
 });
