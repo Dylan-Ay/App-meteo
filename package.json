@@ -2,10 +2,11 @@
   "name": "app-meteo",
   "version": "1.0.0",
   "description": "App-méteo",
-  "main": "main.js",
+  "main": "./main/main.js",
   "scripts": {
     "start": "set NODE_ENV=development&&electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:css": "tailwindcss -i ./style.css -o ./src/output.css --watch"
   },
   "author": "Dylan Ayache",
   "license": "MIT",

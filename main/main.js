@@ -4,7 +4,7 @@ require('dotenv').config();
 const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
 
-const service = require('./weatherService');
+const service = require('../weatherService');
 const API_KEY_VALUE = process.env.API_KEY; 
 
 service.initializeService(API_KEY_VALUE);
@@ -12,10 +12,10 @@ service.initializeService(API_KEY_VALUE);
 const env = process.env.NODE_ENV || 'development';
 
 if (env === 'development') {
-    require('electron-reload')(__dirname, {
-        electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
-        hardResetMethod: 'exit'
-    });
+  require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, '..', 'node_modules', '.bin', 'electron'),
+    hardResetMethod: 'exit'
+  });
 }
 let win;
 
@@ -28,7 +28,7 @@ const createWindow = () => {
     }
   })
 
-  win.loadFile('index.html')
+  win.loadFile('./renderer/index.html')
 
   if (env === "development") {
     win.webContents.openDevTools();
@@ -46,7 +46,6 @@ app.on('window-all-closed', () => {
 const { ipcMain } = require('electron');
 
 ipcMain.handle('get-current-weather-by-city', async (event, city) => {
-  console.log('Ville reçue dans le handler:', city);
   try {
     const { lat, lon } = await service.fetchCoordinates(city);
     const currentCityWeather = await service.fetchCurrentWeather(lat, lon);
