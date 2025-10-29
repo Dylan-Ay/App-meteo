@@ -15,8 +15,8 @@
     "electron-reload": "^2.0.0-alpha.1"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.14",
+    "@tailwindcss/cli": "^4.1.16",
     "dotenv": "^17.2.3",
-    "tailwindcss": "^4.1.14"
+    "tailwindcss": "^4.1.16"
   }
 }
