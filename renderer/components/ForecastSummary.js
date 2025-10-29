@@ -1,4 +1,4 @@
-// import './utils/functions.js';
+import { capitalizeFirstLetter } from '../../utils/functions.js';
 
 class ForecastSummary extends HTMLElement {
     #data;
