@@ -20,7 +20,12 @@ cityInput.addEventListener("input", (event) => {
 
         forecastSummary.data = {
           icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-          currentTemp: data.main.temp
+          currentTemp: data.main.temp,
+          feelsLike: data.main.feels_like,
+          cityName: data.name,
+          weather: data.weather,
+          windSpeed: data.wind.speed,
+          humidity: data.main.humidity
         };
 
         meteoContainer.appendChild(forecastSummary);
@@ -43,7 +48,9 @@ window.weatherAPI.getCurrentWeatherByCity("Colmar")
           currentTemp: data.main.temp,
           feelsLike: data.main.feels_like,
           cityName: data.name,
-          weather: data.weather
+          weather: data.weather,
+          windSpeed: data.wind.speed,
+          humidity: data.main.humidity
         };
 
         meteoContainer.appendChild(forecastSummary);
