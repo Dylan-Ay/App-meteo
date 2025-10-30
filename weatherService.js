@@ -36,7 +36,7 @@ async function fetchCoordinates(city){
   }
 }
 
-// Fetch de toutes les informations pour une ville
+// Fetch de toutes les informations de la méteo actuelle pour une ville
 async function fetchCurrentWeather(lat, lon) {
   try {
     if (!apiKey) {
@@ -61,8 +61,34 @@ async function fetchCurrentWeather(lat, lon) {
   }
 }
 
+// Fetch de toutes les informations de la méteo des 5 prochains jours toutes les 3 heures pour une ville
+async function fetchFiveDaysForecast(lat, lon) {
+  try {
+    if (!apiKey) {
+      throw new Error('Clé API OpenWeather manquante');
+    }
+
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=fr&appid=${apiKey}`;
+    console.log('fetchFiveDaysForecast URL:', url);
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+    
+  } catch (error) {
+    console.error('Erreur fetch-five-days-forecast:', error);
+    throw error;
+  }
+}
+
 module.exports = {
   initializeService,
   fetchCoordinates,
   fetchCurrentWeather,
+  fetchFiveDaysForecast
 };

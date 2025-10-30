@@ -56,3 +56,15 @@ ipcMain.handle('get-current-weather-by-city', async (event, city) => {
     throw error;
   }
 });
+
+ipcMain.handle('get-five-days-forecast-by-city', async (event, city) => {
+  try {
+    const { lat, lon } = await service.fetchCoordinates(city);
+    const currentCityWeather = await service.fetchFiveDaysForecast(lat, lon);
+    return currentCityWeather;
+
+  } catch (error) {
+    console.error('Erreur get-five-days-forecast-by-city:', error);
+    throw error;
+  }
+})

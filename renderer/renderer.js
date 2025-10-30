@@ -43,25 +43,33 @@ cityInput.addEventListener("input", (event) => {
 
 // Pour la construction du html
 window.weatherAPI.getCurrentWeatherByCity("Colmar")
-      .then(data => {
-        const forecastSummary = document.createElement('forecast-summary');
+  .then(data => {
+    const forecastSummary = document.createElement('forecast-summary');
 
-        forecastSummary.data = {
-          icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-          currentTemp: data.main.temp,
-          feelsLike: data.main.feels_like,
-          cityName: data.name,
-          weather: data.weather,
-          windSpeed: data.wind.speed,
-          humidity: data.main.humidity,
-          sunrise: data.sys.sunrise,
-          sunset: data.sys.sunset,
-          pressure: data.main.pressure
-        };
+    forecastSummary.data = {
+      icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+      currentTemp: data.main.temp,
+      feelsLike: data.main.feels_like,
+      cityName: data.name,
+      weather: data.weather,
+      windSpeed: data.wind.speed,
+      humidity: data.main.humidity,
+      sunrise: data.sys.sunrise,
+      sunset: data.sys.sunset,
+      pressure: data.main.pressure
+    };
 
-        meteoContainer.appendChild(forecastSummary);
-        console.log(data)
-      })
-      .catch(err => {
-        console.error('Erreur:', err);
-      });
+    meteoContainer.appendChild(forecastSummary);
+    console.log(data)
+  })
+  .catch(err => {
+    console.error('Erreur:', err);
+  });
+
+  window.weatherAPI.getFiveDaysForecastByCity("Colmar")
+    .then(data => {
+      console.log(data)
+    })
+    .catch(err => {
+      console.error('Erreur:', err);
+    });
