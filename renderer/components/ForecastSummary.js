@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter, mSecToKmSec } from '../../utils/functions.js';
+import { capitalizeFirstLetter, mSecToKmSec, epochToLocaleTimeString } from '../../utils/functions.js';
 
 class ForecastSummary extends HTMLElement {
     #data;
@@ -32,7 +32,7 @@ class ForecastSummary extends HTMLElement {
         this.wrapper.innerHTML = `
             <h1 class="text-2xl font-semibold mb-4">Méteo à ${data.cityName}</h1>
             <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-blue-50 rounded-2xl p-4">
-                <div id="weather-main" class="flex">
+                <div id="weather-main" class="flex w-lg-2/5 items-center">
                     <img src="${data.icon}" alt="Weather icon">
                     <div class="flex flex-col">
                         <span class="text-3xl">${data.currentTemp.toFixed(0)}°</span>
@@ -40,7 +40,7 @@ class ForecastSummary extends HTMLElement {
                         <span class="font-semibold">${capitalizeFirstLetter(data.weather[0].description)}</span>
                     </div>
                 </div>
-                <div id="weather-details" class="bg-white p-3 flex flex-col gap-5 rounded-2xl">
+                <div id="weather-details" class="bg-white p-3 flex flex-col gap-2 rounded-2xl">
                     <div class="flex justify-between gap-10">
                         <span class="font-light">Vitesse du vent</span>
                         <span class="font-semibold">${mSecToKmSec(data.windSpeed).toFixed(0)} km/h</span>
@@ -48,6 +48,16 @@ class ForecastSummary extends HTMLElement {
                     <div class="flex justify-between gap-10">
                         <span class="font-light">Taux d'humidité</span>
                         <span class="font-semibold">${data.humidity} %</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex">
+                            <img src="../src/icons/sunrise.svg" alt="icon sunrise">
+                            <span>${epochToLocaleTimeString(data.sunrise)}</span>
+                        </div>
+                        <div class="flex">
+                            <img src="../src/icons/sunset.svg" alt="icon sunrise">
+                            <span>${epochToLocaleTimeString(data.sunset)}</span>
+                        </div>
                     </div>
                 </div>
             </div>
