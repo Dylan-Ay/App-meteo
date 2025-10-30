@@ -27,7 +27,8 @@ cityInput.addEventListener("input", (event) => {
           windSpeed: data.wind.speed,
           humidity: data.main.humidity,
           sunrise: data.sys.sunrise,
-          sunset: data.sys.sunset
+          sunset: data.sys.sunset,
+          pressure: data.main.pressure
         };
 
         meteoContainer.appendChild(forecastSummary);
@@ -54,7 +55,8 @@ window.weatherAPI.getCurrentWeatherByCity("Colmar")
           windSpeed: data.wind.speed,
           humidity: data.main.humidity,
           sunrise: data.sys.sunrise,
-          sunset: data.sys.sunset
+          sunset: data.sys.sunset,
+          pressure: data.main.pressure
         };
 
         meteoContainer.appendChild(forecastSummary);

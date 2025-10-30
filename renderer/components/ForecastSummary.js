@@ -35,8 +35,8 @@ class ForecastSummary extends HTMLElement {
                 <div id="weather-main" class="flex w-lg-2/5 items-center">
                     <img src="${data.icon}" alt="Weather icon">
                     <div class="flex flex-col">
-                        <span class="text-3xl">${data.currentTemp.toFixed(0)}°</span>
-                        <span class="">Ressenti: ${data.feelsLike.toFixed(0)}°</span>
+                        <span class="text-4xl font-semibold">${data.currentTemp.toFixed(0)}°</span>
+                        <span class="text-sm">Ressenti de l'air: ${data.feelsLike.toFixed(0)}°</span>
                         <span class="font-semibold">${capitalizeFirstLetter(data.weather[0].description)}</span>
                     </div>
                 </div>
@@ -48,6 +48,10 @@ class ForecastSummary extends HTMLElement {
                     <div class="flex justify-between gap-10">
                         <span class="font-light">Taux d'humidité</span>
                         <span class="font-semibold">${data.humidity} %</span>
+                    </div>
+                    <div class="flex justify-between gap-10">
+                        <span class="font-light">Pression</span>
+                        <span class="font-semibold">${data.pressure} hPa</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <div class="flex">
