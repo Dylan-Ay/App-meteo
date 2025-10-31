@@ -4,10 +4,11 @@ require('dotenv').config();
 const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
 
-const service = require('../weatherService');
-const API_KEY_VALUE = process.env.API_KEY; 
+const weatherService = require('../weatherService');
+weatherService.initializeService(process.env.API_KEY_OPEN_WEATHER);
 
-service.initializeService(API_KEY_VALUE);
+const citiesService = require('../citiesService');
+citiesService.initializeService(process.env.API_KEY_GEOCODING);
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -47,8 +48,8 @@ const { ipcMain } = require('electron');
 
 ipcMain.handle('get-current-weather-by-city', async (event, city) => {
   try {
-    const { lat, lon } = await service.fetchCoordinates(city);
-    const currentCityWeather = await service.fetchCurrentWeather(lat, lon);
+    const { lat, lon } = await weatherService.fetchCoordinates(city);
+    const currentCityWeather = await weatherService.fetchCurrentWeather(lat, lon);
     return currentCityWeather;
 
   } catch (error) {
@@ -59,12 +60,32 @@ ipcMain.handle('get-current-weather-by-city', async (event, city) => {
 
 ipcMain.handle('get-five-days-forecast-by-city', async (event, city) => {
   try {
-    const { lat, lon } = await service.fetchCoordinates(city);
-    const currentCityWeather = await service.fetchFiveDaysForecast(lat, lon);
+    const { lat, lon } = await weatherService.fetchCoordinates(city);
+    const currentCityWeather = await weatherService.fetchFiveDaysForecast(lat, lon);
     return currentCityWeather;
 
   } catch (error) {
     console.error('Erreur get-five-days-forecast-by-city:', error);
+    throw error;
+  }
+})
+
+// ipcMain.handle('get-test', async (event, city) => {
+//   try {
+//     const test = await weatherService.fetchCoordinates(city);
+//     return test;
+//   } catch (error) {
+//     console.error('Erreur get-test:', error);
+//     throw error;
+//   }
+// })
+
+ipcMain.handle('get-cities', async (event, city) => {
+  try {
+    const test = await citiesService.fetchCities(city);
+    return test;
+  } catch (error) {
+    console.error('Erreur get-cities:', error);
     throw error;
   }
 })
