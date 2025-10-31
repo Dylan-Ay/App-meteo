@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter, mSecToKmSec, epochToLocaleTimeString } from '../../utils/functions.js';
+import { capitalizeFirstLetter, mSecToKmSec, epochToLocaleTimeString, isoCountryToFullName } from '../../utils/functions.js';
 
 class ForecastSummary extends HTMLElement {
     #data;
@@ -30,7 +30,10 @@ class ForecastSummary extends HTMLElement {
         const data = this.#data;
 
         this.wrapper.innerHTML = `
-            <h1 class="text-2xl font-semibold mb-4">Méteo à ${data.cityName}</h1>
+            <section id="forecast-title" class="mb-4">
+                <h1 class="text-2xl font-semibold">Méteo à ${data.cityName}</h1>
+                <span>${isoCountryToFullName(data.country)}</span>
+            </section>
             <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-blue-50 rounded-2xl p-4">
                 <div id="weather-main" class="flex w-lg-2/5 items-center">
                     <img src="${data.icon}" alt="Weather icon">

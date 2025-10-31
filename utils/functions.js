@@ -12,3 +12,9 @@ export function epochToLocaleTimeString(value) {
   
   return heureMinute; 
 }
+
+export function isoCountryToFullName(isoCountry) {
+  const isoCountryToFullName = new Intl.DisplayNames(["fr"], { type: "region" });
+
+  return isoCountryToFullName.of(isoCountry);
+}
