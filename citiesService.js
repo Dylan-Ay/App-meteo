@@ -15,7 +15,7 @@ async function fetchCities(value) {
         throw new Error('Clé API OpenWeather manquante');
         }
 
-        const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&type=city&limit=5&lang=fr&apiKey=${apiKey}`;
+        const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&type=city&limit=5&lang=fr&bias=countrycode:fr&apiKey=${apiKey}`;
         const response = await fetch(url);
         console.log('fetchCities URL:', url);
 
