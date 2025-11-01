@@ -18,3 +18,16 @@ export function isoCountryToFullName(isoCountry) {
 
   return isoCountryToFullName.of(isoCountry);
 }
+
+export function handleOutsideClick(elementToHide, elementToClickToDisplay, event, child = false) {
+  const targetElement = event.target;
+  const elementToHideList = elementToHide.querySelector(child);
+
+  if (!elementToHideList.contains(targetElement)) {
+    elementToHide.classList.add('hidden');
+  }
+
+  if (targetElement == elementToClickToDisplay) {
+    elementToHide.classList.remove('hidden');
+  }
+}

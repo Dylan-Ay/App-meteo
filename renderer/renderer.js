@@ -1,11 +1,22 @@
 import './components/ForecastSummary.js';
 import './components/SearchResult.js';
+import { handleOutsideClick } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
 const meteoContainer = document.getElementById('meteo-container');
+const searchBarContainer = document.getElementById('search-bar-container');
 
 let typingTimer;
-const debounceDelay = 500;
+let lastRequestId = 0;
+const debounceDelay = 200;
+
+// Gestion de l'affichage de la liste de ville quand on clique en dehors
+document.addEventListener('click', (event) => {
+  const searchResult = document.querySelector('search-result');
+  if (searchResult) {
+    handleOutsideClick(searchResult, cityInput, event, 'ul');
+  }
+});
 
 // cityInput.addEventListener("input", (event) => {
 //   const city = cityInput.value.trim();
@@ -45,28 +56,32 @@ const debounceDelay = 500;
 
 
 cityInput.addEventListener("input", (event) => {
-  const city = cityInput.value.trim();
-  if (city) {
-    if (meteoContainer.hasChildNodes()) {
-      meteoContainer.removeChild(meteoContainer.firstChild);
-    }
-    clearTimeout(typingTimer);
-    typingTimer = setTimeout(() => {
-      window.weatherAPI.getCities(city)
-      .then(data => {
-        let newList = document.createElement('ul');
-      
-        const searchResult = document.createElement('search-result');
-        searchResult.data = data.features;
+  clearTimeout(typingTimer);
 
-        newList.appendChild(searchResult);
-        meteoContainer.appendChild(newList);
-      })
-      .catch(err => {
-        console.error('Erreur:', err);
-      });
-    }, debounceDelay);
-  }
+  const city = cityInput.value.trim();
+
+  // Nettoie les anciens résultats
+  document.querySelectorAll("search-result").forEach(el => el.remove());
+
+  const requestId = ++lastRequestId;
+
+  typingTimer = setTimeout(() => {
+    if (city && city.length > 2) {
+      window.weatherAPI.getCities(city)
+        .then(response => {
+          // Vérifie que c'est la dernière requête
+          if (requestId !== lastRequestId) return;
+
+          const searchResult = document.createElement('search-result');
+          searchResult.data = response.features;
+          searchBarContainer.appendChild(searchResult);
+          console.log(response);
+        })
+        .catch(err => {
+          console.error("Erreur:", err);
+        });
+    }
+  }, debounceDelay);
 });
 
 
