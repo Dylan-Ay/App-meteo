@@ -13,25 +13,39 @@ class SearchResult extends HTMLElement {
         this.appendChild(this.wrapper);
     }
 
-    // Setter qui enregistre les données dans le composant, renvoie les données automatiquement lors de l'appel du composant
+    // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
     set data(features) {
-        this.#data = features;
-        this.render(features);
-    }
-
-    render(features) {
-        if (!this.#data) {
-            this.wrapper.innerHTML = `<p>Pas de données</p>`;
-            console.log('Pas de données reçu dans le composant');
+        if (!features || !features.length) {
             return;
         }
 
+        // Déduplication par city + state + country
+        const seen = new Set();
+        const uniqueFeatures = features.filter(f => {
+            const key = `${f.properties.city}|${f.properties.state || f.properties.region}|${f.properties.country}`;
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+
+        this.#data = uniqueFeatures;
+        this.render(uniqueFeatures);
+    }
+
+
+    render(features) {
         features.forEach(element => {
             const li = document.createElement("li");
 
             const cityName = element.properties.city;
-            const country = element.properties.postcodes ? element.properties.postcodes : element.properties.country;
-            li.textContent = `${cityName} (${country})`;
+            const region = element.properties.state || element.properties.region;
+            const country = element.properties.country;
+
+            li.textContent = `${cityName} - ${region}, (${country})`;
+            li.classList.add('bg-white', 'p-2', 'cursor-pointer', 'hover:bg-slate-100');
+
+            this.wrapper.classList.add('shadow-xl', 'absolute', 'w-full','top-[calc(100%_+_.25rem)]', 'divide-y', 'divide-zinc-300');
+            this.wrapper.id = 'search-bar-results';
 
             this.wrapper.appendChild(li);
         });
