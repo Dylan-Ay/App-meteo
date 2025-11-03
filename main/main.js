@@ -70,22 +70,23 @@ ipcMain.handle('get-five-days-forecast-by-city', async (event, city) => {
   }
 })
 
-// ipcMain.handle('get-test', async (event, city) => {
-//   try {
-//     const test = await weatherService.fetchCoordinates(city);
-//     return test;
-//   } catch (error) {
-//     console.error('Erreur get-test:', error);
-//     throw error;
-//   }
-// })
-
 ipcMain.handle('get-cities', async (event, city) => {
   try {
     const test = await citiesService.fetchCities(city);
     return test;
   } catch (error) {
     console.error('Erreur get-cities:', error);
+    throw error;
+  }
+})
+
+ipcMain.handle('get-current-weather-by-coords', async (event, { lat, lon }) => {
+  try {
+    const currentCityWeather = await weatherService.fetchCurrentWeather(lat, lon);
+    return currentCityWeather;
+
+  } catch (error) {
+    console.error('Erreur get-current-weather-by-coords:', error);
     throw error;
   }
 })
