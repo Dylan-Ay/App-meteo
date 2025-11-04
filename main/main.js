@@ -46,30 +46,6 @@ app.on('window-all-closed', () => {
 
 const { ipcMain } = require('electron');
 
-ipcMain.handle('get-current-weather-by-city', async (event, city) => {
-  try {
-    const { lat, lon } = await weatherService.fetchCoordinates(city);
-    const currentCityWeather = await weatherService.fetchCurrentWeather(lat, lon);
-    return currentCityWeather;
-
-  } catch (error) {
-    console.error('Erreur get-current-weather-by-city:', error);
-    throw error;
-  }
-});
-
-ipcMain.handle('get-five-days-forecast-by-city', async (event, city) => {
-  try {
-    const { lat, lon } = await weatherService.fetchCoordinates(city);
-    const currentCityWeather = await weatherService.fetchFiveDaysForecast(lat, lon);
-    return currentCityWeather;
-
-  } catch (error) {
-    console.error('Erreur get-five-days-forecast-by-city:', error);
-    throw error;
-  }
-})
-
 ipcMain.handle('get-cities', async (event, city) => {
   try {
     const test = await citiesService.fetchCities(city);
@@ -84,9 +60,20 @@ ipcMain.handle('get-current-weather-by-coords', async (event, { lat, lon }) => {
   try {
     const currentCityWeather = await weatherService.fetchCurrentWeather(lat, lon);
     return currentCityWeather;
-
+    
   } catch (error) {
     console.error('Erreur get-current-weather-by-coords:', error);
+    throw error;
+  }
+})
+
+ipcMain.handle('get-five-days-forecast-by-city', async (event, {lat, lon}) => {
+  try {
+    const currentCityWeather = await weatherService.fetchFiveDaysForecast(lat, lon);
+    return currentCityWeather;
+
+  } catch (error) {
+    console.error('Erreur get-five-days-forecast-by-city:', error);
     throw error;
   }
 })

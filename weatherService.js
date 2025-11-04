@@ -8,35 +8,7 @@ function initializeService(key) {
     apiKey = key;
 }
 
-// Fetch des coordonées
-async function fetchCoordinates(city){
-  try {
-    if (!apiKey) {
-      throw new Error('Clé API OpenWeather manquante');
-    }
-
-    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(city)}&limit=1&appid=${apiKey}`;
-    const response = await fetch(url);
-    console.log('fetchCoordinates URL:', url);
-
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    const coordLat = data.at(0).lat;
-    const coordLon = data.at(0).lon;
-
-    return {lat: coordLat, lon: coordLon};
-
-  } catch (error) {
-    console.error('Erreur fetch-coordinates:', error);
-    throw error;
-  }
-}
-
-// Fetch de toutes les informations de la méteo actuelle pour une ville
+// Récupération de toutes les informations de la méteo actuelle pour une ville
 async function fetchCurrentWeather(lat, lon) {
   try {
     if (!apiKey) {
@@ -61,7 +33,7 @@ async function fetchCurrentWeather(lat, lon) {
   }
 }
 
-// Fetch de toutes les informations de la méteo des 5 prochains jours toutes les 3 heures pour une ville
+// Récupération de toutes les informations de la méteo des 5 prochains jours toutes les 3 heures pour une ville
 async function fetchFiveDaysForecast(lat, lon) {
   try {
     if (!apiKey) {
@@ -88,7 +60,6 @@ async function fetchFiveDaysForecast(lat, lon) {
 
 module.exports = {
   initializeService,
-  fetchCoordinates,
   fetchCurrentWeather,
   fetchFiveDaysForecast
 };
