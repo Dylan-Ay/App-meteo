@@ -18,43 +18,7 @@ document.addEventListener('click', (event) => {
   }
 });
 
-// cityInput.addEventListener("input", (event) => {
-//   const city = cityInput.value.trim();
-//   if (city) {
-//     if (meteoContainer.hasChildNodes()) {
-//       meteoContainer.removeChild(meteoContainer.firstChild);
-//     }
-//     clearTimeout(typingTimer);
-//     typingTimer = setTimeout(() => {
-//       window.weatherAPI.getCurrentWeatherByCity(city)
-//       .then(data => {
-//         const forecastSummary = document.createElement('forecast-summary');
-
-//         forecastSummary.data = {
-//           icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-//           currentTemp: data.main.temp,
-//           feelsLike: data.main.feels_like,
-//           cityName: data.name,
-//           weather: data.weather,
-//           windSpeed: data.wind.speed,
-//           humidity: data.main.humidity,
-//           sunrise: data.sys.sunrise,
-//           sunset: data.sys.sunset,
-//           pressure: data.main.pressure,
-//           country: data.sys.country
-//         };
-
-//         meteoContainer.appendChild(forecastSummary);
-//         console.log(data)
-//       })
-//       .catch(err => {
-//         console.error('Erreur:', err);
-//       });
-//     }, debounceDelay);
-//   }
-// });
-
-
+// Affichage des villes dans mon menu déroulant
 cityInput.addEventListener("input", (event) => {
   clearTimeout(typingTimer);
 
@@ -68,61 +32,58 @@ cityInput.addEventListener("input", (event) => {
   typingTimer = setTimeout(() => {
     if (city && city.length > 2) {
       window.weatherAPI.getCities(city)
-        .then(response => {
-          // Vérifie que c'est la dernière requête
-          if (requestId !== lastRequestId) return;
+      .then(response => {
+        // Vérifie que c'est bien la dernière requête
+        if (requestId !== lastRequestId) return;
+        
+        // Affichage de la liste déroulante des villes
+        const searchResult = document.createElement('search-result');
+        searchResult.data = response.features;
+        const cityName = response.features[0].properties.city;
+        
+        searchBarContainer.appendChild(searchResult);
+        
+        // Affichage du résultat de la ville sélectionnée
+        searchResult.addEventListener("location-selected", (event) => {
+          const { lat, lon } = event.detail;
 
-          const searchResult = document.createElement('search-result');
-          searchResult.data = response.features;
-          searchBarContainer.appendChild(searchResult);
-          console.log(response);
+          // Nettoyage
+          searchResult.remove();
+          cityInput.value = "";
+
+          if (meteoContainer.hasChildNodes()) {
+            meteoContainer.removeChild(meteoContainer.firstChild);
+          }
+
+
+          window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
+            .then(data => {
+              const forecastSummary = document.createElement("forecast-summary");
+
+              forecastSummary.data = {
+                icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+                currentTemp: data.main.temp,
+                feelsLike: data.main.feels_like,
+                cityName: cityName,
+                weather: data.weather,
+                windSpeed: data.wind.speed,
+                humidity: data.main.humidity,
+                sunrise: data.sys.sunrise,
+                sunset: data.sys.sunset,
+                pressure: data.main.pressure,
+                country: data.sys.country
+              };
+
+              meteoContainer.appendChild(forecastSummary);
+            })
+            .catch(err => {
+              console.error('Erreur data données méteo:', err);
+            });
+          });
         })
-        .catch(err => {
-          console.error("Erreur:", err);
-        });
+      .catch(err => {
+        console.error("Erreur data données ville:", err);
+      });
     }
   }, debounceDelay);
 });
-
-
-// Pour la construction du html
-// window.weatherAPI.getCurrentWeatherByCity("Colmar")
-//   .then(data => {
-//     const forecastSummary = document.createElement('forecast-summary');
-
-//     forecastSummary.data = {
-//       icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-//       currentTemp: data.main.temp,
-//       feelsLike: data.main.feels_like,
-//       cityName: data.name,
-//       weather: data.weather,
-//       windSpeed: data.wind.speed,
-//       humidity: data.main.humidity,
-//       sunrise: data.sys.sunrise,
-//       sunset: data.sys.sunset,
-//       pressure: data.main.pressure,
-//       country: data.sys.country
-//     };
-
-//     meteoContainer.appendChild(forecastSummary);
-//     console.log(data)
-//   })
-//   .catch(err => {
-//     console.error('Erreur:', err);
-//   });
-
-// window.weatherAPI.getFiveDaysForecastByCity("Colmar")
-//   .then(data => {
-//     console.log(data)
-//   })
-//   .catch(err => {
-//     console.error('Erreur:', err);
-//   });
-
-// window.weatherAPI.fetchCoordinatesTest("Herrlisheim")
-//   .then(data => {
-//     console.log(data)
-//   })
-//   .catch(err => {
-//     console.error('Erreur:', err);
-//   });

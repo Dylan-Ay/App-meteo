@@ -17,7 +17,7 @@ class SearchResult extends HTMLElement {
             return;
         }
 
-        // Déduplication par city + state + country
+        // Déduplication des villes
         const seen = new Set();
         const uniqueFeatures = features.filter(f => {
             const key = `${f.properties.city}|${f.properties.state || f.properties.region}|${f.properties.country}`;
@@ -36,19 +36,25 @@ class SearchResult extends HTMLElement {
             const li = document.createElement("li");
             
             const cityName = element.properties.city;
-            const region = element.properties.state || element.properties.region;
+            const region = (element.properties.state || element.properties.region) ?? "";
             const country = element.properties.country;
             const lat = element.geometry.coordinates[1];
             const lon = element.geometry.coordinates[0];
-            console.log(window.weatherAPI.getCurrentWeatherByCoords(lat, lon))
-            
-            li.textContent = `${cityName} - ${region}, (${country})`;
+            const regionLabel = region ? `${region},` : "";
+
+            li.textContent = `${cityName} - ${regionLabel} (${country})`;
             li.classList.add('bg-white', 'p-2', 'cursor-pointer', 'hover:bg-slate-100');
-            // li.addEventListener('click', fetchCurrentWeather(lat, lon));
-            
+
+            li.addEventListener("click", () => {
+                this.dispatchEvent(new CustomEvent("location-selected", {
+                    detail: { lat, lon },
+                    bubbles: true
+                }));
+            });
+
             this.wrapper.classList.add('shadow-xl', 'absolute', 'w-full','top-[calc(100%_+_.25rem)]', 'divide-y', 'divide-zinc-300');
             this.wrapper.id = 'search-bar-results';
-
+            
             this.wrapper.appendChild(li);
         });
     }

@@ -14,7 +14,7 @@ class ForecastSummary extends HTMLElement {
         this.appendChild(this.wrapper);
     }
 
-    // Setter qui enregistre les données dans le composant, renvoie les données automatiquement lors de l'appel du composant
+    // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
     set data(value) {
         this.#data = value;
         this.render();
