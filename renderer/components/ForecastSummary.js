@@ -34,7 +34,7 @@ class ForecastSummary extends HTMLElement {
                 <h1 class="text-2xl font-semibold">Méteo à ${data.cityName}</h1>
                 <span>${isoCountryToFullName(data.country)}</span>
             </section>
-            <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-blue-50 rounded-2xl p-4">
+            <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-white rounded-2xl p-4">
                 <div id="weather-main" class="flex w-lg-2/5 items-center">
                     <img src="${data.icon}" alt="Weather icon">
                     <div class="flex flex-col">
@@ -43,7 +43,7 @@ class ForecastSummary extends HTMLElement {
                         <span class="font-semibold">${capitalizeFirstLetter(data.weather[0].description)}</span>
                     </div>
                 </div>
-                <div id="weather-details" class="bg-white p-3 flex flex-col gap-2 rounded-2xl">
+                <div id="weather-details" class="bg-[#ebebeb] p-3 flex flex-col gap-2 rounded-2xl">
                     <div class="flex justify-between gap-10">
                         <span class="font-light">Vitesse du vent</span>
                         <span class="font-semibold">${mSecToKmSec(data.windSpeed).toFixed(0)} km/h</span>

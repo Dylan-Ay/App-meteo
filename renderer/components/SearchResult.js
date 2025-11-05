@@ -43,11 +43,11 @@ class SearchResult extends HTMLElement {
             const regionLabel = region ? `${region},` : "";
 
             li.textContent = `${cityName} - ${regionLabel} (${country})`;
-            li.classList.add('bg-white', 'p-2', 'cursor-pointer', 'hover:bg-slate-100');
+            li.classList.add('bg-white', 'p-2', 'cursor-pointer', 'hover:bg-slate-100', 'dark:bg-gray-700', 'dark:text-white', 'dark:hover:bg-gray-900');
 
             li.addEventListener("click", () => {
                 this.dispatchEvent(new CustomEvent("location-selected", {
-                    detail: { lat, lon },
+                    detail: { lat, lon , cityName},
                     bubbles: true
                 }));
             });

@@ -1,14 +1,32 @@
 import './components/ForecastSummary.js';
 import './components/SearchResult.js';
-import { handleOutsideClick } from '.././utils/functions.js';
+import { handleOutsideClick, toggleTheme, setLight, setDark } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
 const meteoContainer = document.getElementById('meteo-container');
 const searchBarContainer = document.getElementById('search-bar-container');
-
 let typingTimer;
 let lastRequestId = 0;
 const debounceDelay = 200;
+
+// Gestion du thème
+window.addEventListener('DOMContentLoaded', () => {
+  toggleTheme();
+  
+  const checkbox = document.getElementById("darkSwitch");
+  if (!checkbox) return;
+
+  checkbox.checked = document.body.classList.contains('dark');
+
+  checkbox.addEventListener("change", (e) => {
+    if (e.target.checked) {
+      setDark();
+    } else {
+      setLight();
+    }
+  });
+});
+
 
 // Gestion de l'affichage de la liste de ville quand on clique en dehors
 document.addEventListener('click', (event) => {
@@ -39,13 +57,12 @@ cityInput.addEventListener("input", (event) => {
         // Affichage de la liste déroulante des villes
         const searchResult = document.createElement('search-result');
         searchResult.data = response.features;
-        const cityName = response.features[0].properties.city;
-        
+
         searchBarContainer.appendChild(searchResult);
         
         // Affichage du résultat de la ville sélectionnée
         searchResult.addEventListener("location-selected", (event) => {
-          const { lat, lon } = event.detail;
+          const { lat, lon, cityName } = event.detail;
 
           // Nettoyage
           searchResult.remove();
@@ -54,7 +71,6 @@ cityInput.addEventListener("input", (event) => {
           if (meteoContainer.hasChildNodes()) {
             meteoContainer.removeChild(meteoContainer.firstChild);
           }
-
 
           window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
             .then(data => {
