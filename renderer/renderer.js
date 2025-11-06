@@ -1,6 +1,6 @@
 import './components/ForecastSummary.js';
 import './components/SearchResult.js';
-import { handleOutsideClick, toggleTheme, setLight, setDark } from '.././utils/functions.js';
+import { handleOutsideClick, toggleTheme, setLight, setDark, printSavedData } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
 const meteoContainer = document.getElementById('meteo-container');
@@ -8,6 +8,8 @@ const searchBarContainer = document.getElementById('search-bar-container');
 let typingTimer;
 let lastRequestId = 0;
 const debounceDelay = 50;
+
+printSavedData('cityWeather', 'forecast-summary', meteoContainer);
 
 // Gestion du thème
 window.addEventListener('DOMContentLoaded', () => {
@@ -67,10 +69,11 @@ cityInput.addEventListener("input", (event) => {
           // Nettoyage
           searchResult.remove();
           cityInput.value = "";
-
           if (meteoContainer.hasChildNodes()) {
-            meteoContainer.removeChild(meteoContainer.firstChild);
-          }
+            while (meteoContainer.firstChild) {
+              meteoContainer.removeChild(meteoContainer.firstChild);
+            }
+          };
 
           window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
             .then(data => {
@@ -89,8 +92,13 @@ cityInput.addEventListener("input", (event) => {
                 pressure: data.main.pressure,
                 country: data.sys.country
               };
-
+              
               meteoContainer.appendChild(forecastSummary);
+              
+              data.name = cityName;
+              const savedData = data;
+
+              localStorage.setItem('cityWeather', JSON.stringify(savedData));
             })
             .catch(err => {
               console.error('Erreur data données méteo:', err);

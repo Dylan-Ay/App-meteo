@@ -56,3 +56,27 @@ export function setSystem() {
   localStorage.removeItem("theme");
   toggleTheme();
 }
+
+export function printSavedData(dataName, component, containerToAppend) {
+  const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
+
+  if (savedData.length != 0) {
+    const forecastSummary = document.createElement(component);
+    
+    forecastSummary.data = {
+      icon: `https://openweathermap.org/img/wn/${savedData.weather[0].icon}@2x.png`,
+      currentTemp: savedData.main.temp,
+      feelsLike: savedData.main.feels_like,
+      cityName: savedData.name,
+      weather: savedData.weather,
+      windSpeed: savedData.wind.speed,
+      humidity: savedData.main.humidity,
+      sunrise: savedData.sys.sunrise,
+      sunset: savedData.sys.sunset,
+      pressure: savedData.main.pressure,
+      country: savedData.sys.country
+    };
+
+    containerToAppend.appendChild(forecastSummary);
+  }
+}
