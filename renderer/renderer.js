@@ -7,7 +7,7 @@ const meteoContainer = document.getElementById('meteo-container');
 const searchBarContainer = document.getElementById('search-bar-container');
 let typingTimer;
 let lastRequestId = 0;
-const debounceDelay = 200;
+const debounceDelay = 50;
 
 // Gestion du thème
 window.addEventListener('DOMContentLoaded', () => {

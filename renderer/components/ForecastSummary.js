@@ -31,8 +31,8 @@ class ForecastSummary extends HTMLElement {
 
         this.wrapper.innerHTML = `
             <section id="forecast-title" class="mb-4">
-                <h1 class="text-2xl font-semibold">Méteo à ${data.cityName}</h1>
-                <span>${isoCountryToFullName(data.country)}</span>
+                <h1 class="text-2xl font-semibold dark:text-[#e9e9e9]">Méteo à ${data.cityName}</h1>
+                <span class="dark:text-[#e9e9e9]">${isoCountryToFullName(data.country)}</span>
             </section>
             <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-white rounded-2xl p-4">
                 <div id="weather-main" class="flex w-lg-2/5 items-center">
