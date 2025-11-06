@@ -43,7 +43,7 @@ class SearchResult extends HTMLElement {
             const regionLabel = region ? `${region},` : "";
 
             li.textContent = `${cityName} - ${regionLabel} (${country})`;
-            li.classList.add('bg-white', 'p-2', 'cursor-pointer', 'hover:bg-slate-100', 'dark:bg-gray-700', 'dark:text-white', 'dark:hover:bg-gray-900');
+            li.classList.add('bg-white', 'p-2', 'cursor-pointer', 'hover:bg-slate-100', 'dark:bg-gray-700', 'dark:text-white', 'dark:hover:bg-gray-900', 'inset-shadow-sm');
 
             li.addEventListener("click", () => {
                 this.dispatchEvent(new CustomEvent("location-selected", {
@@ -52,7 +52,7 @@ class SearchResult extends HTMLElement {
                 }));
             });
 
-            this.wrapper.classList.add('shadow-xl', 'absolute', 'w-full','top-[calc(100%_+_.25rem)]', 'divide-y', 'divide-zinc-300');
+            this.wrapper.classList.add('shadow-2xl', 'shadow-xl/30','dark:shadow-[0_10px_20px_rgba(0,0,0,1)]', 'absolute', 'w-full','top-[calc(100%_+_.25rem)]', 'divide-y', 'divide-zinc-300');
             this.wrapper.id = 'search-bar-results';
             
             this.wrapper.appendChild(li);
