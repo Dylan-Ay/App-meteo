@@ -30,14 +30,14 @@ class ForecastSummary extends HTMLElement {
         const data = this.#data;
 
         this.wrapper.innerHTML = `
-            <section id="forecast-title" class="mb-4">
-                <h1 class="text-2xl font-semibold dark:text-[#e9e9e9]">Méteo à ${data.cityName}</h1>
-                <span class="dark:text-[#e9e9e9]">${isoCountryToFullName(data.country)}</span>
+            <section id="forecast-title" class="mb-4 dark:text-[#f3f3f3]">
+                <h1 class="text-2xl font-semibold">Méteo à ${data.cityName}</h1>
+                <span>${isoCountryToFullName(data.country)}</span>
             </section>
-            <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-white rounded-2xl p-4">
+            <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-white rounded-2xl p-4 dark:bg-gray-700">
                 <div id="weather-main" class="flex w-lg-2/5 items-center">
                     <img src="${data.icon}" alt="Weather icon">
-                    <div class="flex flex-col">
+                    <div class="flex flex-col dark:text-[#f3f3f3]">
                         <span class="text-4xl font-semibold">${data.currentTemp.toFixed(0)}°</span>
                         <span class="text-sm">Ressenti de l'air: ${data.feelsLike.toFixed(0)}°</span>
                         <span class="font-semibold">${capitalizeFirstLetter(data.weather[0].description)}</span>
