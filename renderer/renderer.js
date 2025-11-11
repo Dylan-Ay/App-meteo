@@ -1,15 +1,18 @@
 import './components/ForecastSummary.js';
 import './components/SearchResult.js';
-import { handleOutsideClick, toggleTheme, setLight, setDark, printSavedData } from '.././utils/functions.js';
+import './components/SearchedCity.js';
+import { handleOutsideClick, toggleTheme, setLight, setDark, printSavedData, updateSavedData } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
 const meteoContainer = document.getElementById('meteo-container');
 const searchBarContainer = document.getElementById('search-bar-container');
+const searchedCitiesList = document.getElementById('searched-cities');
 let typingTimer;
 let lastRequestId = 0;
 const debounceDelay = 50;
 
-printSavedData('cityWeather', 'forecast-summary', meteoContainer);
+printSavedData('searchedCitiesList', 'forecast-summary', meteoContainer);
+printSavedData('searchedCitiesList', 'searched-city', searchedCitiesList, true);
 
 // Gestion du thème
 window.addEventListener('DOMContentLoaded', () => {
@@ -96,9 +99,13 @@ cityInput.addEventListener("input", (event) => {
               meteoContainer.appendChild(forecastSummary);
               
               data.name = cityName;
-              const savedData = data;
 
-              localStorage.setItem('cityWeather', JSON.stringify(savedData));
+              // Update du localStorage avec la dernière ville recherchée
+              // localStorage.removeItem('searchedCitiesList');
+              updateSavedData('searchedCitiesList', data);
+              // printSavedData('searchedCitiesList', 'searched-city', searchedCitiesList, true);
+              
+              console.log(JSON.parse(localStorage.getItem('searchedCitiesList')));
             })
             .catch(err => {
               console.error('Erreur data données méteo:', err);

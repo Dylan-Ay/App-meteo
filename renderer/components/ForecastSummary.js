@@ -23,7 +23,7 @@ class ForecastSummary extends HTMLElement {
     render() {
         if (!this.#data) {
             this.wrapper.innerHTML = `<p>Pas de données</p>`;
-            console.log('Pas de données reçu dans le composant');
+            console.log('Pas de données reçu dans le composant ForecastSummary');
             return;
         }
 
