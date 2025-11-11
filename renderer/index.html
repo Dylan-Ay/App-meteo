@@ -16,9 +16,10 @@
     <title>App Méteo</title>
   </head>
   <body class="bg-linear-to-b from-[#93c5fd] dark:from-[#183997] dark to-white bg-fixed h-screen">
+    <!-- HEADER -->
     <header class="relative flex items-center justify-center">
       <h2 class="text-5xl font-semibold text-center dark:text-[#f3f3f3]">App-Méteo</h2>
-
+      <!-- Toggle dark mode -->
       <div id="dark-switch" class="absolute top-4 right-8">
         <label for="darkSwitch" class="relative inline-block w-11 h-6 cursor-pointer">
           <input type="checkbox" id="darkSwitch" class="peer sr-only">
@@ -34,21 +35,29 @@
         </label>
       </div>
     </header>
-    <main class="container mx-auto mt-5">
-      <section id="search-bar-container" class="w-3/4 mx-auto relative mb-4">
-        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Rechercher une ville</label>
-        <div id="search-bar">
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-            </svg>
+    <main class="container mx-auto mt-5 max-w-7xl">
+      <!-- Barre de recherche -->
+      <section class="w-4/5 mx-auto">
+        <div id="search-bar-container" class="relative">
+          <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Rechercher une ville</label>
+          <div id="search-bar">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              </svg>
+            </div>
+              <input type="search" id="city-input" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4" placeholder="Rechercher une ville" required />
           </div>
-            <input type="search" id="city-input" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Rechercher une ville" required />
+        </div>
+
+        <!-- Composants villes recherchées -->
+        <div id="searched-cities" class="mb-6 gap-2.5 flex dark:text-[#f3f3f3]">
+
         </div>
       </section>
-        <div id="meteo-container">
-          
-        </div>
+      <div id="meteo-container">
+
+      </div>
     </main>
   </body>
   <script type="module" src="./renderer.js"></script>
