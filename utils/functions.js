@@ -57,26 +57,89 @@ export function setSystem() {
   toggleTheme();
 }
 
-export function printSavedData(dataName, component, containerToAppend) {
+export async function printSavedData(dataName, component, containerToAppend, isList = false) {
+  const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
+  
+  if (savedData.length != 0) {
+    if (!isList) {
+      const lastCitySaved = savedData[savedData.length - 1];
+      const lat = lastCitySaved.coord.lat;
+      const lon = lastCitySaved.coord.lon;
+      const cityName = lastCitySaved.name;
+
+      window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
+        .then(data => {
+          const newComponent = document.createElement(component);
+  
+          newComponent.data = {
+            icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+            currentTemp: data.main.temp,
+            feelsLike: data.main.feels_like,
+            cityName: cityName,
+            weather: data.weather,
+            windSpeed: data.wind.speed,
+            humidity: data.main.humidity,
+            sunrise: data.sys.sunrise,
+            sunset: data.sys.sunset,
+            pressure: data.main.pressure,
+            country: data.sys.country
+          };
+  
+          containerToAppend.appendChild(newComponent);
+        })
+        .catch(err => {
+        console.error(`Erreur data données méteo avec le composant ${component} et le storage ${dataName} :`, err);
+      });
+
+    } else {
+      const firstFourCities = savedData.slice(0,5);
+      
+      for (const element of firstFourCities) {
+        const cityName = element.name;
+        try {
+            const data = await window.weatherAPI.getCurrentWeatherByCoords(element.coord.lat, element.coord.lon);
+
+            const newComponent = document.createElement(component);
+            
+            newComponent.data = {
+              icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+              currentTemp: data.main.temp,
+              feelsLike: data.main.feels_like,
+              cityName: cityName,
+              weather: data.weather,
+              windSpeed: data.wind.speed,
+              humidity: data.main.humidity,
+              sunrise: data.sys.sunrise,
+              sunset: data.sys.sunset,
+              pressure: data.main.pressure,
+              country: data.sys.country
+            };
+
+            containerToAppend.appendChild(newComponent);
+            
+          } catch(err) {
+            console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
+          }
+      }
+    }
+  }
+} 
+
+export function updateSavedData(dataName, newCityData) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
 
-  if (savedData.length != 0) {
-    const forecastSummary = document.createElement(component);
-    
-    forecastSummary.data = {
-      icon: `https://openweathermap.org/img/wn/${savedData.weather[0].icon}@2x.png`,
-      currentTemp: savedData.main.temp,
-      feelsLike: savedData.main.feels_like,
-      cityName: savedData.name,
-      weather: savedData.weather,
-      windSpeed: savedData.wind.speed,
-      humidity: savedData.main.humidity,
-      sunrise: savedData.sys.sunrise,
-      sunset: savedData.sys.sunset,
-      pressure: savedData.main.pressure,
-      country: savedData.sys.country
-    };
+  // Supprime la ville si elle est déjà présente dans la liste
+  const indexOfExistingCity = savedData.findIndex(city => city.name === newCityData.name);
+  if (indexOfExistingCity !== -1) {
+    savedData.splice(indexOfExistingCity, 1);
+  }
 
-    containerToAppend.appendChild(forecastSummary);
+  if (savedData && savedData.length < 5) {
+    savedData.push(newCityData);
+    localStorage.setItem(dataName, JSON.stringify(savedData));
+  } else {
+    savedData.shift();
+    savedData.push(newCityData);
+    localStorage.setItem(dataName, JSON.stringify(savedData));
   }
 }
