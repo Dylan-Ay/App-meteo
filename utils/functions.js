@@ -77,8 +77,8 @@ export async function printSavedData(dataName, component, containerToAppend, isL
       const lastCitySaved = savedData[savedData.length - 1];
       const lat = lastCitySaved.coord.lat;
       const lon = lastCitySaved.coord.lon;
-      const cityName = lastCitySaved.name;
-
+      const timeZone = savedData[savedData.length - 1].timezone;
+      
       window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
         .then(data => {
           const newComponent = document.createElement(component);
@@ -87,7 +87,8 @@ export async function printSavedData(dataName, component, containerToAppend, isL
             icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
             currentTemp: data.main.temp,
             feelsLike: data.main.feels_like,
-            cityName: cityName,
+            cityName: data.name,
+            timeZone: timeZone,
             weather: data.weather,
             windSpeed: data.wind.speed,
             humidity: data.main.humidity,
@@ -128,7 +129,9 @@ export async function printSavedData(dataName, component, containerToAppend, isL
               sunrise: data.sys.sunrise,
               sunset: data.sys.sunset,
               pressure: data.main.pressure,
-              country: data.sys.country
+              country: data.sys.country,
+              lat: element.coord.lat,
+              lon: element.coord.lon,
             };
 
             containerToAppend.appendChild(newComponent);

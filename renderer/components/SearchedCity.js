@@ -25,16 +25,19 @@ class SearchedCity extends HTMLElement {
             return;
         }
         const data = this.#data;
-        
+        const cityName = data.cityName;
+        const lat = data.lat;
+        const lon = data.lon;
+        const timeZone = 0;
+                
         const li = document.createElement("li");
-        li.classList.add('bg-gray-50', 'dark:bg-gray-800', 'rounded-md');
+        li.classList.add('bg-gray-50', 'dark:bg-gray-800', 'rounded-md', 'cursor-pointer');
 
-        const a = document.createElement("a");
-        a.classList.add('flex', 'flex-wrap', 'items-center', 'justify-center', 'px-2', 'py-1.5', 'text-sm');
-        a.href = "monlien";
-
+        const div = document.createElement("div");
+        div.classList.add('flex', 'flex-wrap', 'items-center', 'justify-center', 'px-2', 'py-1.5', 'text-sm');
+        
         const cityNameSpan = document.createElement('span');
-        cityNameSpan.textContent = data.cityName;
+        cityNameSpan.textContent = cityName;
 
         const weatherImg = document.createElement('img');
         weatherImg.src = data.icon;
@@ -44,14 +47,14 @@ class SearchedCity extends HTMLElement {
         const cityTemperatureSpan = document.createElement('span');
         cityTemperatureSpan.textContent = `${data.currentTemp.toFixed(0)}°`;
 
-        a.append(cityNameSpan, weatherImg, cityTemperatureSpan);
+        div.append(cityNameSpan, weatherImg, cityTemperatureSpan);
 
-        li.appendChild(a);
+        li.appendChild(div);
         // A réparer
 
         li.addEventListener("click", () => {
             this.dispatchEvent(new CustomEvent("location-selected", {
-                detail: { lat, lon , cityName},
+                detail: { lat, lon , cityName, timeZone },
                 bubbles: true
             }));
         });

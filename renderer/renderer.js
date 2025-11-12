@@ -96,7 +96,8 @@ cityInput.addEventListener("input", () => {
               meteoContainer.appendChild(forecastSummary);
               
               data.name = cityName;
-
+              data.timezone = timeZone;
+              
               // Update du localStorage avec la dernière ville recherchée
               updateSavedData('searchedCitiesList', data);
 
