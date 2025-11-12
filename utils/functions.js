@@ -78,6 +78,7 @@ export async function printSavedData(dataName, component, containerToAppend, isL
       const lat = lastCitySaved.coord.lat;
       const lon = lastCitySaved.coord.lon;
       const timeZone = savedData[savedData.length - 1].timezone;
+      const cityName = lastCitySaved.name;
       
       window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
         .then(data => {
@@ -87,7 +88,7 @@ export async function printSavedData(dataName, component, containerToAppend, isL
             icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
             currentTemp: data.main.temp,
             feelsLike: data.main.feels_like,
-            cityName: data.name,
+            cityName: cityName,
             timeZone: timeZone,
             weather: data.weather,
             windSpeed: data.wind.speed,
