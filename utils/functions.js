@@ -57,7 +57,15 @@ export function setSystem() {
   toggleTheme();
 }
 
-export async function printSavedData(dataName, component, containerToAppend, isList = false) {
+export function cleanContainer(container) {
+  if (container.hasChildNodes()) {
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  };
+}
+
+export async function printSavedData(dataName, component, containerToAppend, isList = false, isClean = false) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
   
   if (savedData.length != 0) {
@@ -92,8 +100,12 @@ export async function printSavedData(dataName, component, containerToAppend, isL
       });
 
     } else {
-      const firstFourCities = savedData.slice(0,5);
       
+      if (isClean) {
+        cleanContainer(containerToAppend);
+      }
+
+      const firstFourCities = savedData.slice(0,5);
       for (const element of firstFourCities) {
         const cityName = element.name;
         try {

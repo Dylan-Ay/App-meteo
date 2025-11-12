@@ -1,7 +1,7 @@
 import './components/ForecastSummary.js';
 import './components/SearchResult.js';
 import './components/SearchedCity.js';
-import { handleOutsideClick, toggleTheme, setLight, setDark, printSavedData, updateSavedData } from '.././utils/functions.js';
+import { handleOutsideClick, toggleTheme, setLight, setDark, printSavedData, updateSavedData, cleanContainer } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
 const meteoContainer = document.getElementById('meteo-container');
@@ -41,8 +41,8 @@ document.addEventListener('click', (event) => {
   }
 });
 
-// Affichage des villes dans mon menu déroulant
-cityInput.addEventListener("input", (event) => {
+// Affichage des villes dans le menu déroulant de la barre de recherche
+cityInput.addEventListener("input", () => {
   clearTimeout(typingTimer);
 
   const city = cityInput.value.trim();
@@ -72,11 +72,7 @@ cityInput.addEventListener("input", (event) => {
           // Nettoyage
           searchResult.remove();
           cityInput.value = "";
-          if (meteoContainer.hasChildNodes()) {
-            while (meteoContainer.firstChild) {
-              meteoContainer.removeChild(meteoContainer.firstChild);
-            }
-          };
+          cleanContainer(meteoContainer);
 
           window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
             .then(data => {
@@ -101,11 +97,10 @@ cityInput.addEventListener("input", (event) => {
               data.name = cityName;
 
               // Update du localStorage avec la dernière ville recherchée
-              // localStorage.removeItem('searchedCitiesList');
               updateSavedData('searchedCitiesList', data);
-              // printSavedData('searchedCitiesList', 'searched-city', searchedCitiesList, true);
-              
-              console.log(JSON.parse(localStorage.getItem('searchedCitiesList')));
+
+              // Update des villes recherchées
+              printSavedData('searchedCitiesList', 'searched-city', searchedCitiesList, true, true);
             })
             .catch(err => {
               console.error('Erreur data données méteo:', err);
