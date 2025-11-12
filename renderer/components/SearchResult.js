@@ -41,13 +41,14 @@ class SearchResult extends HTMLElement {
             const lat = element.geometry.coordinates[1];
             const lon = element.geometry.coordinates[0];
             const regionLabel = region ? `${region},` : "";
+            const timeZone = element.properties.timezone.name;
 
             li.textContent = `${cityName} - ${regionLabel} (${country})`;
             li.classList.add('bg-white', 'p-2', 'cursor-pointer', 'hover:bg-slate-100', 'dark:bg-gray-700', 'dark:text-white', 'dark:hover:bg-gray-900', 'inset-shadow-sm');
 
             li.addEventListener("click", () => {
                 this.dispatchEvent(new CustomEvent("location-selected", {
-                    detail: { lat, lon , cityName},
+                    detail: { lat, lon , cityName, timeZone},
                     bubbles: true
                 }));
             });

@@ -59,11 +59,11 @@ class ForecastSummary extends HTMLElement {
                     <div class="flex items-center justify-between">
                         <div class="flex">
                             <img src="../src/icons/sunrise.svg" alt="icon sunrise">
-                            <span>${epochToLocaleTimeString(data.sunrise)}</span>
+                            <span>${epochToLocaleTimeString(data.sunrise, data.timeZone)}</span>
                         </div>
                         <div class="flex">
                             <img src="../src/icons/sunset.svg" alt="icon sunrise">
-                            <span>${epochToLocaleTimeString(data.sunset)}</span>
+                            <span>${epochToLocaleTimeString(data.sunset, data.timeZone)}</span>
                         </div>
                     </div>
                 </div>

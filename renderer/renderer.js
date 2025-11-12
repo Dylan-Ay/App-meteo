@@ -62,13 +62,13 @@ cityInput.addEventListener("input", () => {
         // Affichage de la liste déroulante des villes
         const searchResult = document.createElement('search-result');
         searchResult.data = response.features;
-
+        
         searchBarContainer.appendChild(searchResult);
         
         // Affichage du résultat de la ville sélectionnée
         searchResult.addEventListener("location-selected", (event) => {
-          const { lat, lon, cityName } = event.detail;
-
+          const { lat, lon, cityName, timeZone } = event.detail;
+          
           // Nettoyage
           searchResult.remove();
           cityInput.value = "";
@@ -83,6 +83,7 @@ cityInput.addEventListener("input", () => {
                 currentTemp: data.main.temp,
                 feelsLike: data.main.feels_like,
                 cityName: cityName,
+                timeZone: timeZone,
                 weather: data.weather,
                 windSpeed: data.wind.speed,
                 humidity: data.main.humidity,

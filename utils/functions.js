@@ -6,11 +6,15 @@ export function mSecToKmSec(value) {
   return value * 3.6;
 }
 
-export function epochToLocaleTimeString(value) {
+export function epochToLocaleTimeString(value, timeZone = 'Europe/Paris') {
   const date = new Date(value * 1000);
-  const heureMinute = date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+  const time = date.toLocaleTimeString([], {
+    hour: '2-digit', 
+    minute: '2-digit',
+    timeZone
+  });
   
-  return heureMinute; 
+  return time; 
 }
 
 export function isoCountryToFullName(isoCountry) {
