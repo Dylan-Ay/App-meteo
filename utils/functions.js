@@ -69,9 +69,10 @@ export function cleanContainer(container) {
   };
 }
 
-export async function printData(dataName, component, containerToAppend, isList = false, isClean = false) {
+export async function printData(dataName, component, containerToAppend, isList = false) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
-  
+  cleanContainer(containerToAppend);
+
   if (savedData.length != 0) {
     if (!isList) {
       const lastCitySaved = savedData[savedData.length - 1];
@@ -98,7 +99,7 @@ export async function printData(dataName, component, containerToAppend, isList =
             pressure: data.main.pressure,
             country: data.sys.country
           };
-  
+          
           containerToAppend.appendChild(newComponent);
         })
         .catch(err => {
@@ -107,16 +108,14 @@ export async function printData(dataName, component, containerToAppend, isList =
 
     } else {
       
-      if (isClean) {
-        cleanContainer(containerToAppend);
-      }
-
       const firstFourCities = savedData.slice(0,5);
       for (const element of firstFourCities) {
         const cityName = element.name;
+        const timeZone = element.timezone;
+        
         try {
             const data = await window.weatherAPI.getCurrentWeatherByCoords(element.coord.lat, element.coord.lon);
-
+            
             const newComponent = document.createElement(component);
             
             newComponent.data = {
@@ -124,6 +123,7 @@ export async function printData(dataName, component, containerToAppend, isList =
               currentTemp: data.main.temp,
               feelsLike: data.main.feels_like,
               cityName: cityName,
+              timeZone: timeZone,
               weather: data.weather,
               windSpeed: data.wind.speed,
               humidity: data.main.humidity,
@@ -162,4 +162,26 @@ export function saveNewCity(dataName, newCityData) {
     savedData.push(newCityData);
     localStorage.setItem(dataName, JSON.stringify(savedData));
   }
+}
+
+export async function handleLocationSelected(event, meteoContainer,searchedCitiesContainer) {
+  const { lat, lon, cityName, timeZone } = event.detail;
+  
+  window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
+    .then(async data => {
+      data.name = cityName;
+      data.timezone = timeZone;
+      
+      // Update du localStorage avec la dernière ville recherchée
+      saveNewCity('searchedCitiesList', data);
+
+      // Affichage de la météo pour la ville sélectionnée
+      await printData('searchedCitiesList', 'forecast-summary', meteoContainer, false);
+      
+      // Update des villes recherchées
+      await printData('searchedCitiesList', 'searched-city', searchedCitiesContainer, true);
+    })
+    .catch(err => {
+      console.error('Erreur data données méteo:', err);
+    });
 }

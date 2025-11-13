@@ -28,8 +28,8 @@ class SearchedCity extends HTMLElement {
         const cityName = data.cityName;
         const lat = data.lat;
         const lon = data.lon;
-        const timeZone = 0;
-                
+        const timeZone = data.timeZone;
+           
         const li = document.createElement("li");
         li.classList.add('bg-gray-50', 'dark:bg-gray-800', 'rounded-md', 'cursor-pointer');
 
@@ -50,7 +50,6 @@ class SearchedCity extends HTMLElement {
         div.append(cityNameSpan, weatherImg, cityTemperatureSpan);
 
         li.appendChild(div);
-        // A réparer
 
         li.addEventListener("click", () => {
             this.dispatchEvent(new CustomEvent("location-selected", {

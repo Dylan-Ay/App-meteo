@@ -1,18 +1,32 @@
 import './components/ForecastSummary.js';
 import './components/SearchResult.js';
 import './components/SearchedCity.js';
-import { handleOutsideClick, toggleTheme, setLight, setDark, cleanContainer, printData, saveNewCity } from '.././utils/functions.js';
+import { handleOutsideClick, toggleTheme, setLight, setDark, printData, handleLocationSelected } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
 const meteoContainer = document.getElementById('meteo-container');
 const searchBarContainer = document.getElementById('search-bar-container');
-const searchedCitiesList = document.getElementById('searched-cities');
+const searchedCitiesContainer = document.getElementById('searched-cities-container');
 let typingTimer;
 let lastRequestId = 0;
 const debounceDelay = 50;
 
 printData('searchedCitiesList', 'forecast-summary', meteoContainer);
-printData('searchedCitiesList', 'searched-city', searchedCitiesList, true);
+printData('searchedCitiesList', 'searched-city', searchedCitiesContainer, true);
+
+const observer = new MutationObserver(() => {
+  const searchedCitiesList = document.querySelectorAll('searched-city');
+  searchedCitiesList.forEach(city => {
+    if (!city.dataset.listenerAttached) {
+      city.addEventListener("location-selected", (event) => {
+        handleLocationSelected(event, meteoContainer, searchedCitiesContainer);
+      });
+      city.dataset.listenerAttached = "true";
+    }
+  });
+});
+
+observer.observe(searchedCitiesContainer, { childList: true });
 
 // Gestion du thème
 window.addEventListener('DOMContentLoaded', () => {
@@ -31,7 +45,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
 
 // Gestion de l'affichage de la liste de ville quand on clique en dehors
 document.addEventListener('click', (event) => {
@@ -64,34 +77,13 @@ cityInput.addEventListener("input", () => {
         searchResult.data = response.features;
         
         searchBarContainer.appendChild(searchResult);
-        
-        // Affichage du résultat de la ville sélectionnée
+
         searchResult.addEventListener("location-selected", (event) => {
-          const { lat, lon, cityName, timeZone } = event.detail;
-          
-          // Nettoyage
           searchResult.remove();
           cityInput.value = "";
-          cleanContainer(meteoContainer);
 
-          window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
-            .then(data => {
-              data.name = cityName;
-              data.timezone = timeZone;
-              
-              // Update du localStorage avec la dernière ville recherchée
-              saveNewCity('searchedCitiesList', data);
-
-              // Affichage de la météo pour la ville sélectionnée
-              printData('searchedCitiesList', 'forecast-summary', meteoContainer);
-              
-              // Update des villes recherchées
-              printData('searchedCitiesList', 'searched-city', searchedCitiesList, true, true);
-            })
-            .catch(err => {
-              console.error('Erreur data données méteo:', err);
-            });
-          });
+          handleLocationSelected(event, meteoContainer, searchedCitiesContainer, searchResult, cityInput);
+        });
         })
       .catch(err => {
         console.error("Erreur data données ville:", err);
