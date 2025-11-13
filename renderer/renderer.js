@@ -1,7 +1,7 @@
 import './components/ForecastSummary.js';
 import './components/SearchResult.js';
 import './components/SearchedCity.js';
-import { handleOutsideClick, toggleTheme, setLight, setDark, printSavedData, updateSavedData, cleanContainer } from '.././utils/functions.js';
+import { handleOutsideClick, toggleTheme, setLight, setDark, cleanContainer, printData, saveNewCity } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
 const meteoContainer = document.getElementById('meteo-container');
@@ -11,8 +11,8 @@ let typingTimer;
 let lastRequestId = 0;
 const debounceDelay = 50;
 
-printSavedData('searchedCitiesList', 'forecast-summary', meteoContainer);
-printSavedData('searchedCitiesList', 'searched-city', searchedCitiesList, true);
+printData('searchedCitiesList', 'forecast-summary', meteoContainer);
+printData('searchedCitiesList', 'searched-city', searchedCitiesList, true);
 
 // Gestion du thème
 window.addEventListener('DOMContentLoaded', () => {
@@ -76,33 +76,17 @@ cityInput.addEventListener("input", () => {
 
           window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
             .then(data => {
-              const forecastSummary = document.createElement("forecast-summary");
-
-              forecastSummary.data = {
-                icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-                currentTemp: data.main.temp,
-                feelsLike: data.main.feels_like,
-                cityName: cityName,
-                timeZone: timeZone,
-                weather: data.weather,
-                windSpeed: data.wind.speed,
-                humidity: data.main.humidity,
-                sunrise: data.sys.sunrise,
-                sunset: data.sys.sunset,
-                pressure: data.main.pressure,
-                country: data.sys.country
-              };
-              
-              meteoContainer.appendChild(forecastSummary);
-              
               data.name = cityName;
               data.timezone = timeZone;
               
               // Update du localStorage avec la dernière ville recherchée
-              updateSavedData('searchedCitiesList', data);
+              saveNewCity('searchedCitiesList', data);
 
+              // Affichage de la météo pour la ville sélectionnée
+              printData('searchedCitiesList', 'forecast-summary', meteoContainer);
+              
               // Update des villes recherchées
-              printSavedData('searchedCitiesList', 'searched-city', searchedCitiesList, true, true);
+              printData('searchedCitiesList', 'searched-city', searchedCitiesList, true, true);
             })
             .catch(err => {
               console.error('Erreur data données méteo:', err);

@@ -69,7 +69,7 @@ export function cleanContainer(container) {
   };
 }
 
-export async function printSavedData(dataName, component, containerToAppend, isList = false, isClean = false) {
+export async function printData(dataName, component, containerToAppend, isList = false, isClean = false) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
   
   if (savedData.length != 0) {
@@ -145,7 +145,7 @@ export async function printSavedData(dataName, component, containerToAppend, isL
   }
 } 
 
-export function updateSavedData(dataName, newCityData) {
+export function saveNewCity(dataName, newCityData) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
 
   // Supprime la ville si elle est déjà présente dans la liste
