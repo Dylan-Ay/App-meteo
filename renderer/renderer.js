@@ -14,6 +14,7 @@ const debounceDelay = 50;
 printData('searchedCitiesList', 'forecast-summary', meteoContainer);
 printData('searchedCitiesList', 'searched-city', searchedCitiesContainer, true);
 
+// Observer pour attacher le listener aux searched-city à chaque création du composant
 const observer = new MutationObserver(() => {
   const searchedCitiesList = document.querySelectorAll('searched-city');
   searchedCitiesList.forEach(city => {
