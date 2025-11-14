@@ -107,8 +107,9 @@ export async function printData(dataName, component, containerToAppend, isList =
       });
 
     } else {
-      
+      const citiesToAppend = [];
       const firstFourCities = savedData.slice(0,5);
+      
       for (const element of firstFourCities) {
         const cityName = element.name;
         const timeZone = element.timezone;
@@ -134,13 +135,16 @@ export async function printData(dataName, component, containerToAppend, isList =
               lat: element.coord.lat,
               lon: element.coord.lon,
             };
-
-            containerToAppend.appendChild(newComponent);
             
+            citiesToAppend.push(newComponent);
+
           } catch(err) {
             console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
           }
       }
+      citiesToAppend.forEach((element) => {
+        containerToAppend.appendChild(element);
+      });
     }
   }
 } 
