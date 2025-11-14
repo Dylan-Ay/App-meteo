@@ -9,6 +9,7 @@ class SearchedCity extends HTMLElement {
     // Ajout de l'élement au DOM
     connectedCallback() {
         this.appendChild(this.wrapper);
+        this.registerEvents();
     }
 
     // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
@@ -25,41 +26,32 @@ class SearchedCity extends HTMLElement {
             return;
         }
         const data = this.#data;
-        const cityName = data.cityName;
-        const lat = data.lat;
-        const lon = data.lon;
-        const timeZone = data.timeZone;
-           
-        const li = document.createElement("li");
-        li.classList.add('bg-gray-50', 'dark:bg-gray-800', 'rounded-md', 'cursor-pointer');
 
-        const div = document.createElement("div");
-        div.classList.add('flex', 'flex-wrap', 'items-center', 'justify-center', 'px-2', 'py-1.5', 'text-sm');
+        this.wrapper.innerHTML = `
+            <li class="bg-gray-50 dark:bg-gray-800 rounded-md cursor-pointer">
+                <div class="flex flex-wrap items-center justify-center px-2 py-1.5 text-sm">
+                    <span>${data.cityName}</span>
+                    <img src="${data.icon}" alt="Icône ${data.weather}" class="w-7">
+                    <span>${data.currentTemp.toFixed(0)}°</span>
+                </div>
+            </li>
+        `;
+
+    }
+
+    registerEvents() {
+        const lat = this.#data.lat;
+        const lon = this.#data.lon;
+        const timeZone = this.#data.timeZone;
+        const cityName = this.#data.cityName;
         
-        const cityNameSpan = document.createElement('span');
-        cityNameSpan.textContent = cityName;
-
-        const weatherImg = document.createElement('img');
-        weatherImg.src = data.icon;
-        weatherImg.alt = "Weather icon";
-        weatherImg.className = "w-7";
-
-        const cityTemperatureSpan = document.createElement('span');
-        cityTemperatureSpan.textContent = `${data.currentTemp.toFixed(0)}°`;
-
-        div.append(cityNameSpan, weatherImg, cityTemperatureSpan);
-
-        li.appendChild(div);
-
-        li.addEventListener("click", () => {
+        this.querySelector('li').addEventListener("click", () => {
             this.dispatchEvent(new CustomEvent("location-selected", {
                 detail: { lat, lon , cityName, timeZone },
                 bubbles: true
             }));
-        });
-        
-        this.wrapper.appendChild(li);
-    }
+        })
+    };
 }
 // Définition du nom du composant
 customElements.define('searched-city', SearchedCity);
