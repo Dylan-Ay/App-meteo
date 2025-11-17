@@ -80,7 +80,9 @@ export async function printData(dataName, component, containerToAppend, isList =
       const lon = lastCitySaved.coord.lon;
       const timeZone = savedData[savedData.length - 1].timezone;
       const cityName = lastCitySaved.name;
-      
+
+      await getFiveDaysForecastByCity(dataName, component, containerToAppend);
+
       window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
         .then(data => {
           const newComponent = document.createElement(component);
@@ -147,7 +149,57 @@ export async function printData(dataName, component, containerToAppend, isList =
       });
     }
   }
-} 
+}
+
+export async function getFiveDaysForecastByCity(dataName, component, containerToAppend) {
+  const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
+  cleanContainer(containerToAppend);
+
+  if (savedData.length != 0) {
+    const lastCitySaved = savedData[savedData.length - 1];
+    const lat = lastCitySaved.coord.lat;
+    const lon = lastCitySaved.coord.lon;
+    const timeZone = savedData[savedData.length - 1].timezone;
+    const cityName = lastCitySaved.name;
+
+      const elementToAppend = [];
+
+      try {
+          const data = await window.weatherAPI.getFiveDaysForecastByCity(lat, lon);
+
+          data.list.forEach(weather => {
+            console.log(weather)
+          });
+          
+          // const newComponent = document.createElement(component);
+          
+          // newComponent.data = {
+          //   icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+          //   currentTemp: data.main.temp,
+          //   feelsLike: data.main.feels_like,
+          //   cityName: cityName,
+          //   timeZone: timeZone,
+          //   weather: data.weather,
+          //   windSpeed: data.wind.speed,
+          //   humidity: data.main.humidity,
+          //   sunrise: data.sys.sunrise,
+          //   sunset: data.sys.sunset,
+          //   pressure: data.main.pressure,
+          //   country: data.sys.country,
+          //   lat: element.coord.lat,
+          //   lon: element.coord.lon,
+          // };
+          
+          // citiesToAppend.push(newComponent);
+
+        } catch(err) {
+          console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
+        }
+      // citiesToAppend.forEach((element) => {
+      //   containerToAppend.appendChild(element);
+      // });
+  }
+}
 
 export function saveNewCity(dataName, newCityData) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
