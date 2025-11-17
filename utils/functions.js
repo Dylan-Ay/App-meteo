@@ -1,3 +1,5 @@
+import '../renderer/components/HourlyForecast.js';
+
 export function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -81,8 +83,6 @@ export async function printData(dataName, component, containerToAppend, isList =
       const timeZone = savedData[savedData.length - 1].timezone;
       const cityName = lastCitySaved.name;
 
-      await getFiveDaysForecastByCity(dataName, component, containerToAppend);
-
       window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
         .then(data => {
           const newComponent = document.createElement(component);
@@ -107,6 +107,8 @@ export async function printData(dataName, component, containerToAppend, isList =
         .catch(err => {
         console.error(`Erreur data données méteo avec le composant ${component} et le storage ${dataName} :`, err);
       });
+      
+      await getHourlyForecastByCity(dataName, 'hourly-forecast', containerToAppend);
 
     } else {
       const citiesToAppend = [];
@@ -151,53 +153,43 @@ export async function printData(dataName, component, containerToAppend, isList =
   }
 }
 
-export async function getFiveDaysForecastByCity(dataName, component, containerToAppend) {
+export async function getHourlyForecastByCity(dataName, component, containerToAppend) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
-  cleanContainer(containerToAppend);
-
+  
   if (savedData.length != 0) {
     const lastCitySaved = savedData[savedData.length - 1];
     const lat = lastCitySaved.coord.lat;
     const lon = lastCitySaved.coord.lon;
     const timeZone = savedData[savedData.length - 1].timezone;
-    const cityName = lastCitySaved.name;
 
-      const elementToAppend = [];
+      const hourlyForecastList = [];
 
       try {
           const data = await window.weatherAPI.getFiveDaysForecastByCity(lat, lon);
 
-          data.list.forEach(weather => {
-            console.log(weather)
+          data.list.forEach(element => {
+            // console.log(element)
+            const newComponent = document.createElement(component);
+            console.log("instance HourlyForecast ?", newComponent instanceof HourlyForecast);
+            newComponent.data = {
+              icon: `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`,
+              currentTemp: element.main.temp,
+              feelsLike: element.main.feels_like,
+              timeZone: timeZone,
+              weather: data.weather,
+              lat: lat,
+              lon: lon,
+            };
+            
+            hourlyForecastList.push(newComponent);
           });
-          
-          // const newComponent = document.createElement(component);
-          
-          // newComponent.data = {
-          //   icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-          //   currentTemp: data.main.temp,
-          //   feelsLike: data.main.feels_like,
-          //   cityName: cityName,
-          //   timeZone: timeZone,
-          //   weather: data.weather,
-          //   windSpeed: data.wind.speed,
-          //   humidity: data.main.humidity,
-          //   sunrise: data.sys.sunrise,
-          //   sunset: data.sys.sunset,
-          //   pressure: data.main.pressure,
-          //   country: data.sys.country,
-          //   lat: element.coord.lat,
-          //   lon: element.coord.lon,
-          // };
-          
-          // citiesToAppend.push(newComponent);
 
         } catch(err) {
           console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
         }
-      // citiesToAppend.forEach((element) => {
-      //   containerToAppend.appendChild(element);
-      // });
+      hourlyForecastList.forEach((element) => {
+        containerToAppend.appendChild(element);
+      });
   }
 }
 
@@ -231,14 +223,11 @@ export async function handleLocationSelected(event, meteoContainer,searchedCitie
       // Update du localStorage avec la dernière ville recherchée
       saveNewCity('searchedCitiesList', data);
 
-      // Affichage de la météo pour la ville sélectionnée
+      // Affichage de la météo pour la ville sélectionnée + de la météo des prochaines heures
       await printData('searchedCitiesList', 'forecast-summary', meteoContainer, false);
       
       // Update des villes recherchées
       await printData('searchedCitiesList', 'searched-city', searchedCitiesContainer, true);
-
-      // Récupération de la méteo toutes les 3 heures des 5 prochains jours
-      await printData('searchedCitiesList', 'hourly-forecast', meteoContainer, false);
     })
     .catch(err => {
       console.error('Erreur data données méteo:', err);
