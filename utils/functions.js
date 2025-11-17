@@ -236,6 +236,9 @@ export async function handleLocationSelected(event, meteoContainer,searchedCitie
       
       // Update des villes recherchées
       await printData('searchedCitiesList', 'searched-city', searchedCitiesContainer, true);
+
+      // Récupération de la méteo toutes les 3 heures des 5 prochains jours
+      await printData('searchedCitiesList', 'hourly-forecast', meteoContainer, false);
     })
     .catch(err => {
       console.error('Erreur data données méteo:', err);
