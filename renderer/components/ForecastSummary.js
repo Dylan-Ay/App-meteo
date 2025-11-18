@@ -5,13 +5,11 @@ class ForecastSummary extends HTMLElement {
 
     constructor() {
         super();
-        this.wrapper = document.createElement('div');
-        this.wrapper.classList.add('container', 'w-4/5', 'mx-auto');
     }
     
     // Ajout de l'élement au DOM
     connectedCallback() {
-        this.appendChild(this.wrapper);
+        this.parentElement.classList.add('container', 'w-4/5', 'mx-auto');
     }
 
     // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
@@ -22,19 +20,19 @@ class ForecastSummary extends HTMLElement {
 
     render() {
         if (!this.#data) {
-            this.wrapper.innerHTML = `<p>Pas de données</p>`;
+            this.innerHTML = `<p>Pas de données</p>`;
             console.log('Pas de données reçu dans le composant ForecastSummary');
             return;
         }
 
         const data = this.#data;
 
-        this.wrapper.innerHTML = `
+        this.innerHTML = `
             <section id="forecast-title" class="mb-4 dark:text-[#f3f3f3]">
                 <h1 class="text-2xl font-semibold">Méteo à ${data.cityName}</h1>
                 <span>${isoCountryToFullName(data.country)}</span>
             </section>
-            <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-[#9ebee8bf] rounded-2xl p-4 dark:bg-gray-800">
+            <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-[#9ebee8bf] rounded-t-3xl p-4 dark:bg-gray-800">
                 <div id="weather-main" class="flex w-lg-2/5 items-center">
                     <img src="${data.icon}" alt="Weather icon">
                     <div class="flex flex-col dark:text-[#f3f3f3]">
