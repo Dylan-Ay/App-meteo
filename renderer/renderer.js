@@ -1,6 +1,7 @@
 import './components/ForecastSummary.js';
 import './components/SearchResult.js';
 import './components/SearchedCity.js';
+import './components/HourlyForecast.js';
 import { handleOutsideClick, toggleTheme, setLight, setDark, printData, handleLocationSelected } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
@@ -83,7 +84,7 @@ cityInput.addEventListener("input", () => {
           searchResult.remove();
           cityInput.value = "";
 
-          handleLocationSelected(event, meteoContainer, searchedCitiesContainer, searchResult, cityInput);
+          handleLocationSelected(event, meteoContainer, searchedCitiesContainer);
         });
         })
       .catch(err => {

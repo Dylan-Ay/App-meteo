@@ -3,12 +3,11 @@ class SearchedCity extends HTMLElement {
 
     constructor() {
         super();
-        this.wrapper = document.createElement('ul');
     }
     
     // Ajout de l'élement au DOM
     connectedCallback() {
-        this.appendChild(this.wrapper);
+        this.parentElement?.classList.add('bg-gray-50', 'dark:bg-gray-800', 'rounded-md', 'cursor-pointer');
         this.registerEvents();
     }
 
@@ -26,15 +25,13 @@ class SearchedCity extends HTMLElement {
             return;
         }
         const data = this.#data;
-
-        this.wrapper.innerHTML = `
-            <li class="bg-gray-50 dark:bg-gray-800 rounded-md cursor-pointer">
-                <div class="flex flex-wrap items-center justify-center px-2 py-1.5 text-sm">
-                    <span>${data.cityName}</span>
-                    <img src="${data.icon}" alt="Icône ${data.weather}" class="w-7">
-                    <span>${data.currentTemp.toFixed(0)}°</span>
-                </div>
-            </li>
+        
+        this.innerHTML = `
+            <div class="flex flex-wrap items-center justify-center px-2 py-1.5 text-sm">
+                <span>${data.cityName}</span>
+                <img src="${data.icon}" alt="Icône ${data.weather}" class="w-7">
+                <span>${data.currentTemp.toFixed(0)}°</span>
+            </div>
         `;
 
     }
@@ -45,7 +42,7 @@ class SearchedCity extends HTMLElement {
         const timeZone = this.#data.timeZone;
         const cityName = this.#data.cityName;
         
-        this.querySelector('li').addEventListener("click", () => {
+        this.parentElement.addEventListener("click", () => {
             this.dispatchEvent(new CustomEvent("location-selected", {
                 detail: { lat, lon , cityName, timeZone },
                 bubbles: true
