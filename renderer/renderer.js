@@ -2,18 +2,19 @@ import './components/ForecastSummary.js';
 import './components/SearchResult.js';
 import './components/SearchedCity.js';
 import './components/HourlyForecast.js';
-import { handleOutsideClick, toggleTheme, setLight, setDark, printData, handleLocationSelected } from '.././utils/functions.js';
+import { handleOutsideClick, toggleTheme, setLight, setDark, printData, handleLocationSelected, getHourlyForecastByCity } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
-const meteoContainer = document.getElementById('meteo-container');
+const forecastSummaryContainer = document.getElementById('forecast-summary');
 const searchBarContainer = document.getElementById('search-bar-container');
 const searchedCitiesContainer = document.getElementById('searched-cities-container');
 let typingTimer;
 let lastRequestId = 0;
 const debounceDelay = 50;
 
-printData('searchedCitiesList', 'forecast-summary', meteoContainer);
+printData('searchedCitiesList', 'forecast-summary', forecastSummaryContainer);
 printData('searchedCitiesList', 'searched-city', searchedCitiesContainer, true);
+getHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 9);
 
 // Observer pour attacher le listener aux searched-city à chaque création du composant
 const observer = new MutationObserver(() => {
@@ -21,7 +22,7 @@ const observer = new MutationObserver(() => {
   searchedCitiesList.forEach(city => {
     if (!city.dataset.listenerAttached) {
       city.addEventListener("location-selected", (event) => {
-        handleLocationSelected(event, meteoContainer, searchedCitiesContainer);
+        handleLocationSelected(event, forecastSummaryContainer, searchedCitiesContainer);
       });
       city.dataset.listenerAttached = "true";
     }
@@ -84,7 +85,7 @@ cityInput.addEventListener("input", () => {
           searchResult.remove();
           cityInput.value = "";
 
-          handleLocationSelected(event, meteoContainer, searchedCitiesContainer);
+          handleLocationSelected(event, forecastSummaryContainer, searchedCitiesContainer);
         });
         })
       .catch(err => {
