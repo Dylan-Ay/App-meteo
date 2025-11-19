@@ -1,7 +1,7 @@
 {
   "name": "app-meteo",
   "version": "1.0.0",
-  "description": "App-méteo",
+  "description": "App-météo",
   "main": "./main/main.js",
   "scripts": {
     "start": "set NODE_ENV=development&&electron .",

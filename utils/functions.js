@@ -8,15 +8,14 @@ export function mSecToKmSec(value) {
   return value * 3.6;
 }
 
-export function epochToLocaleTimeString(value, timeZone = 'Europe/Paris') {
+export function epochToLocaleTimeString(value, timeZone = 'Europe/Paris', minutes = true) {
   const date = new Date(value * 1000);
-  const time = date.toLocaleTimeString([], {
-    hour: '2-digit', 
-    minute: '2-digit',
+
+  return date.toLocaleTimeString([], {
+    hour: '2-digit',
+    ...(minutes && { minute : "2-digit" }),
     timeZone
-  });
-  
-  return time; 
+  })
 }
 
 export function isoCountryToFullName(isoCountry) {
@@ -105,7 +104,7 @@ export async function printData(dataName, component, containerToAppend, isList =
           containerToAppend.appendChild(newComponent);
         })
         .catch(err => {
-        console.error(`Erreur data données méteo avec le composant ${component} et le storage ${dataName} :`, err);
+        console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
       });
 
     } else {
@@ -243,6 +242,6 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
       await getHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 9);
     })
     .catch(err => {
-      console.error('Erreur data données méteo:', err);
+      console.error('Erreur data données météo:', err);
     });
 }

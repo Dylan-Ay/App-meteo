@@ -8,7 +8,7 @@ class HourlyForecast extends HTMLElement {
     
     // Ajout de l'élement au DOM
     connectedCallback() {
-        this.parentElement.classList.add('px-3', 'py-3');
+        this.parentElement.classList.add('px-3', 'py-4', 'flex', 'items-center', 'min-w-27');
     }
 
     // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
@@ -27,10 +27,15 @@ class HourlyForecast extends HTMLElement {
         const data = this.#data;
         
         this.innerHTML = `
-            <span>${epochToLocaleTimeString(data.time, data.timeZone)}</span>
+        <div class="flex flex-col items-center">
+            <span class="font-semibold">${epochToLocaleTimeString(data.time, data.timeZone, false)}</span>
             <img src="${data.icon}">
-            <p>${data.currentTemp.toFixed(0)}°C</p>
-            <p>Ressenti : ${data.feelsLike.toFixed(0)}°C</p>
+            <p>
+                <i class="fa-solid fa-temperature-half"></i>
+                ${data.currentTemp.toFixed(0)}°
+            </p>
+            <p class="text-xs pt-1">Ressenti : ${data.feelsLike.toFixed(0)}°</p>
+        </div>
     `;
     }
 }

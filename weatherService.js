@@ -8,7 +8,7 @@ function initializeService(key) {
     apiKey = key;
 }
 
-// Récupération de toutes les informations de la méteo actuelle pour une ville
+// Récupération de toutes les informations de la météo actuelle pour une ville
 async function fetchCurrentWeather(lat, lon) {
   try {
     if (!apiKey) {
@@ -33,7 +33,7 @@ async function fetchCurrentWeather(lat, lon) {
   }
 }
 
-// Récupération de toutes les informations de la méteo des 5 prochains jours toutes les 3 heures pour une ville
+// Récupération de toutes les informations de la météo des 5 prochains jours toutes les 3 heures pour une ville
 async function fetchFiveDaysForecast(lat, lon) {
   try {
     if (!apiKey) {
