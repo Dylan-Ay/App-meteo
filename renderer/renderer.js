@@ -5,7 +5,7 @@ import './components/HourlyForecast.js';
 import { handleOutsideClick, toggleTheme, setLight, setDark, printData, handleLocationSelected, getHourlyForecastByCity } from '.././utils/functions.js';
 
 const cityInput = document.getElementById('city-input');
-const forecastSummaryContainer = document.getElementById('forecast-summary');
+const forecastSummaryContainer = document.getElementById('forecast-summary-container');
 const searchBarContainer = document.getElementById('search-bar-container');
 const searchedCitiesContainer = document.getElementById('searched-cities-container');
 let typingTimer;
