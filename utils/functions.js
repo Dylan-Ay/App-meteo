@@ -202,16 +202,29 @@ export async function getHourlyForecastByCity(dataName, component, howMany = fal
 }
 
 // Moyenne temp_min et moyenne temp_max pour 9
-export async function getAverageTempMinAndMaxPerDay(lat, lon) {
-  window.weatherAPI.getFiveDaysForecastByCity(lat, lon)
-    .then(data => {
-      const listOfHourlyForecastByDay = data.list.slice(0, 9);
-      console.log(listOfHourlyForecastByDay)
-    })
-    .catch(err => {
-      console.error(`Erreur data données météo avec la fonction getAverageTempMinAndMaxPerDay :`, err);
+export async function getAverageTempMinAndMaxPerDay(lat, lon, start, end) {
+  let minTempPerDay = 0;
+  let maxTempPerDay = 0;
+  let listOfMinTempPerDay = [];
+  let listOfMaxTempPerDay = [];
+
+  try {
+    const data = await window.weatherAPI.getFiveDaysForecastByCity(lat, lon);
+    
+    data.list.slice(start, end).forEach(item => {
+      listOfMinTempPerDay.push(String(Math.round(item.main.temp_min)));
+      listOfMaxTempPerDay.push(String(Math.round(item.main.temp_max)));
     });
-}
+
+    minTempPerDay = listOfMinTempPerDay.sort((a, b) => a - b).at(0);
+    maxTempPerDay = listOfMaxTempPerDay.sort((a, b) => b - a).at(0);
+
+    console.log(minTempPerDay)
+    console.log(maxTempPerDay)
+  } catch(err) {
+    console.error(`Erreur data données météo avec la fonction getAverageTempMinAndMaxPerDay:`, err);
+  }
+} 
 
 export function saveNewCity(dataName, newCityData) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
@@ -252,7 +265,7 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
       // Affichage de la météo des prochaines heures de la ville sélectionnée
       await getHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 9);
 
-      await getAverageTempMinAndMaxPerDay(lat, lon);
+      await getAverageTempMinAndMaxPerDay(lat, lon, 0, 9);
     })
     .catch(err => {
       console.error('Erreur data données météo:', err);
