@@ -166,13 +166,12 @@ export async function getHourlyForecastByCity(dataName, component, howMany = fal
     
     try {
       let data = await window.weatherAPI.getFiveDaysForecastByCity(lat, lon);
-
       if (howMany) {
         data = data.list.slice(0, howMany);
       } else {
         data = data.list;
       }
-
+      
       data.forEach(element => {
         const newElement = document.createElement('li');
         const newComponent = document.createElement(component);
@@ -200,6 +199,18 @@ export async function getHourlyForecastByCity(dataName, component, howMany = fal
       hourlyForecastContainer.appendChild(hourlyForecast);
     });
   }
+}
+
+// Moyenne temp_min et moyenne temp_max pour 9
+export async function getAverageTempMinAndMaxPerDay(lat, lon) {
+  window.weatherAPI.getFiveDaysForecastByCity(lat, lon)
+    .then(data => {
+      const listOfHourlyForecastByDay = data.list.slice(0, 9);
+      console.log(listOfHourlyForecastByDay)
+    })
+    .catch(err => {
+      console.error(`Erreur data données météo avec la fonction getAverageTempMinAndMaxPerDay :`, err);
+    });
 }
 
 export function saveNewCity(dataName, newCityData) {
@@ -240,6 +251,8 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
 
       // Affichage de la météo des prochaines heures de la ville sélectionnée
       await getHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 9);
+
+      await getAverageTempMinAndMaxPerDay(lat, lon);
     })
     .catch(err => {
       console.error('Erreur data données météo:', err);
