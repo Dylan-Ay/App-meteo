@@ -1,18 +1,14 @@
 import { cleanContainer } from "../../utils/functions.js";
+import { getLastSavedCityInfo } from "../../services/citiesService.js";
 
 // Permet d'afficher les données météo du localStorage pour un seul élément
 export async function printData(dataName, component, containerToAppend) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
-   cleanContainer(containerToAppend);
    
    if (savedData.length != 0) {
-      const lastCitySaved = savedData[savedData.length - 1];
-      const lat = lastCitySaved.coord.lat;
-      const lon = lastCitySaved.coord.lon;
-      const timeZone = savedData[savedData.length - 1].timezone;
-      const cityName = lastCitySaved.name;
+      const lastCitySaved = getLastSavedCityInfo(savedData);
       
-      window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
+      window.weatherAPI.getCurrentWeatherByCoords(lastCitySaved.lat, lastCitySaved.lon)
       .then(data => {
          const newComponent = document.createElement(component);
          
@@ -20,8 +16,8 @@ export async function printData(dataName, component, containerToAppend) {
             icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
             currentTemp: data.main.temp,
             feelsLike: data.main.feels_like,
-            cityName: cityName,
-            timeZone: timeZone,
+            cityName: lastCitySaved.cityName,
+            timeZone: lastCitySaved.timeZone,
             weather: data.weather,
             windSpeed: data.wind.speed,
             humidity: data.main.humidity,
@@ -30,6 +26,7 @@ export async function printData(dataName, component, containerToAppend) {
             pressure: data.main.pressure,
             country: data.sys.country
          };
+         cleanContainer(containerToAppend);
          
          containerToAppend.appendChild(newComponent);
       })
@@ -43,21 +40,15 @@ export async function printData(dataName, component, containerToAppend) {
 export async function getHourlyForecastByCity(dataName, component, howMany = false) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const hourlyForecastContainer = document.getElementById('hourly-forecast-items');
-   cleanContainer(hourlyForecastContainer);
    
    if (savedData.length != 0) {
-      const lastCitySaved = savedData[savedData.length - 1];
-      const lat = lastCitySaved.coord.lat;
-      const lon = lastCitySaved.coord.lon;
-      const timeZone = savedData[savedData.length - 1].timezone;
+      const lastCitySaved = getLastSavedCityInfo(savedData);
       const hourlyForecastList = [];
       
       try {
-         let data = await window.weatherAPI.getFiveDaysForecastByCity(lat, lon);
+         let data = await window.weatherAPI.getFiveDaysForecastByCity(lastCitySaved.lat, lastCitySaved.lon);
          if (howMany) {
             data = data.list.slice(0, howMany);
-         } else {
-            data = data.list;
          }
          
          data.forEach(element => {
@@ -69,10 +60,10 @@ export async function getHourlyForecastByCity(dataName, component, howMany = fal
                time: element.dt,
                currentTemp: element.main.temp,
                feelsLike: element.main.feels_like,
-               timeZone: timeZone,
+               timeZone: lastCitySaved.timeZone,
                weather: data.weather,
-               lat: lat,
-               lon: lon,
+               lat: lastCitySaved.lat,
+               lon: lastCitySaved.lon,
             };
             
             newElement.appendChild(newComponent);
@@ -82,9 +73,34 @@ export async function getHourlyForecastByCity(dataName, component, howMany = fal
       } catch(err) {
          console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
       }
-      
+      cleanContainer(hourlyForecastContainer);
+
       hourlyForecastList.forEach(hourlyForecast => {
          hourlyForecastContainer.appendChild(hourlyForecast);
       });
+   }
+}
+
+export async function renderDailyMinMaxTemp(dataName, component, start, end) {
+   let minTempPerDay = 0;
+   let maxTempPerDay = 0;
+   let listOfMinTempPerDay = [];
+   let listOfMaxTempPerDay = [];
+   
+   try {
+      const data = await window.weatherAPI.getFiveDaysForecastByCity(lat, lon);
+      
+      data.list.slice(start, end).forEach(item => {
+         listOfMinTempPerDay.push(String(Math.round(item.main.temp_min)));
+         listOfMaxTempPerDay.push(String(Math.round(item.main.temp_max)));
+      });
+      
+      minTempPerDay = listOfMinTempPerDay.sort((a, b) => a - b).at(0);
+      maxTempPerDay = listOfMaxTempPerDay.sort((a, b) => b - a).at(0);
+      
+      return {minTempPerDay, maxTempPerDay};
+      
+   } catch(err) {
+      console.error(`Erreur data données météo avec la fonction getAverageTempMinAndMaxPerDay:`, err);
    }
 }

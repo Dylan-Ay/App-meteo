@@ -3,7 +3,6 @@ import { cleanContainer } from "../../utils/functions.js";
 // Permet d'afficher une liste de ville selon un mot clé
 export async function printCitiesResults(dataName, component, containerToAppend, howMany = 5) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
-   cleanContainer(containerToAppend);
    
    if (savedData.length != 0) {
       const citiesToAppend = [];
@@ -43,6 +42,8 @@ export async function printCitiesResults(dataName, component, containerToAppend,
             console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
          }
       }
+      cleanContainer(containerToAppend);
+      
       citiesToAppend.forEach((element) => {
          containerToAppend.appendChild(element);
       });

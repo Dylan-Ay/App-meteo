@@ -57,28 +57,3 @@ export async function fetchFiveDaysForecast(lat, lon) {
       throw error;
    }
 }
-
-// Permet de récupérer la température min et max pour un jour
-export async function getAverageTempMinAndMaxPerDay(lat, lon, start, end) {
-   let minTempPerDay = 0;
-   let maxTempPerDay = 0;
-   let listOfMinTempPerDay = [];
-   let listOfMaxTempPerDay = [];
-   
-   try {
-      const data = await window.weatherAPI.getFiveDaysForecastByCity(lat, lon);
-      
-      data.list.slice(start, end).forEach(item => {
-         listOfMinTempPerDay.push(String(Math.round(item.main.temp_min)));
-         listOfMaxTempPerDay.push(String(Math.round(item.main.temp_max)));
-      });
-      
-      minTempPerDay = listOfMinTempPerDay.sort((a, b) => a - b).at(0);
-      maxTempPerDay = listOfMaxTempPerDay.sort((a, b) => b - a).at(0);
-      
-      return {minTempPerDay, maxTempPerDay};
-      
-   } catch(err) {
-      console.error(`Erreur data données météo avec la fonction getAverageTempMinAndMaxPerDay:`, err);
-   }
-} 
