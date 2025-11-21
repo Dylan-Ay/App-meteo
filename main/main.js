@@ -4,10 +4,10 @@ require('dotenv').config();
 const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
 
-const weatherService = require('../weatherService');
+const weatherService = require('../services/weatherService');
 weatherService.initializeService(process.env.API_KEY_OPEN_WEATHER);
 
-const citiesService = require('../citiesService');
+const citiesService = require('../services/citiesService');
 citiesService.initializeService(process.env.API_KEY_GEOCODING);
 
 const env = process.env.NODE_ENV || 'development';

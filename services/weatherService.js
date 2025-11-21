@@ -1,15 +1,15 @@
 let apiKey = null;
 
 // Permet de récupérer l'api key depuis main.js
-function initializeService(key) {
+export function initializeService(key) {
     if (!key) {
         console.error("SERVICE ERREUR: Clé API manquante lors de l'initialisation du service.");
     }
     apiKey = key;
 }
 
-// Récupération de toutes les informations de la météo actuelle pour une ville
-async function fetchCurrentWeather(lat, lon) {
+// Permet de récupérer toutes les informations de la météo actuelle pour une ville
+export async function fetchCurrentWeather(lat, lon) {
   try {
     if (!apiKey) {
       throw new Error('Clé API OpenWeather manquante');
@@ -33,8 +33,8 @@ async function fetchCurrentWeather(lat, lon) {
   }
 }
 
-// Récupération de toutes les informations de la météo des 5 prochains jours toutes les 3 heures pour une ville
-async function fetchFiveDaysForecast(lat, lon) {
+// Permet de récupérer toutes les informations de la météo des 5 prochains jours toutes les 3 heures pour une ville
+export async function fetchFiveDaysForecast(lat, lon) {
   try {
     if (!apiKey) {
       throw new Error('Clé API OpenWeather manquante');
@@ -58,8 +58,27 @@ async function fetchFiveDaysForecast(lat, lon) {
   }
 }
 
-module.exports = {
-  initializeService,
-  fetchCurrentWeather,
-  fetchFiveDaysForecast
-};
+// Permet de récupérer la température min et max pour un jour
+export async function getAverageTempMinAndMaxPerDay(lat, lon, start, end) {
+  let minTempPerDay = 0;
+  let maxTempPerDay = 0;
+  let listOfMinTempPerDay = [];
+  let listOfMaxTempPerDay = [];
+
+  try {
+    const data = await window.weatherAPI.getFiveDaysForecastByCity(lat, lon);
+    
+    data.list.slice(start, end).forEach(item => {
+      listOfMinTempPerDay.push(String(Math.round(item.main.temp_min)));
+      listOfMaxTempPerDay.push(String(Math.round(item.main.temp_max)));
+    });
+
+    minTempPerDay = listOfMinTempPerDay.sort((a, b) => a - b).at(0);
+    maxTempPerDay = listOfMaxTempPerDay.sort((a, b) => b - a).at(0);
+
+    return {minTempPerDay, maxTempPerDay};
+
+  } catch(err) {
+    console.error(`Erreur data données météo avec la fonction getAverageTempMinAndMaxPerDay:`, err);
+  }
+} 

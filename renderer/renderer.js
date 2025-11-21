@@ -2,7 +2,10 @@ import './components/ForecastSummary.js';
 import './components/SearchResult.js';
 import './components/SearchedCity.js';
 import './components/HourlyForecast.js';
-import { handleOutsideClick, toggleTheme, setLight, setDark, printData, handleLocationSelected, getHourlyForecastByCity } from '.././utils/functions.js';
+import { handleOutsideClick } from '.././utils/functions.js';
+import { getHourlyForecastByCity, printData } from './ui/displayWeather.js';
+import { handleLocationSelected } from './ui/handlers.js';
+import { toggleTheme, setLight, setDark } from './ui/theme.js';
 
 const cityInput = document.getElementById('city-input');
 const forecastSummaryContainer = document.getElementById('forecast-summary-container');
