@@ -37,19 +37,21 @@ export async function printData(dataName, component, containerToAppend) {
 }
 
 // Permet de récupérer les données météo de toutes les 3 heures des x prochains jours (au maximum 5 jours)
-export async function getHourlyForecastByCity(dataName, component, howMany = false) {
+export async function getHourlyForecastByCity(dataName, component, howManyDays) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const hourlyForecastContainer = document.getElementById('hourly-forecast-items');
-   
+
+   // Convertit le nombre de jours en paramètre en nombre d'éléménts
+   howManyDays = howManyDays * 8 + 1;
+
    if (savedData.length != 0) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
       const hourlyForecastList = [];
       
       try {
          let data = await window.weatherAPI.getFiveDaysForecastByCity(lastCitySaved.lat, lastCitySaved.lon);
-         if (howMany) {
-            data = data.list.slice(0, howMany);
-         }
+         
+         data = data.list.slice(0, howManyDays);
          
          data.forEach(element => {
             const newElement = document.createElement('li');
