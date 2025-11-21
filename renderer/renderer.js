@@ -4,6 +4,7 @@ import './components/SearchedCity.js';
 import './components/HourlyForecast.js';
 import { handleOutsideClick } from '.././utils/functions.js';
 import { getHourlyForecastByCity, printData } from './ui/displayWeather.js';
+import { printCitiesResults } from './ui/displayCities.js';
 import { handleLocationSelected } from './ui/handlers.js';
 import { toggleTheme, setLight, setDark } from './ui/theme.js';
 
@@ -16,7 +17,7 @@ let lastRequestId = 0;
 const debounceDelay = 50;
 
 printData('searchedCitiesList', 'forecast-summary', forecastSummaryContainer);
-printData('searchedCitiesList', 'searched-city', searchedCitiesContainer, true);
+printCitiesResults('searchedCitiesList', 'searched-city', searchedCitiesContainer);
 getHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 9);
 
 // Observer pour attacher le listener aux searched-city à chaque création du composant
