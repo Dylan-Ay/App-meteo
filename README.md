@@ -28,11 +28,12 @@ npm run dev:css to compile tailwind css
 - The data is saved in your browser's local storage so that it can be printed when you reload or close the app.
 
 - You can access a history of your search terms under the search bar. These components are clickable and allow you to quickly print the weather forecast for the selected city.
+
+- Fetching the weather every 3 hours of the next five days for the city clicked (max temp, min temp, weather description, sunrise, sunset)
   
 - I also created a dark theme which you can switch using the toggle situated in the top right corner of the app.
 
 **The functionalities in building :**
-- Fetching the weather every 3 hours of the next five days for the city clicked
 - Air pollution data
 - Weather maps
 - Cities near the selected city
