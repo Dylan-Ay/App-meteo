@@ -1,5 +1,5 @@
 import { saveNewCity } from '../../services/citiesService.js';
-import { printData, getHourlyForecastByCity } from './displayWeather.js';
+import { printData, renderHourlyForecastByCity, renderDailyMinMaxTemp } from './displayWeather.js';
 import { printCitiesResults } from './displayCities.js';
 
 // Permet de gérer le comportement d'une ville choisie et d'exécuter les fonctions nécessaires
@@ -21,9 +21,10 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
       await printCitiesResults('searchedCitiesList', 'searched-city', searchedCitiesContainer);
       
       // Affichage de la météo des prochaines heures de la ville sélectionnée
-      await getHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 9);
+      await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
       
-      // await getAverageTempMinAndMaxPerDay(lat, lon, 0, 9);
+      // Affichage de la météo (max, min, description et icone) des prochains jours
+      await renderDailyMinMaxTemp('searchedCitiesList', 'next-day-forecast', 5);
    })
    .catch(err => {
       console.error('Erreur data données météo:', err);

@@ -1,80 +1,82 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy"
-      content="
-        default-src 'self';
-        script-src 'self' https://kit.fontawesome.com;
-        style-src 'self' https://ka-f.fontawesome.com 'unsafe-inline';
-        connect-src 'self' https://ka-f.fontawesome.com;
-        font-src 'self' https://ka-f.fontawesome.com;
-        img-src 'self' https://openweathermap.org;
-      ">
-    <link href="../src/output.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/aadee783c9.js" crossorigin="anonymous"></script>
-    <title>App Météo</title>
-  </head>
-  <body class="bg-linear-to-b from-[#93c5fd] dark:from-[#183997] dark to-white bg-fixed h-screen">
-    <!-- HEADER -->
-    <header class="relative flex items-center justify-center p-2.5">
+<head>
+   <meta charset="UTF-8" />
+   <meta http-equiv="Content-Security-Policy"
+   content="
+   default-src 'self';
+   script-src 'self' https://kit.fontawesome.com;
+   style-src 'self' https://ka-f.fontawesome.com 'unsafe-inline';
+   connect-src 'self' https://ka-f.fontawesome.com;
+   font-src 'self' https://ka-f.fontawesome.com;
+   img-src 'self' https://openweathermap.org;
+   ">
+   <link href="../src/output.css" rel="stylesheet">
+   <script src="https://kit.fontawesome.com/aadee783c9.js" crossorigin="anonymous"></script>
+   <title>App Météo</title>
+</head>
+<body class="bg-linear-to-b from-[#93c5fd] dark:from-[#183997] dark to-white bg-fixed h-screen">
+   <!-- HEADER -->
+   <header class="relative flex items-center justify-center p-2.5">
       <h2 class="text-5xl font-semibold text-center dark:text-[#f3f3f3]">App-Météo</h2>
       <!-- Toggle dark mode -->
       <div id="dark-switch" class="absolute top-4 right-8">
-        <label for="darkSwitch" class="relative inline-block w-11 h-6 cursor-pointer">
-          <input type="checkbox" id="darkSwitch" class="peer sr-only">
-          <div class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-gray-900 peer-disabled:opacity-50 peer-disabled:pointer-events-none w-[53px] h-7">
-            <span class="flex text-lg h-7 items-center gap-2 p-1">
-              <i class="fa-regular fa-moon ms-1 text-white"></i>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="2 1 21 23" id="sun">
-                <path d="m17.75,12c0,3.171-2.58,5.75-5.75,5.75s-5.75-2.579-5.75-5.75,2.58-5.75,5.75-5.75,5.75,2.579,5.75,5.75Zm-11.937,5.127l-.707.707c-.293.293-.293.768,0,1.061.146.146.338.22.53.22s.384-.073.53-.22l.707-.707c.293-.293.293-.768,0-1.061s-.768-.293-1.061,0Zm0-10.254c.146.146.338.22.53.22s.384-.073.53-.22c.293-.293.293-.768,0-1.061l-.707-.707c-.293-.293-.768-.293-1.061,0s-.293.768,0,1.061l.707.707Zm6.187-2.123c.414,0,.75-.336.75-.75v-1c0-.414-.336-.75-.75-.75s-.75.336-.75.75v1c0,.414.336.75.75.75Zm-8,6.5h-1c-.414,0-.75.336-.75.75s.336.75.75.75h1c.414,0,.75-.336.75-.75s-.336-.75-.75-.75Zm17,0h-1c-.414,0-.75.336-.75.75s.336.75.75.75h1c.414,0,.75-.336.75-.75s-.336-.75-.75-.75Zm-3.167-6.145l-.707.707c-.293.293-.293.768,0,1.061.146.146.338.22.53.22s.384-.073.53-.22l.707-.707c.293-.293.293-.768,0-1.061s-.768-.293-1.061,0Zm-5.833,14.145c-.414,0-.75.336-.75.75v1c0,.414.336.75.75.75s.75-.336.75-.75v-1c0-.414-.336-.75-.75-.75Zm6.187-2.123c-.293-.293-.768-.293-1.061,0s-.293.768,0,1.061l.707.707c.146.146.338.22.53.22s.384-.073.53-.22c.293-.293.293-.768,0-1.061l-.707-.707Z"></path>
-              </svg>
-            </span>
-          </div>
-          <span class="absolute top-3.5 start-0.5 -translate-y-1/2 size-6 bg-gray-900 dark:bg-white rounded-full shadow-sm transition-transform! duration-200 ease-in-out peer-checked:translate-x-6 "></span>
-        </label>
+         <label for="darkSwitch" class="relative inline-block w-11 h-6 cursor-pointer">
+            <input type="checkbox" id="darkSwitch" class="peer sr-only">
+            <div class="absolute inset-0 bg-gray-200 rounded-full transition-colors duration-200 ease-in-out peer-checked:bg-gray-900 peer-disabled:opacity-50 peer-disabled:pointer-events-none w-[53px] h-7">
+               <span class="flex text-lg h-7 items-center gap-2 p-1">
+                  <i class="fa-regular fa-moon ms-1 text-white"></i>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="2 1 21 23" id="sun">
+                     <path d="m17.75,12c0,3.171-2.58,5.75-5.75,5.75s-5.75-2.579-5.75-5.75,2.58-5.75,5.75-5.75,5.75,2.579,5.75,5.75Zm-11.937,5.127l-.707.707c-.293.293-.293.768,0,1.061.146.146.338.22.53.22s.384-.073.53-.22l.707-.707c.293-.293.293-.768,0-1.061s-.768-.293-1.061,0Zm0-10.254c.146.146.338.22.53.22s.384-.073.53-.22c.293-.293.293-.768,0-1.061l-.707-.707c-.293-.293-.768-.293-1.061,0s-.293.768,0,1.061l.707.707Zm6.187-2.123c.414,0,.75-.336.75-.75v-1c0-.414-.336-.75-.75-.75s-.75.336-.75.75v1c0,.414.336.75.75.75Zm-8,6.5h-1c-.414,0-.75.336-.75.75s.336.75.75.75h1c.414,0,.75-.336.75-.75s-.336-.75-.75-.75Zm17,0h-1c-.414,0-.75.336-.75.75s.336.75.75.75h1c.414,0,.75-.336.75-.75s-.336-.75-.75-.75Zm-3.167-6.145l-.707.707c-.293.293-.293.768,0,1.061.146.146.338.22.53.22s.384-.073.53-.22l.707-.707c.293-.293.293-.768,0-1.061s-.768-.293-1.061,0Zm-5.833,14.145c-.414,0-.75.336-.75.75v1c0,.414.336.75.75.75s.75-.336.75-.75v-1c0-.414-.336-.75-.75-.75Zm6.187-2.123c-.293-.293-.768-.293-1.061,0s-.293.768,0,1.061l.707.707c.146.146.338.22.53.22s.384-.073.53-.22c.293-.293.293-.768,0-1.061l-.707-.707Z"></path>
+                  </svg>
+               </span>
+            </div>
+            <span class="absolute top-3.5 start-0.5 -translate-y-1/2 size-6 bg-gray-900 dark:bg-white rounded-full shadow-sm transition-transform! duration-200 ease-in-out peer-checked:translate-x-6 "></span>
+         </label>
       </div>
-    </header>
-    <main class="container mx-auto mt-5 max-w-7xl">
+   </header>
+   <main class="container mx-auto mt-5 max-w-7xl">
       <!-- Barre de recherche -->
       <section class="w-4/5 mx-auto">
-        <div id="search-bar-container" class="relative">
-          <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Rechercher une ville</label>
-          <div id="search-bar">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
+         <div id="search-bar-container" class="relative">
+            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Rechercher une ville</label>
+            <div id="search-bar">
+               <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                  </svg>
+               </div>
+               <input type="search" id="city-input" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4" placeholder="Rechercher une ville" required />
             </div>
-              <input type="search" id="city-input" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-4" placeholder="Rechercher une ville" required />
-          </div>
-        </div>
-
-        <!-- Composants villes recherchées -->
-        <ul id="searched-cities-container" class="mb-6 gap-2.5 flex dark:text-[#f3f3f3] md:justify-center flex-wrap min-h-10">
-
-        </ul>
+         </div>
+         
+         <!-- Composants villes recherchées -->
+         <ul id="searched-cities-container" class="mb-6 gap-2.5 flex dark:text-[#f3f3f3] md:justify-center flex-wrap min-h-10">
+            
+         </ul>
       </section>
       <!-- Sommaire complet de la météo -->
       <section>
-        <div id="complete-summary" class="pb-5 px-4 mx-auto md:w-4/5 min-h-[537px]">
-          <div id="forecast-summary-container" class="min-h-[317px]">
-    
-          </div>
-          <div id="hourly-forecast-container">
-            <ul id="hourly-forecast-items" class="container mx-auto flex overflow-auto bg-[#a4c5f1] rounded-b-3xl dark:bg-gray-800 min-h-[200px] dark:text-[#f3f3f3]">
-
-            </ul>
-          </div>
-        </div>
+         <div id="complete-summary" class="pb-8 px-4 mx-auto md:w-4/5 min-h-[537px]">
+            <div id="forecast-summary-container" class="min-h-[317px]">
+               
+            </div>
+            <div id="hourly-forecast-container">
+               <ul id="hourly-forecast-items" class="container mx-auto flex overflow-auto bg-[#a4c5f1] rounded-b-3xl dark:bg-gray-800 min-h-[200px] dark:text-[#f3f3f3]">
+                  
+               </ul>
+            </div>
+         </div>
       </section>
       <section>
-        <!-- Météo des prochains jours -->
-        <ul id="next-days-forecast-container">
-          
-        </ul>
+         <!-- Météo des prochains jours -->
+         <div id="next-days-forecast-container" class="pb-5 px-4 mx-auto md:w-4/5">
+            <ul id="next-days-forecast-items" class="container mx-auto flex justify-between gap-3 overflow-auto">
+               
+            </ul>
+         </div>
       </section>
-    </main>
-  </body>
-  <script type="module" src="./renderer.js"></script>
+   </main>
+</body>
+<script type="module" src="./renderer.js"></script>
 </html>
