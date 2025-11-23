@@ -11,36 +11,37 @@ export async function printCitiesResults(dataName, component, containerToAppend,
       for (const element of firstFourCities) {
          const cityName = element.name;
          const timeZone = element.timezone;
+         const country = element.country;
          
-         // try {
-         //    const data = await window.weatherAPI.getCurrentWeatherByCoords(element.coord.lat, element.coord.lon);
+         try {
+            const data = await window.weatherAPI.getCurrentWeatherByCoords(element.lat, element.lon);
             
-         //    const newComponent = document.createElement(component);
-         //    const li = document.createElement("li");
+            const newComponent = document.createElement(component);
+            const li = document.createElement("li");
             
-         //    newComponent.data = {
-         //       icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-         //       currentTemp: data.main.temp,
-         //       feelsLike: data.main.feels_like,
-         //       cityName: cityName,
-         //       timeZone: timeZone,
-         //       weather: data.weather,
-         //       windSpeed: data.wind.speed,
-         //       humidity: data.main.humidity,
-         //       sunrise: data.sys.sunrise,
-         //       sunset: data.sys.sunset,
-         //       pressure: data.main.pressure,
-         //       country: data.sys.country,
-         //       lat: element.coord.lat,
-         //       lon: element.coord.lon,
-         //    };
+            newComponent.data = {
+               icon: `https://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`,
+               currentTemp: data.current.temp,
+               feelsLike: data.current.feels_like,
+               cityName: cityName,
+               timeZone: timeZone,
+               weather: data.current.weather,
+               windSpeed: data.current.wind_speed,
+               humidity: data.current.humidity,
+               sunrise: data.current.sunrise,
+               sunset: data.current.sunset,
+               pressure: data.current.pressure,
+               country: country,
+               lat: element.lat,
+               lon: element.lon,
+            };
             
-         //    li.appendChild(newComponent);
-         //    citiesToAppend.push(li);
+            li.appendChild(newComponent);
+            citiesToAppend.push(li);
             
-         // } catch(err) {
-         //    console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
-         // }
+         } catch(err) {
+            console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
+         }
       }
       cleanContainer(containerToAppend);
       
