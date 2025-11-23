@@ -11,7 +11,7 @@ export async function printData(dataName, component, containerToAppend) {
       window.weatherAPI.getCurrentWeatherByCoords(lastCitySaved.lat, lastCitySaved.lon)
       .then(data => {
          const newComponent = document.createElement(component);
-         console.log(lastCitySaved)
+         
          newComponent.data = {
             icon: `https://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`,
             currentTemp: data.current.temp,
@@ -44,8 +44,9 @@ async function getHourlyForecastByCity(dataName) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
       
       try {
-         const data = await window.weatherAPI.getFiveDaysForecastByCity(lastCitySaved.lat, lastCitySaved.lon);
-         data.city.name = lastCitySaved.cityName;
+         const data = await window.weatherAPI.fetchHourlyForecastByCity(lastCitySaved.lat, lastCitySaved.lon);
+         data.name = lastCitySaved.name;
+
          return data;
          
       } catch(err) {
@@ -54,19 +55,22 @@ async function getHourlyForecastByCity(dataName) {
    }
 }
 
-// Permet d'afficher les données météo de toutes les 3 heures des x prochains jours (au maximum 5 jours)
+// Permet d'afficher les données météo de toutes les heures des x prochains jours (au maximum 2 jours)
 export async function renderHourlyForecastByCity(dataName, component, howManyDays) {
    const hourlyForecastContainer = document.getElementById('hourly-forecast-items');
    const hourlyForecastList = [];
    
    // Convertit le nombre de jours en paramètre en nombre d'éléménts
-   howManyDays = howManyDays * 8 + 1;
+   howManyDays = howManyDays * 24 + 1;
    
    try {
       let data = await getHourlyForecastByCity(dataName);
       
-      data = data.list.slice(0, howManyDays);
-      
+      data = data.hourly.slice(0, howManyDays);
+      const timeZone = data.timezone;
+      const lat = data.lat;
+      const lon = data.lon;
+
       data.forEach(element => {
          const newElement = document.createElement('li');
          const newComponent = document.createElement(component);
@@ -74,12 +78,12 @@ export async function renderHourlyForecastByCity(dataName, component, howManyDay
          newComponent.data = {
             icon: `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`,
             time: element.dt,
-            currentTemp: element.main.temp,
-            feelsLike: element.main.feels_like,
-            timeZone: data.timeZone,
+            currentTemp: element.temp,
+            feelsLike: element.feels_like,
+            timeZone: timeZone,
             weather: data.weather,
-            lat: data.lat,
-            lon: data.lon,
+            lat: lat,
+            lon: lon,
          };
          
          newElement.appendChild(newComponent);

@@ -22,7 +22,7 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
       await printCitiesResults('searchedCitiesList', 'searched-city', searchedCitiesContainer);
       
       // Affichage de la météo des prochaines heures de la ville sélectionnée
-      // await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
+      await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
       
       // Affichage de la météo (max, min, description et icone) des prochains jours
       // await renderDailyMinMaxTemp('searchedCitiesList', 'next-day-forecast', 5);

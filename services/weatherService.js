@@ -33,14 +33,14 @@ export async function fetchCurrentWeather(lat, lon) {
    }
 }
 
-// Permet de récupérer toutes les informations de la météo des 5 prochains jours toutes les 3 heures pour une ville
-export async function fetchFiveDaysForecast(lat, lon) {
+// Permet de récupérer toutes les informations de la météo par heure pour les 2 prochains jours
+export async function fetchHourlyForecast(lat, lon) {
    try {
       if (!apiKey) {
          throw new Error('Clé API OpenWeather manquante');
       }
       
-      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=fr&appid=${apiKey}`;
+      const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,daily,alerts,minutely&units=metric&lang=fr&appid=${apiKey}`;
       console.log('fetchFiveDaysForecast URL:', url);
       
       const response = await fetch(url);
