@@ -11,20 +11,20 @@ export async function printData(dataName, component, containerToAppend) {
       window.weatherAPI.getCurrentWeatherByCoords(lastCitySaved.lat, lastCitySaved.lon)
       .then(data => {
          const newComponent = document.createElement(component);
-         
+         console.log(lastCitySaved)
          newComponent.data = {
-            icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-            currentTemp: data.main.temp,
-            feelsLike: data.main.feels_like,
-            cityName: lastCitySaved.cityName,
+            icon: `https://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`,
+            currentTemp: data.current.temp,
+            feelsLike: data.current.feels_like,
+            cityName: lastCitySaved.name,
             timeZone: lastCitySaved.timeZone,
-            weather: data.weather,
-            windSpeed: data.wind.speed,
-            humidity: data.main.humidity,
-            sunrise: data.sys.sunrise,
-            sunset: data.sys.sunset,
-            pressure: data.main.pressure,
-            country: data.sys.country
+            weather: data.current.weather,
+            windSpeed: data.current.wind_speed,
+            humidity: data.current.humidity,
+            sunrise: data.current.sunrise,
+            sunset: data.current.sunset,
+            pressure: data.current.pressure,
+            country: lastCitySaved.country
          };
          cleanContainer(containerToAppend);
          

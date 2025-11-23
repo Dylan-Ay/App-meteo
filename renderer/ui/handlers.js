@@ -4,12 +4,13 @@ import { printCitiesResults } from './displayCities.js';
 
 // Permet de gérer le comportement d'une ville choisie et d'exécuter les fonctions nécessaires
 export async function handleLocationSelected(event, forecastSummaryContainer, searchedCitiesContainer) {
-   const { lat, lon, cityName, timeZone } = event.detail;
+   const { lat, lon, cityName, timeZone, country } = event.detail;
    
    window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
    .then(async data => {
       data.name = cityName;
       data.timezone = timeZone;
+      data.country = country;
       
       // Update du localStorage avec la dernière ville recherchée
       saveNewCity('searchedCitiesList', data);
@@ -21,10 +22,10 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
       await printCitiesResults('searchedCitiesList', 'searched-city', searchedCitiesContainer);
       
       // Affichage de la météo des prochaines heures de la ville sélectionnée
-      await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
+      // await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
       
       // Affichage de la météo (max, min, description et icone) des prochains jours
-      await renderDailyMinMaxTemp('searchedCitiesList', 'next-day-forecast', 5);
+      // await renderDailyMinMaxTemp('searchedCitiesList', 'next-day-forecast', 5);
    })
    .catch(err => {
       console.error('Erreur data données météo:', err);

@@ -31,7 +31,7 @@ class ForecastSummary extends HTMLElement {
             <section id="forecast-title" class="mb-2 dark:text-[#f3f3f3]">
                 <div class="mb-8">
                     <h1 class="text-3xl font-semibold">Météo à ${data.cityName}</h1>
-                    <span>${isoCountryToFullName(data.country)}</span>
+                    <span>${data.country}</span>
                 </div>
                 <span class="text-[22px] font-semibold">Météo dans les 24h</span>
             </section>

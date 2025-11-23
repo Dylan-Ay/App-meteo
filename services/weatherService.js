@@ -15,7 +15,7 @@ export async function fetchCurrentWeather(lat, lon) {
          throw new Error('Clé API OpenWeather manquante');
       }
       
-      const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&lang=fr&appid=${apiKey}`;
+      const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=hourly,daily,minutely,alerts&units=metric&lang=fr&appid=${apiKey}`;
       console.log('fetchCurrentWeather URL:', url);
       
       const response = await fetch(url);

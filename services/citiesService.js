@@ -56,10 +56,6 @@ export function saveNewCity(dataName, newCityData) {
 // Permet de récupérer les informations de la dernière ville enregistrée dans le localStorage
 export function getLastSavedCityInfo(savedData) {
   const lastCitySaved = savedData[savedData.length - 1];
-  const lat = lastCitySaved.coord.lat;
-  const lon = lastCitySaved.coord.lon;
-  const timeZone = savedData[savedData.length - 1].timezone;
-  const cityName = lastCitySaved.name;
 
-  return {lastCitySaved, lat, lon, timeZone, cityName};
+  return lastCitySaved;
 }

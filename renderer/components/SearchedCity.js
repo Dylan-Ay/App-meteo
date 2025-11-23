@@ -41,10 +41,11 @@ class SearchedCity extends HTMLElement {
         const lon = this.#data.lon;
         const timeZone = this.#data.timeZone;
         const cityName = this.#data.cityName;
-        
+        const country = this.#data.country;
+       
         this.parentElement.addEventListener("click", () => {
             this.dispatchEvent(new CustomEvent("location-selected", {
-                detail: { lat, lon , cityName, timeZone },
+                detail: { lat, lon , cityName, timeZone, country },
                 bubbles: true
             }));
         })

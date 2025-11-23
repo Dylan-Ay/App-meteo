@@ -48,7 +48,7 @@ class SearchResult extends HTMLElement {
 
             li.addEventListener("click", () => {
                 this.dispatchEvent(new CustomEvent("location-selected", {
-                    detail: { lat, lon , cityName, timeZone},
+                    detail: { lat, lon , cityName, timeZone, country},
                     bubbles: true
                 }));
             });

@@ -19,8 +19,8 @@ const debounceDelay = 50;
 
 printData('searchedCitiesList', 'forecast-summary', forecastSummaryContainer);
 printCitiesResults('searchedCitiesList', 'searched-city', searchedCitiesContainer);
-renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
-renderDailyMinMaxTemp('searchedCitiesList', 'next-day-forecast', 5);
+// renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
+// renderDailyMinMaxTemp('searchedCitiesList', 'next-day-forecast', 5);
 
 // Observer pour attacher le listener aux searched-city à chaque création du composant
 const observer = new MutationObserver(() => {
