@@ -67,13 +67,13 @@ ipcMain.handle('fetch-current-weather-by-coords', async (event, { lat, lon }) =>
   }
 })
 
-ipcMain.handle('fetch-hourly-forecast-by-city', async (event, {lat, lon}) => {
+ipcMain.handle('fetch-hourly-forecast-by-coords', async (event, {lat, lon}) => {
   try {
     const currentCityWeather = await weatherService.fetchHourlyForecast(lat, lon);
     return currentCityWeather;
 
   } catch (error) {
-    console.error('Erreur fetch-hourly-forecast-by-city:', error);
+    console.error('Erreur fetch-hourly-forecast-by-coords:', error);
     throw error;
   }
 })

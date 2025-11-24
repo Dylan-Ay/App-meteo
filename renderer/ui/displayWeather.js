@@ -44,7 +44,7 @@ async function getHourlyForecastByCity(dataName) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
       
       try {
-         const data = await window.weatherAPI.fetchHourlyForecastByCity(lastCitySaved.lat, lastCitySaved.lon);
+         const data = await window.weatherAPI.fetchHourlyForecastByCoords(lastCitySaved.lat, lastCitySaved.lon);
          data.name = lastCitySaved.name;
 
          return data;
