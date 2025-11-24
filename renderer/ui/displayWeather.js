@@ -100,8 +100,8 @@ export async function renderHourlyForecastByCity(dataName, component, howManyDay
    });
 }
 
-// Permet d'afficher les températures météo min et max des prochains jours (au maximum 4 jours)
-export async function renderDailyMinMaxTemp(dataName, component, howManyDays) {
+// Permet d'afficher les données météo des prochains jours (au maximum 8 jours)
+export async function renderDailyForecastByCity(dataName, component, howManyDays) {
    const nextDaysForecastItems = document.getElementById('next-days-forecast-items');
    const nextDaysForecastContainer = document.getElementById('next-days-forecast-container');
 
@@ -168,6 +168,6 @@ export async function renderDailyMinMaxTemp(dataName, component, howManyDays) {
       });
       
    } catch(err) {
-      console.error(`Erreur data données météo avec la fonction renderDailyMinMaxTemp:`, err);
+      console.error(`Erreur data données météo avec la fonction renderDailyForecastByCity:`, err);
    }
 }
