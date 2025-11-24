@@ -50,22 +50,19 @@ export async function renderHourlyForecastByCity(dataName, component, howManyDay
    
       try {
          let data = await window.weatherAPI.fetchHourlyForecastByCoords(lastCitySaved.lat, lastCitySaved.lon);
-         data.name = lastCitySaved.name;
-
-         data = data.hourly.slice(0, howManyDays);
          const timeZone = data.timezone;
          const lat = data.lat;
          const lon = data.lon;
-
-         data.forEach(element => {
+         
+         data.hourly.slice(0, howManyDays).forEach(hour => {
             const newElement = document.createElement('li');
             const newComponent = document.createElement(component);
             
             newComponent.data = {
-               icon: `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`,
-               time: element.dt,
-               currentTemp: element.temp,
-               feelsLike: element.feels_like,
+               icon: `https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`,
+               time: hour.dt,
+               currentTemp: hour.temp,
+               feelsLike: hour.feels_like,
                timeZone: timeZone,
                weather: data.weather,
                lat: lat,
@@ -89,72 +86,58 @@ export async function renderHourlyForecastByCity(dataName, component, howManyDay
 
 // Permet d'afficher les données météo des prochains jours (au maximum 8 jours)
 export async function renderDailyForecastByCity(dataName, component, howManyDays) {
-   const nextDaysForecastItems = document.getElementById('next-days-forecast-items');
-   const nextDaysForecastContainer = document.getElementById('next-days-forecast-container');
+   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
+   const dailyForecastItems = document.getElementById('daily-forecast-items');
+   const dailyForecastContainer = document.getElementById('daily-forecast-container');
+   const dailyForecastList = [];
 
-   // Permet de calculer la correspondance entre le nombre de jours voulus et son équivalent en nombre d'éléments
-   const elementsPerDay = 8; 
-   const nbElements = howManyDays * elementsPerDay;
-   const dailyMinMaxTempList = [];
-   
-   const currentDate = new Date();
-   const today2359 = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      currentDate.getDate(),
-      23, 59, 59, 999
-   );
-
-   try {
-      // let data = await getHourlyForecastByCity(dataName);
+   if (savedData.length != 0) {
+      const lastCitySaved = getLastSavedCityInfo(savedData);
       
-      // Convertir dt en ms, on garde uniquement les éléments > à today2359
-      const filteredData = data.list.filter(e => e.dt * 1000 > today2359);
-      
-      // Saute de 8 en 8 dans le tableau car 8 éléments = 1 jour puis stocke chaque jour dans daySlice
-      for (let i = 0; i < nbElements; i += elementsPerDay) {
-         const daySlice = filteredData.slice(i, i + elementsPerDay);
-         
-         if (daySlice.length === 0) break;
-         
-         const minTemp = Math.round(Math.min(...daySlice.map(el => el.main.temp_min)));
-         const maxTemp = Math.round(Math.max(...daySlice.map(el => el.main.temp_max)));
-         const dominantWeather = getDominantWeather(daySlice);
-
-         const newElement = document.createElement('li');
-         const newComponent = document.createElement(component);
+      try {
+         let data = await window.weatherAPI.fetchDailyForecastByCoords(lastCitySaved.lat, lastCitySaved.lon);
+         const timeZone = data.timezone;
+         const lat = data.lat;
+         const lon = data.lon;
 
          const options = {
             weekday: "long",
             day: "numeric"
          }
          
-         newComponent.data = {
-            icon: `https://openweathermap.org/img/wn/${dominantWeather.weather[0].icon}@2x.png`,
-            date: new Date(daySlice.at(0).dt * 1000).toLocaleDateString("fr-FR", options),
-            minTemp: minTemp,
-            maxTemp: maxTemp,
-            weatherDesc: dominantWeather.weather[0].description
-         };
+         data.daily.slice(1, howManyDays + 1).forEach(day => {
+            const newElement = document.createElement('li');
+            const newComponent = document.createElement(component);
 
-         newElement.appendChild(newComponent);
-         dailyMinMaxTempList.push(newElement);
+            newComponent.data = {
+               icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`,
+               date: new Date(day.dt * 1000).toLocaleDateString("fr-FR", options),
+               minTemp: day.temp.min,
+               maxTemp: day.temp.max,
+               weatherDesc: day.weather[0].description
+            };
+
+            newElement.appendChild(newComponent);
+            dailyForecastList.push(newElement);
+         });
+
+      } catch(err) {
+         console.error(`Erreur data données météo avec la fonction renderDailyForecastByCity:`, err);
       }
-      cleanContainer(nextDaysForecastItems);
-      if (nextDaysForecastContainer.firstElementChild?.nodeName === "H2") {
-         nextDaysForecastContainer.firstElementChild.remove();
+
+      cleanContainer(dailyForecastItems);
+
+      if (dailyForecastContainer.firstElementChild?.nodeName === "H2") {
+         dailyForecastContainer.firstElementChild.remove();
       }
-      
+
       const title = document.createElement('h2');
-      title.textContent = `Prévisions météo à ${data.city.name} pour les ${howManyDays} prochains jours`;
+      title.textContent = `Prévisions météo à ${lastCitySaved.name} pour les ${howManyDays} prochains jours`;
       title.classList.add('text-[22px]', 'font-semibold', 'mb-2')
-      nextDaysForecastContainer.insertBefore(title, nextDaysForecastItems);
+      dailyForecastContainer.insertBefore(title, dailyForecastItems);
 
-      dailyMinMaxTempList.forEach((dailyMinMax) => {
-         nextDaysForecastItems.appendChild(dailyMinMax)
+      dailyForecastList.forEach((daily) => {
+         dailyForecastItems.appendChild(daily)
       });
-      
-   } catch(err) {
-      console.error(`Erreur data données météo avec la fonction renderDailyForecastByCity:`, err);
    }
 }

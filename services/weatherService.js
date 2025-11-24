@@ -63,7 +63,7 @@ export async function fetchDailyForecast(lat, lon) {
          throw new Error('Clé API OpenWeather manquante');
       }
       
-      const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,alerts,minutely&units=metric&lang=fr&appid=${apiKey}`;
+      const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=current,alerts,hourly,minutely&units=metric&lang=fr&appid=${apiKey}`;
       
       const response = await fetch(url);
       if (!response.ok) {
