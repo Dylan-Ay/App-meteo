@@ -36,68 +36,55 @@ export async function printData(dataName, component, containerToAppend) {
    }
 }
 
-// Permet de récupérer les données météo de toutes les 3 heures des x prochains jours (au maximum 5 jours)
-async function getHourlyForecastByCity(dataName) {
-   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
-   
-   if (savedData.length != 0) {
-      const lastCitySaved = getLastSavedCityInfo(savedData);
-      
-      try {
-         const data = await window.weatherAPI.fetchHourlyForecastByCoords(lastCitySaved.lat, lastCitySaved.lon);
-         data.name = lastCitySaved.name;
-
-         return data;
-         
-      } catch(err) {
-         console.error(`Erreur data données météo avec la fonction getHourlyForecastByCity :`, err);
-      }
-   }
-}
-
 // Permet d'afficher les données météo de toutes les heures des x prochains jours (au maximum 2 jours)
 export async function renderHourlyForecastByCity(dataName, component, howManyDays) {
+   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const hourlyForecastContainer = document.getElementById('hourly-forecast-items');
    const hourlyForecastList = [];
    
    // Convertit le nombre de jours en paramètre en nombre d'éléménts
    howManyDays = howManyDays * 24 + 1;
-   
-   try {
-      let data = await getHourlyForecastByCity(dataName);
-      
-      data = data.hourly.slice(0, howManyDays);
-      const timeZone = data.timezone;
-      const lat = data.lat;
-      const lon = data.lon;
 
-      data.forEach(element => {
-         const newElement = document.createElement('li');
-         const newComponent = document.createElement(component);
-         
-         newComponent.data = {
-            icon: `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`,
-            time: element.dt,
-            currentTemp: element.temp,
-            feelsLike: element.feels_like,
-            timeZone: timeZone,
-            weather: data.weather,
-            lat: lat,
-            lon: lon,
-         };
-         
-         newElement.appendChild(newComponent);
-         hourlyForecastList.push(newElement);
-      });
-      
-   } catch(err) {
-      console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
-   }
-   cleanContainer(hourlyForecastContainer);
+   if (savedData.length != 0) {
+      const lastCitySaved = getLastSavedCityInfo(savedData);
    
-   hourlyForecastList.forEach(hourlyForecast => {
-      hourlyForecastContainer.appendChild(hourlyForecast);
-   });
+      try {
+         let data = await window.weatherAPI.fetchHourlyForecastByCoords(lastCitySaved.lat, lastCitySaved.lon);
+         data.name = lastCitySaved.name;
+
+         data = data.hourly.slice(0, howManyDays);
+         const timeZone = data.timezone;
+         const lat = data.lat;
+         const lon = data.lon;
+
+         data.forEach(element => {
+            const newElement = document.createElement('li');
+            const newComponent = document.createElement(component);
+            
+            newComponent.data = {
+               icon: `https://openweathermap.org/img/wn/${element.weather[0].icon}@2x.png`,
+               time: element.dt,
+               currentTemp: element.temp,
+               feelsLike: element.feels_like,
+               timeZone: timeZone,
+               weather: data.weather,
+               lat: lat,
+               lon: lon,
+            };
+            
+            newElement.appendChild(newComponent);
+            hourlyForecastList.push(newElement);
+         });
+         
+      } catch(err) {
+         console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
+      }
+      cleanContainer(hourlyForecastContainer);
+      
+      hourlyForecastList.forEach(hourlyForecast => {
+         hourlyForecastContainer.appendChild(hourlyForecast);
+      });
+   }
 }
 
 // Permet d'afficher les données météo des prochains jours (au maximum 8 jours)
@@ -119,7 +106,7 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
    );
 
    try {
-      let data = await getHourlyForecastByCity(dataName);
+      // let data = await getHourlyForecastByCity(dataName);
       
       // Convertir dt en ms, on garde uniquement les éléments > à today2359
       const filteredData = data.list.filter(e => e.dt * 1000 > today2359);
