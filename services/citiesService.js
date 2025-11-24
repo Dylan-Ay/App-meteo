@@ -17,7 +17,6 @@ export async function fetchCities(value) {
 
         const url = `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&type=city&limit=5&lang=fr&bias=countrycode:fr&apiKey=${apiKey}`;
         const response = await fetch(url);
-        console.log('fetchCities URL:', url);
 
         if (!response.ok) {
         throw new Error(`Erreur HTTP ${response.status}`);

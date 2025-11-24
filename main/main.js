@@ -69,8 +69,19 @@ ipcMain.handle('fetch-current-weather-by-coords', async (event, { lat, lon }) =>
 
 ipcMain.handle('fetch-hourly-forecast-by-coords', async (event, {lat, lon}) => {
   try {
-    const currentCityWeather = await weatherService.fetchHourlyForecast(lat, lon);
-    return currentCityWeather;
+    const hourlyForecast = await weatherService.fetchHourlyForecast(lat, lon);
+    return hourlyForecast;
+
+  } catch (error) {
+    console.error('Erreur fetch-hourly-forecast-by-coords:', error);
+    throw error;
+  }
+})
+
+ipcMain.handle('fetch-daily-forecast-by-coords', async (event, {lat, lon}) => {
+  try {
+    const dailyForecast = await weatherService.fetchHourlyForecast(lat, lon);
+    return dailyForecast;
 
   } catch (error) {
     console.error('Erreur fetch-hourly-forecast-by-coords:', error);
