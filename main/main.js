@@ -80,11 +80,11 @@ ipcMain.handle('fetch-hourly-forecast-by-coords', async (event, {lat, lon}) => {
 
 ipcMain.handle('fetch-daily-forecast-by-coords', async (event, {lat, lon}) => {
   try {
-    const dailyForecast = await weatherService.fetchHourlyForecast(lat, lon);
+    const dailyForecast = await weatherService.fetchDailyForecast(lat, lon);
     return dailyForecast;
 
   } catch (error) {
-    console.error('Erreur fetch-hourly-forecast-by-coords:', error);
+    console.error('Erreur fetch-daily-forecast-by-coords:', error);
     throw error;
   }
 })
