@@ -14,7 +14,7 @@ export async function printCitiesResults(dataName, component, containerToAppend,
          const country = element.country;
          
          try {
-            const data = await window.weatherAPI.getCurrentWeatherByCoords(element.lat, element.lon);
+            const data = await window.weatherAPI.fetchCurrentWeatherByCoords(element.lat, element.lon);
             
             const newComponent = document.createElement(component);
             const li = document.createElement("li");

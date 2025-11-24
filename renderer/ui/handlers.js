@@ -6,7 +6,7 @@ import { printCitiesResults } from './displayCities.js';
 export async function handleLocationSelected(event, forecastSummaryContainer, searchedCitiesContainer) {
    const { lat, lon, cityName, timeZone, country } = event.detail;
    
-   window.weatherAPI.getCurrentWeatherByCoords(lat, lon)
+   window.weatherAPI.fetchCurrentWeatherByCoords(lat, lon)
    .then(async data => {
       data.name = cityName;
       data.timezone = timeZone;

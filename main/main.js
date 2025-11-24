@@ -46,23 +46,23 @@ app.on('window-all-closed', () => {
 
 const { ipcMain } = require('electron');
 
-ipcMain.handle('get-cities', async (event, city) => {
+ipcMain.handle('fetch-cities', async (event, city) => {
   try {
     const test = await citiesService.fetchCities(city);
     return test;
   } catch (error) {
-    console.error('Erreur get-cities:', error);
+    console.error('Erreur fetch-cities:', error);
     throw error;
   }
 })
 
-ipcMain.handle('get-current-weather-by-coords', async (event, { lat, lon }) => {
+ipcMain.handle('fetch-current-weather-by-coords', async (event, { lat, lon }) => {
   try {
     const currentCityWeather = await weatherService.fetchCurrentWeather(lat, lon);
     return currentCityWeather;
     
   } catch (error) {
-    console.error('Erreur get-current-weather-by-coords:', error);
+    console.error('Erreur fetch-current-weather-by-coords:', error);
     throw error;
   }
 })

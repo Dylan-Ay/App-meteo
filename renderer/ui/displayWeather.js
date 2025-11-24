@@ -8,7 +8,7 @@ export async function printData(dataName, component, containerToAppend) {
    if (savedData.length != 0) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
       
-      window.weatherAPI.getCurrentWeatherByCoords(lastCitySaved.lat, lastCitySaved.lon)
+      window.weatherAPI.fetchCurrentWeatherByCoords(lastCitySaved.lat, lastCitySaved.lon)
       .then(data => {
          const newComponent = document.createElement(component);
          

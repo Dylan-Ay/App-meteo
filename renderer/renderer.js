@@ -76,7 +76,7 @@ cityInput.addEventListener("input", () => {
 
   typingTimer = setTimeout(() => {
     if (city && city.length > 2) {
-      window.weatherAPI.getCities(city)
+      window.weatherAPI.fetchCities(city)
       .then(response => {
         // Vérifie que c'est bien la dernière requête
         if (requestId !== lastRequestId) return;
