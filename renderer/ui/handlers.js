@@ -25,7 +25,7 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
       await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
       
       // Affichage de la météo des prochains jours
-      await renderDailyForecastByCity('searchedCitiesList', 'next-day-forecast', 7);
+      await renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7);
    })
    .catch(err => {
       console.error('Erreur data données météo:', err);

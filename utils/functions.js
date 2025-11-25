@@ -35,44 +35,10 @@ export function handleOutsideClick(elementToHide, elementToClickToDisplay, event
    }
 }
 
-// Nettoie les informations d'un container
 export function cleanContainer(container) {
    if (container.hasChildNodes()) {
       while (container.firstChild) {
          container.removeChild(container.firstChild);
       }
    };
-}
-
-export function getDominantWeather(data) {
-   const map = new Map();
-   // Récupère toutes les description de l'objet data
-   const descriptionList = data.map(el => el.weather[0].description);
-   
-   // Compte le nombre d'occurence par description
-   for (const description of descriptionList) {
-      map.set(description, (map.get(description) ?? 0) + 1);
-   }
-   
-   let dominantDescription = null;
-   let highestCount = 0;
-   
-   // Récupère la météo dominante sur la journée
-   for (const [element, count] of map.entries()) {
-      if (count > highestCount) {
-         highestCount = count;
-         dominantDescription = element;
-      }
-   }
-   
-   let dominantWeather;
-   
-   // Récupère le tableau complet "weather" correspondant à la description dominante
-   for (const day of data) {
-      if (day.weather[0].description == dominantDescription) {
-         dominantWeather = day;
-      }
-   }
-
-   return dominantWeather;
 }

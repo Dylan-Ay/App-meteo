@@ -1,4 +1,4 @@
-import { cleanContainer, getDominantWeather } from "../../utils/functions.js";
+import { cleanContainer } from "../../utils/functions.js";
 import { getLastSavedCityInfo } from "../../services/citiesService.js";
 
 // Permet d'afficher les données météo du localStorage pour un seul élément
@@ -112,8 +112,8 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
             newComponent.data = {
                icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`,
                date: new Date(day.dt * 1000).toLocaleDateString("fr-FR", options),
-               minTemp: day.temp.min,
                maxTemp: day.temp.max,
+               minTemp: day.temp.min,
                weatherDesc: day.weather[0].description
             };
 

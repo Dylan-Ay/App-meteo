@@ -2,7 +2,7 @@ import './components/ForecastSummary.js';
 import './components/SearchResult.js';
 import './components/SearchedCity.js';
 import './components/HourlyForecast.js';
-import './components/NextDayForecast.js';
+import './components/DailyForecast.js';
 import { handleOutsideClick } from '.././utils/functions.js';
 import { renderHourlyForecastByCity, printData, renderDailyForecastByCity } from './ui/displayWeather.js';
 import { printCitiesResults } from './ui/displayCities.js';
@@ -20,7 +20,7 @@ const debounceDelay = 50;
 printData('searchedCitiesList', 'forecast-summary', forecastSummaryContainer);
 printCitiesResults('searchedCitiesList', 'searched-city', searchedCitiesContainer);
 renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
-renderDailyForecastByCity('searchedCitiesList', 'next-day-forecast', 7);
+renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7);
 
 // Observer pour attacher le listener aux searched-city à chaque création du composant
 const observer = new MutationObserver(() => {

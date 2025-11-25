@@ -1,4 +1,4 @@
-class NextDayForecast extends HTMLElement {
+class DailyForecast extends HTMLElement {
     #data;
 
     constructor() {
@@ -19,7 +19,7 @@ class NextDayForecast extends HTMLElement {
     render() {
         if (!this.#data) {
             this.innerHTML = `<p>Pas de données</p>`;
-            console.log('Pas de données reçu dans le composant NextDayForecast');
+            console.log('Pas de données reçu dans le composant DailyForecast');
             return;
         }
         
@@ -36,8 +36,8 @@ class NextDayForecast extends HTMLElement {
                 <div class="flex gap-3">
                     <img src="${data.icon}" alt="Weather icon" class="w-15">
                     <div class="flex flex-col text-end">
-                        <span class="font-semibold">${data.maxTemp}°</span>
-                        <span>${data.minTemp}°</span>
+                        <span class="font-semibold">${data.maxTemp.toFixed()}°</span>
+                        <span>${data.minTemp.toFixed()}°</span>
                     </div>
                 </div>
             </div>
@@ -45,4 +45,4 @@ class NextDayForecast extends HTMLElement {
     }
 }
 // Définition du nom du composant
-customElements.define('next-day-forecast', NextDayForecast);
+customElements.define('daily-forecast', DailyForecast);
