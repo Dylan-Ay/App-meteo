@@ -23,13 +23,13 @@ npm run dev:css to compile tailwind css
 **The functionalities are :**
 - Searching for any city in the world thanks to Geoapify API by clicking the city result it'll retrieve the weather for this actual city.
   
-- The current weather information includes the temperature, the temperature as it feels, the weather icon, the wind speed, the humidity rate, the atmospheric pressure, and the times of sunrise and sunset.
+- The current and 24 hours weather information includes the temperature, the temperature as it feels, the weather icon, the wind speed, the humidity rate, the atmospheric pressure, and the times of sunrise and sunset.
 
 - The data is saved in your browser's local storage so that it can be printed when you reload or close the app.
 
 - You can access a history of your search terms under the search bar. These components are clickable and allow you to quickly print the weather forecast for the selected city.
 
-- Fetching the weather every 3 hours of the next five days for the city clicked (max temp, min temp, weather description, sunrise, sunset)
+- The daily weather of the next 7 days for the city clicked (max temp, min temp, weather description, sunrise, sunset)
   
 - I also created a dark theme which you can switch using the toggle situated in the top right corner of the app.
 
