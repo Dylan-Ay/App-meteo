@@ -1,43 +1,36 @@
 import { cleanContainer } from "../../utils/functions.js";
 import { getLastSavedCityInfo } from "../../services/citiesService.js";
 
-// Permet d'afficher les données météo du localStorage pour un seul élément
-export async function printData(dataName, component, containerToAppend) {
+// Permet d'afficher les données météo actuelles
+export async function renderCurrentForecastByCity(dataName, component, containerToAppend, data) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    
    if (savedData.length != 0) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
+      const newComponent = document.createElement(component);
       
-      window.weatherAPI.fetchCurrentWeatherByCoords(lastCitySaved.lat, lastCitySaved.lon)
-      .then(data => {
-         const newComponent = document.createElement(component);
-         
-         newComponent.data = {
-            icon: `https://openweathermap.org/img/wn/${data.current.weather[0].icon}@2x.png`,
-            currentTemp: data.current.temp,
-            feelsLike: data.current.feels_like,
-            cityName: lastCitySaved.name,
-            timeZone: lastCitySaved.timeZone,
-            weather: data.current.weather,
-            windSpeed: data.current.wind_speed,
-            humidity: data.current.humidity,
-            sunrise: data.current.sunrise,
-            sunset: data.current.sunset,
-            pressure: data.current.pressure,
-            country: lastCitySaved.country
-         };
-         cleanContainer(containerToAppend);
-         
-         containerToAppend.appendChild(newComponent);
-      })
-      .catch(err => {
-         console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
-      });
+      newComponent.data = {
+         icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
+         currentTemp: data.temp,
+         feelsLike: data.feels_like,
+         cityName: lastCitySaved.name,
+         timeZone: lastCitySaved.timezone,
+         weather: data.weather,
+         windSpeed: data.wind_speed,
+         humidity: data.humidity,
+         sunrise: data.sunrise,
+         sunset: data.sunset,
+         pressure: data.pressure,
+         country: lastCitySaved.country
+      };
+      cleanContainer(containerToAppend);
+      
+      containerToAppend.appendChild(newComponent);
    }
 }
 
 // Permet d'afficher les données météo de toutes les heures des x prochains jours (au maximum 2 jours)
-export async function renderHourlyForecastByCity(dataName, component, howManyDays) {
+export async function renderHourlyForecastByCity(dataName, component, howManyDays, data) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const hourlyForecastContainer = document.getElementById('hourly-forecast-items');
    const hourlyForecastList = [];
@@ -47,35 +40,26 @@ export async function renderHourlyForecastByCity(dataName, component, howManyDay
 
    if (savedData.length != 0) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
-   
-      try {
-         let data = await window.weatherAPI.fetchHourlyForecastByCoords(lastCitySaved.lat, lastCitySaved.lon);
-         const timeZone = data.timezone;
-         const lat = data.lat;
-         const lon = data.lon;
+      
+      data.slice(0, howManyDays).forEach(hour => {
+         const newElement = document.createElement('li');
+         const newComponent = document.createElement(component);
          
-         data.hourly.slice(0, howManyDays).forEach(hour => {
-            const newElement = document.createElement('li');
-            const newComponent = document.createElement(component);
-            
-            newComponent.data = {
-               icon: `https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`,
-               time: hour.dt,
-               currentTemp: hour.temp,
-               feelsLike: hour.feels_like,
-               timeZone: timeZone,
-               weather: data.weather,
-               lat: lat,
-               lon: lon,
-            };
-            
-            newElement.appendChild(newComponent);
-            hourlyForecastList.push(newElement);
-         });
+         newComponent.data = {
+            icon: `https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`,
+            time: hour.dt,
+            currentTemp: hour.temp,
+            feelsLike: hour.feels_like,
+            timeZone: lastCitySaved.timezone,
+            weather: data.weather,
+            lat: lastCitySaved.lat,
+            lon: lastCitySaved.lon,
+         };
          
-      } catch(err) {
-         console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
-      }
+         newElement.appendChild(newComponent);
+         hourlyForecastList.push(newElement);
+      });
+         
       cleanContainer(hourlyForecastContainer);
       
       hourlyForecastList.forEach(hourlyForecast => {
@@ -84,8 +68,8 @@ export async function renderHourlyForecastByCity(dataName, component, howManyDay
    }
 }
 
-// Permet d'afficher les données météo des prochains jours (au maximum 8 jours)
-export async function renderDailyForecastByCity(dataName, component, howManyDays) {
+// // Permet d'afficher les données météo des prochains jours (au maximum 8 jours)
+export async function renderDailyForecastByCity(dataName, component, howManyDays, data) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const dailyForecastItems = document.getElementById('daily-forecast-items');
    const dailyForecastContainer = document.getElementById('daily-forecast-container');
@@ -94,36 +78,26 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
    if (savedData.length != 0) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
       
-      try {
-         let data = await window.weatherAPI.fetchDailyForecastByCoords(lastCitySaved.lat, lastCitySaved.lon);
-         const timeZone = data.timezone;
-         const lat = data.lat;
-         const lon = data.lon;
-
-         const options = {
-            weekday: "long",
-            day: "numeric"
-         }
-         
-         data.daily.slice(1, howManyDays + 1).forEach(day => {
-            const newElement = document.createElement('li');
-            const newComponent = document.createElement(component);
-
-            newComponent.data = {
-               icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`,
-               date: new Date(day.dt * 1000).toLocaleDateString("fr-FR", options),
-               maxTemp: day.temp.max,
-               minTemp: day.temp.min,
-               weatherDesc: day.weather[0].description
-            };
-
-            newElement.appendChild(newComponent);
-            dailyForecastList.push(newElement);
-         });
-
-      } catch(err) {
-         console.error(`Erreur data données météo avec la fonction renderDailyForecastByCity:`, err);
+      const options = {
+         weekday: "long",
+         day: "numeric"
       }
+      
+      data.slice(1, howManyDays + 1).forEach(day => {
+         const newElement = document.createElement('li');
+         const newComponent = document.createElement(component);
+
+         newComponent.data = {
+            icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`,
+            date: new Date(day.dt * 1000).toLocaleDateString("fr-FR", options),
+            maxTemp: day.temp.max,
+            minTemp: day.temp.min,
+            weatherDesc: day.weather[0].description
+         };
+
+         newElement.appendChild(newComponent);
+         dailyForecastList.push(newElement);
+      });
 
       cleanContainer(dailyForecastItems);
 

@@ -1,33 +1,30 @@
 import { saveNewCity } from '../../services/citiesService.js';
-import { printData, renderHourlyForecastByCity, renderDailyForecastByCity } from './displayWeather.js';
-import { printCitiesResults } from './displayCities.js';
+import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity } from './displayWeather.js';
+import { renderCitiesHistory } from './displayCities.js';
+import { getWeather } from '../weatherCache.js';
 
 // Permet de gérer le comportement d'une ville choisie et d'exécuter les fonctions nécessaires
 export async function handleLocationSelected(event, forecastSummaryContainer, searchedCitiesContainer) {
    const { lat, lon, cityName, timeZone, country } = event.detail;
    
-   window.weatherAPI.fetchCurrentWeatherByCoords(lat, lon)
-   .then(async data => {
-      data.name = cityName;
-      data.timezone = timeZone;
-      data.country = country;
-      
-      // Update du localStorage avec la dernière ville recherchée
-      saveNewCity('searchedCitiesList', data);
-      
-      // Affichage de la météo pour la ville sélectionnée
-      await printData('searchedCitiesList', 'forecast-summary', forecastSummaryContainer);
-      
-      // Affichage des villes qui correspondent à la recherche d'un mot clé
-      await printCitiesResults('searchedCitiesList', 'searched-city', searchedCitiesContainer);
-      
-      // Affichage de la météo des prochaines heures de la ville sélectionnée
-      await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
-      
-      // Affichage de la météo des prochains jours
-      await renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7);
-   })
-   .catch(err => {
-      console.error('Erreur data données météo:', err);
-   });
+   const data = await getWeather(lat, lon);
+
+   data.name = cityName;
+   data.timezone = timeZone;
+   data.country = country;
+
+   // Update du localStorage avec la dernière ville recherchée
+   saveNewCity('searchedCitiesList', data);
+   
+   // Affichage des villes qui correspondent à la recherche d'un mot clé
+   await renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
+
+   // Affichage de la météo pour la ville sélectionnée
+   await renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current);
+   
+   // Affichage de la météo des prochaines heures de la ville sélectionnée
+   await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);
+   
+   // Affichage de la météo des prochains jours
+   await renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7, data.daily);
 }

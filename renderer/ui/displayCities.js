@@ -1,7 +1,7 @@
 import { cleanContainer } from "../../utils/functions.js";
 
-// Permet d'afficher une liste de ville selon un mot clé
-export async function printCitiesResults(dataName, component, containerToAppend, howMany = 5) {
+// Permet d'afficher l'historique des 5 dernières villes recherchées
+export async function renderCitiesHistory(dataName, component, containerToAppend, howMany = 5) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    
    if (savedData.length != 0) {
@@ -14,7 +14,7 @@ export async function printCitiesResults(dataName, component, containerToAppend,
          const country = element.country;
          
          try {
-            const data = await window.weatherAPI.fetchCurrentWeatherByCoords(element.lat, element.lon);
+            const data = await window.weatherAPI.fetchWeather(element.lat, element.lon);
             
             const newComponent = document.createElement(component);
             const li = document.createElement("li");

@@ -56,35 +56,35 @@ ipcMain.handle('fetch-cities', async (event, city) => {
   }
 })
 
-ipcMain.handle('fetch-current-weather-by-coords', async (event, { lat, lon }) => {
+ipcMain.handle('fetch-weather', async (event, { lat, lon }) => {
   try {
-    const currentCityWeather = await weatherService.fetchCurrentWeather(lat, lon);
-    return currentCityWeather;
+    const weather = await weatherService.fetchWeather(lat, lon);
+    return weather;
     
   } catch (error) {
-    console.error('Erreur fetch-current-weather-by-coords:', error);
+    console.error('Erreur fetch-weather:', error);
     throw error;
   }
 })
 
-ipcMain.handle('fetch-hourly-forecast-by-coords', async (event, {lat, lon}) => {
-  try {
-    const hourlyForecast = await weatherService.fetchHourlyForecast(lat, lon);
-    return hourlyForecast;
+// ipcMain.handle('fetch-hourly-forecast-by-coords', async (event, {lat, lon}) => {
+//   try {
+//     const hourlyForecast = await weatherService.fetchHourlyForecast(lat, lon);
+//     return hourlyForecast;
 
-  } catch (error) {
-    console.error('Erreur fetch-hourly-forecast-by-coords:', error);
-    throw error;
-  }
-})
+//   } catch (error) {
+//     console.error('Erreur fetch-hourly-forecast-by-coords:', error);
+//     throw error;
+//   }
+// })
 
-ipcMain.handle('fetch-daily-forecast-by-coords', async (event, {lat, lon}) => {
-  try {
-    const dailyForecast = await weatherService.fetchDailyForecast(lat, lon);
-    return dailyForecast;
+// ipcMain.handle('fetch-daily-forecast-by-coords', async (event, {lat, lon}) => {
+//   try {
+//     const dailyForecast = await weatherService.fetchDailyForecast(lat, lon);
+//     return dailyForecast;
 
-  } catch (error) {
-    console.error('Erreur fetch-daily-forecast-by-coords:', error);
-    throw error;
-  }
-})
+//   } catch (error) {
+//     console.error('Erreur fetch-daily-forecast-by-coords:', error);
+//     throw error;
+//   }
+// })

@@ -4,10 +4,12 @@ import './components/SearchedCity.js';
 import './components/HourlyForecast.js';
 import './components/DailyForecast.js';
 import { handleOutsideClick } from '.././utils/functions.js';
-import { renderHourlyForecastByCity, printData, renderDailyForecastByCity } from './ui/displayWeather.js';
-import { printCitiesResults } from './ui/displayCities.js';
+import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity } from './ui/displayWeather.js';
+import { renderCitiesHistory } from './ui/displayCities.js';
 import { handleLocationSelected } from './ui/handlers.js';
 import { toggleTheme, setLight, setDark } from './ui/theme.js';
+import { getLastSavedCityInfo } from '../services/citiesService.js';
+import { getWeather } from './weatherCache.js';
 
 const cityInput = document.getElementById('city-input');
 const forecastSummaryContainer = document.getElementById('forecast-summary-container');
@@ -17,10 +19,19 @@ let typingTimer;
 let lastRequestId = 0;
 const debounceDelay = 50;
 
-printData('searchedCitiesList', 'forecast-summary', forecastSummaryContainer);
-printCitiesResults('searchedCitiesList', 'searched-city', searchedCitiesContainer);
-renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1);
-renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7);
+async function init() {
+  const savedData = JSON.parse(localStorage.getItem('searchedCitiesList')) || [];
+
+  if (savedData.length != 0) {
+    const lastCitySaved = getLastSavedCityInfo(savedData);
+    const data = await getWeather(lastCitySaved.lat, lastCitySaved.lon);
+
+    renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
+    renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current);
+    renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);
+    renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7, data.daily); 
+  }
+}
 
 // Observer pour attacher le listener aux searched-city à chaque création du composant
 const observer = new MutationObserver(() => {
@@ -37,8 +48,9 @@ const observer = new MutationObserver(() => {
 
 observer.observe(searchedCitiesContainer, { childList: true });
 
-// Gestion du thème
+// Gestion des fonctions à lancer au rechargement
 window.addEventListener('DOMContentLoaded', () => {
+  init();
   toggleTheme();
   
   const checkbox = document.getElementById("darkSwitch");

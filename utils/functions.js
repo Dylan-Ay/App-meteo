@@ -42,3 +42,13 @@ export function cleanContainer(container) {
       }
    };
 }
+
+export function formatMinutesSeconds(ms) {
+    if (ms <= 0) return "cache expiré";
+
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${minutes}min ${seconds}s`;
+}
