@@ -86,13 +86,16 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
       data.slice(1, howManyDays + 1).forEach(day => {
          const newElement = document.createElement('li');
          const newComponent = document.createElement(component);
-
+         console.log(data)
          newComponent.data = {
             icon: `https://openweathermap.org/img/wn/${day.weather[0].icon}@2x.png`,
             date: new Date(day.dt * 1000).toLocaleDateString("fr-FR", options),
             maxTemp: day.temp.max,
             minTemp: day.temp.min,
-            weatherDesc: day.weather[0].description
+            weatherDesc: day.weather[0].description,
+            timezone: lastCitySaved.timezone,
+            sunrise: day.sunrise,
+            sunset: day.sunset
          };
 
          newElement.appendChild(newComponent);
