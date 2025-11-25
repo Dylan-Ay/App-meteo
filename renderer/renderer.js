@@ -7,7 +7,6 @@ import { handleOutsideClick } from '.././utils/functions.js';
 import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity } from './ui/displayWeather.js';
 import { renderCitiesHistory } from './ui/displayCities.js';
 import { handleLocationSelected } from './ui/handlers.js';
-import { toggleTheme, setLight, setDark } from './ui/theme.js';
 import { getLastSavedCityInfo } from '../services/citiesService.js';
 import { getWeather } from './weatherCache.js';
 
@@ -26,7 +25,7 @@ async function init() {
     const lastCitySaved = getLastSavedCityInfo(savedData);
     const data = await getWeather(lastCitySaved.lat, lastCitySaved.lon);
 
-    renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
+    // renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
     renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current);
     renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);
     renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7, data.daily); 
@@ -51,19 +50,15 @@ observer.observe(searchedCitiesContainer, { childList: true });
 // Gestion des fonctions à lancer au rechargement
 window.addEventListener('DOMContentLoaded', () => {
   init();
-  toggleTheme();
+  const savedTheme = localStorage.getItem("theme");
+  const toggleTheme = document.getElementById("darkSwitch");
+
+  if (savedTheme == 'dark') {
+    toggleTheme.checked = true;
+  }
   
-  const checkbox = document.getElementById("darkSwitch");
-  if (!checkbox) return;
-
-  checkbox.checked = document.body.classList.contains('dark');
-
-  checkbox.addEventListener("change", (e) => {
-    if (e.target.checked) {
-      setDark();
-    } else {
-      setLight();
-    }
+  toggleTheme.addEventListener("change", () => {
+    window.toggleTheme();
   });
 });
 

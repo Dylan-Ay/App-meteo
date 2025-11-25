@@ -6,9 +6,8 @@ export async function renderCitiesHistory(dataName, component, containerToAppend
    
    if (savedData.length != 0) {
       const citiesToAppend = [];
-      const firstFourCities = savedData.slice(0, howMany);
       
-      for (const element of firstFourCities) {
+      for (const element of savedData.slice(0, howMany)) {
          const cityName = element.name;
          const timeZone = element.timezone;
          const country = element.country;

@@ -1,24 +1,28 @@
-// Gestion du  thème dark/light
-export function toggleTheme() {
-   const isDark =
-   localStorage.theme === "dark" ||
-   (!("theme" in localStorage) &&
-   window.matchMedia("(prefers-color-scheme: dark)").matches);
+(function() {
+   const root = document.documentElement;
    
-   document.body.classList.toggle("dark", isDark);
-}
+   // Appliquer le thème au chargement
+   function applyTheme(theme) {
+      root.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+      root.classList.add("theme-ready"); // rendre le DOM visible
+   }
+   
+   // Déterminer le thème initial
+   const savedTheme = localStorage.getItem("theme");
+   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+   
+   if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+      applyTheme("dark");
+   } else {
+      applyTheme("light");
+   }
+   
+   // Fonction toggle
+   window.toggleTheme = function() {
+      const current = root.getAttribute("data-theme");
+      const newTheme = current === "dark" ? "light" : "dark";
+      applyTheme(newTheme);
+   };
 
-export function setLight() {
-   localStorage.theme = "light";
-   document.body.classList.remove("dark");
-}
-
-export function setDark() {
-   localStorage.theme = "dark";
-   document.body.classList.add("dark");
-}
-
-export function setSystem() {
-   localStorage.removeItem("theme");
-   toggleTheme();
-}
+})();
