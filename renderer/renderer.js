@@ -24,8 +24,8 @@ async function init() {
   if (savedData.length != 0) {
     const lastCitySaved = getLastSavedCityInfo(savedData);
     const data = await getWeather(lastCitySaved.lat, lastCitySaved.lon);
-
-    // renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
+    
+    renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
     renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current);
     renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);
     renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7, data.daily); 

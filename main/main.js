@@ -66,25 +66,3 @@ ipcMain.handle('fetch-weather', async (event, { lat, lon }) => {
     throw error;
   }
 })
-
-// ipcMain.handle('fetch-hourly-forecast-by-coords', async (event, {lat, lon}) => {
-//   try {
-//     const hourlyForecast = await weatherService.fetchHourlyForecast(lat, lon);
-//     return hourlyForecast;
-
-//   } catch (error) {
-//     console.error('Erreur fetch-hourly-forecast-by-coords:', error);
-//     throw error;
-//   }
-// })
-
-// ipcMain.handle('fetch-daily-forecast-by-coords', async (event, {lat, lon}) => {
-//   try {
-//     const dailyForecast = await weatherService.fetchDailyForecast(lat, lon);
-//     return dailyForecast;
-
-//   } catch (error) {
-//     console.error('Erreur fetch-daily-forecast-by-coords:', error);
-//     throw error;
-//   }
-// })

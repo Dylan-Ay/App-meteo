@@ -1,4 +1,5 @@
 import { cleanContainer } from "../../utils/functions.js";
+import { getWeather } from "../weatherCache.js";
 
 // Permet d'afficher l'historique des 5 dernières villes recherchées
 export async function renderCitiesHistory(dataName, component, containerToAppend, howMany = 5) {
@@ -7,13 +8,13 @@ export async function renderCitiesHistory(dataName, component, containerToAppend
    if (savedData.length != 0) {
       const citiesToAppend = [];
       
-      for (const element of savedData.slice(0, howMany)) {
-         const cityName = element.name;
-         const timeZone = element.timezone;
-         const country = element.country;
+      for (const city of savedData.slice(0, howMany)) {
+         const cityName = city.name;
+         const timeZone = city.timezone;
+         const country = city.country;
          
          try {
-            const data = await window.weatherAPI.fetchWeather(element.lat, element.lon);
+            const data = await getWeather(city.lat, city.lon);
             
             const newComponent = document.createElement(component);
             const li = document.createElement("li");
@@ -31,8 +32,8 @@ export async function renderCitiesHistory(dataName, component, containerToAppend
                sunset: data.current.sunset,
                pressure: data.current.pressure,
                country: country,
-               lat: element.lat,
-               lon: element.lon,
+               lat: city.lat,
+               lon: city.lon,
             };
             
             li.appendChild(newComponent);
@@ -44,8 +45,8 @@ export async function renderCitiesHistory(dataName, component, containerToAppend
       }
       cleanContainer(containerToAppend);
       
-      citiesToAppend.forEach((element) => {
-         containerToAppend.appendChild(element);
+      citiesToAppend.forEach((city) => {
+         containerToAppend.appendChild(city);
       });
    }
 }

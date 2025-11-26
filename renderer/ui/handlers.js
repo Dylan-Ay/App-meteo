@@ -17,7 +17,7 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
    saveNewCity('searchedCitiesList', data);
    
    // Affichage des villes qui correspondent à la recherche d'un mot clé
-   // await renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
+   await renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
 
    // Affichage de la météo pour la ville sélectionnée
    await renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current);
