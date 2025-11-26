@@ -16,9 +16,8 @@ First, run the development server:
 ```bash
 npm run start
 # and
-npm run dev:css to compile tailwind css
+npm run dev:css
 ```
-
 
 **The functionalities are :**
 - Searching for any city in the world thanks to Geoapify API by clicking the city result it'll retrieve the weather for this actual city.
@@ -29,21 +28,24 @@ npm run dev:css to compile tailwind css
 
 - You can access a history of your search terms under the search bar. These components are clickable and allow you to quickly print the weather forecast for the selected city.
 
-- The daily weather of the next 7 days for the city clicked (max temp, min temp, weather description, sunrise, sunset)
+- The daily weather of the next 7 days for the selected city (max temp, min temp, weather description, sunrise, sunset)
   
 - I also created a dark theme which you can switch using the toggle situated in the top right corner of the app.
+
+- A cache was implemented to avoid an excess of API calls.
 
 **The functionalities in building :**
 - Air pollution data
 - Weather maps
 - Cities near the selected city
+- UV chart
+- Rain chart
 - Activities near the selected city
 - Resuming the weather with a description using AI
 - Maybe more informations about the city
 
 **Stacks used :**
-- JavaScript vanilla / Electron.js
-- Web Components
+- JavaScript Web Components / Electron.js
 - Tailwind
 - OpenWeather API
 - Geoapify API
