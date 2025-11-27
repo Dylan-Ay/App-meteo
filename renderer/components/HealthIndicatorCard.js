@@ -17,18 +17,30 @@ class HealthIndicatorCard extends HTMLElement {
         this.render();
     }
 
+    set type(value) {
+        this._type = value;
+        this.render();
+    }
+
+    get type() {
+    return this._type;
+    }
+
     render() {
         if (!this.#data) {
             this.innerHTML = `<p>Pas de données</p>`;
             console.log('Pas de données reçu dans le composant DailyForecast');
             return;
         }
-        
+
+        const isAirQuality = this._type?.isAirQuality ?? false;
         const data = this.#data;
         
         this.innerHTML = `
-            
+            ${isAirQuality ? 'Air quality' : 'UV'}
         `;
+
+        // Lors de la création du composant : card.type = { isAirQuality: true };
     }
 }
 // Définition du nom du composant
