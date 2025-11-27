@@ -100,7 +100,7 @@ cityInput.addEventListener("input", () => {
 
           handleLocationSelected(event, forecastSummaryContainer, searchedCitiesContainer);
         });
-        })
+      })
       .catch(err => {
         console.error("Erreur data données ville:", err);
       });

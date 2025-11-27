@@ -34,13 +34,13 @@ class DailyForecast extends HTMLElement {
                     <span class="font-semibold">${date.charAt(0).toUpperCase() + date.slice(1)}</span> 
                     <span class="text-sm">${weatherDesc.charAt(0).toUpperCase() + weatherDesc.slice(1)}</span>
                 </div>
-                <div class="flex items-center">
+                <div class="flex items-center max-md:gap-1.5">
                     <img src="${data.icon}" alt="Weather icon" class="w-14">
                     <div class="flex flex-col text-end text-sm gap-1.5">
                         <span class="font-bold">${data.maxTemp.toFixed()}°</span>
                         <span>${data.minTemp.toFixed()}°</span>
                     </div>
-                    <div class="flex flex-col gap-1.5 flex-1">
+                    <div class="md:flex hidden flex-col gap-1.5 flex-1">
                         <div class="flex items-center self-end">
                             <img class="dark:filter-[invert(1)] w-5" src="../src/icons/sunset.svg" alt="icon sunset">
                             <span class="text-sm">${epochToLocaleTimeString(data.sunset, data.timezone)}</span>

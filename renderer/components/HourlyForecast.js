@@ -34,7 +34,7 @@ class HourlyForecast extends HTMLElement {
                 <i class="fa-solid fa-temperature-half"></i>
                 ${data.currentTemp.toFixed(0)}°
             </p>
-            <p class="text-xs pt-1">Ressenti : ${data.feelsLike.toFixed(0)}°</p>
+            <p class="text-xs pt-1">Ressenti ${data.feelsLike.toFixed(0)}°</p>
         </div>
     `;
     }
