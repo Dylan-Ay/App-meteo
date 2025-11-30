@@ -1,4 +1,3 @@
-// main.js
 require('dotenv').config(); 
 
 const { app, BrowserWindow } = require('electron');
@@ -9,6 +8,9 @@ weatherService.initializeService(process.env.API_KEY_OPEN_WEATHER);
 
 const citiesService = require('../services/citiesService');
 citiesService.initializeService(process.env.API_KEY_GEOCODING);
+
+const airQualityService = require('../services/airQualityService');
+airQualityService.initializeService(process.env.API_KEY_OPEN_WEATHER);
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -48,8 +50,9 @@ const { ipcMain } = require('electron');
 
 ipcMain.handle('fetch-cities', async (event, city) => {
   try {
-    const test = await citiesService.fetchCities(city);
-    return test;
+    const cities = await citiesService.fetchCities(city);
+    return cities;
+
   } catch (error) {
     console.error('Erreur fetch-cities:', error);
     throw error;
@@ -63,6 +66,17 @@ ipcMain.handle('fetch-weather', async (event, { lat, lon }) => {
     
   } catch (error) {
     console.error('Erreur fetch-weather:', error);
+    throw error;
+  }
+})
+
+ipcMain.handle('fetch-air-quality', async (event, { lat, lon }) => {
+  try {
+    const airQuality = await airQualityService.fetchAirQuality(lat, lon);
+    return airQuality;
+    
+  } catch (error) {
+    console.error('Erreur fetch-air-quality:', error);
     throw error;
   }
 })

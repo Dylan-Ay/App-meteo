@@ -118,3 +118,28 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
       });
    }
 }
+
+export async function renderAirQualityByCity(dataName, component) {
+   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
+   const healthIndicatorsContainer = document.getElementById('health-indicators-container');
+   
+   if (savedData.length != 0) {
+      const lastCitySaved = getLastSavedCityInfo(savedData);
+            
+      window.weatherAPI.fetchAirQuality(lastCitySaved.lat, lastCitySaved.lon)
+        .then(data => {
+         const newComponent = document.createElement(component);
+
+         newComponent.data = {
+            airQuality: data.list.at(0).main.aqi,
+            components: data.list.at(0).components
+         };
+         
+         cleanContainer(healthIndicatorsContainer);
+         healthIndicatorsContainer.appendChild(newComponent);
+        })
+        .catch(err => {
+        console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
+      });
+   }
+}

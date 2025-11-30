@@ -1,5 +1,5 @@
 import { saveNewCity } from '../../services/citiesService.js';
-import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity } from './displayWeather.js';
+import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity, renderAirQualityByCity } from './displayWeather.js';
 import { renderCitiesHistory } from './displayCities.js';
 import { getWeather } from '../weatherCache.js';
 
@@ -27,4 +27,7 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
    
    // Affichage de la météo des prochains jours
    await renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7, data.daily);
+
+   // Affichage de la qualité de l'air
+   await renderAirQualityByCity('searchedCitiesList', 'air-quality-card');
 }
