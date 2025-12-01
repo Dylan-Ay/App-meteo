@@ -32,9 +32,9 @@ class HourlyForecast extends HTMLElement {
             <img src="${data.icon}">
             <p>
                 <i class="fa-solid fa-temperature-half"></i>
-                ${data.currentTemp.toFixed(0)}°
+                ${Math.round(data.currentTemp)}°
             </p>
-            <p class="text-xs pt-1">Ressenti ${data.feelsLike.toFixed(0)}°</p>
+            <p class="text-xs pt-1">Ressenti ${Math.round(data.feelsLike)}°</p>
         </div>
     `;
     }

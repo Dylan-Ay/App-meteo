@@ -37,8 +37,8 @@ class DailyForecast extends HTMLElement {
                 <div class="flex items-center max-md:gap-1.5">
                     <img src="${data.icon}" alt="Weather icon" class="w-14">
                     <div class="flex flex-col text-end text-sm gap-1.5">
-                        <span class="font-bold">${data.maxTemp.toFixed()}°</span>
-                        <span>${data.minTemp.toFixed()}°</span>
+                        <span class="font-bold">${Math.round(data.maxTemp)}°</span>
+                        <span>${Math.round(data.minTemp)}°</span>
                     </div>
                     <div class="md:flex hidden flex-col gap-1.5 flex-1">
                         <div class="flex items-center self-end">

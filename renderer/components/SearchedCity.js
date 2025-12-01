@@ -30,7 +30,7 @@ class SearchedCity extends HTMLElement {
             <div class="flex flex-wrap items-center justify-center px-2 py-1.5 text-sm">
                 <span>${data.cityName}</span>
                 <img src="${data.icon}" alt="Icône ${data.weather}" class="w-7">
-                <span>${data.currentTemp.toFixed(0)}°</span>
+                <span>${Math.round(data.currentTemp)}°</span>
             </div>
         `;
 

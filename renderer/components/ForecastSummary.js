@@ -39,8 +39,8 @@ class ForecastSummary extends HTMLElement {
                 <div id="weather-main" class="flex w-lg-2/5 items-center">
                     <img src="${data.icon}" alt="Weather icon">
                     <div class="flex flex-col dark:text-[#f3f3f3]">
-                        <span class="text-4xl font-semibold">${data.currentTemp.toFixed(0)}°</span>
-                        <span class="text-sm">Ressenti de l'air: ${data.feelsLike.toFixed(0)}°</span>
+                        <span class="text-4xl font-semibold">${Math.round(data.currentTemp)}°</span>
+                        <span class="text-sm">Ressenti de l'air: ${Math.round(data.feelsLike)}°</span>
                         <span class="font-semibold">${capitalizeFirstLetter(data.weather[0].description)}</span>
                     </div>
                 </div>
