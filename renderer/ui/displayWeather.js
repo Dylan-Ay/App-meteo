@@ -68,7 +68,7 @@ export async function renderHourlyForecastByCity(dataName, component, howManyDay
    }
 }
 
-// // Permet d'afficher les données météo des prochains jours (au maximum 8 jours)
+// Permet d'afficher les données météo des prochains jours (au maximum 8 jours)
 export async function renderDailyForecastByCity(dataName, component, howManyDays, data) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const dailyForecastItems = document.getElementById('daily-forecast-items');
@@ -119,44 +119,46 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
    }
 }
 
-// Permet d'afficher le composant de la qualité de l'air du jour
-export async function renderAirQualityByCity(dataName, component) {
+// Permet le rendu des indicateurs santé
+export async function renderHealthIndicatorsCards(dataName, componentsList, dataParameter) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const healthIndicatorsContainer = document.getElementById('health-indicators-container');
+   const healthIndicatorsList = [];
    
+   let uvIndexComponent = componentsList[0];
+   let airQualityComponent = componentsList[1];
+
    if (savedData.length != 0) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
-            
-      window.weatherAPI.fetchAirQuality(lastCitySaved.lat, lastCitySaved.lon)
-        .then(data => {
-         const newComponent = document.createElement(component);
 
-         newComponent.data = {
+      // Composant "Qualité de l'air"
+      try {
+         const data = await window.weatherAPI.fetchAirQuality(lastCitySaved.lat, lastCitySaved.lon);
+         const newAirQualityComponent = document.createElement(airQualityComponent);
+            
+         newAirQualityComponent.data = {
             airQuality: data.list.at(0).main.aqi,
             components: data.list.at(0).components
          };
-         
-         healthIndicatorsContainer.appendChild(newComponent);
-        })
-        .catch(err => {
-        console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
-      });
-   }
-}
-
-// Permet d'afficher le composant de l'indice UV du jour
-export async function renderUvIndexByCity(dataName, component, data) {
-   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
-   const healthIndicatorsContainer = document.getElementById('health-indicators-container');
    
-   if (savedData.length != 0) {
-      const newComponent = document.createElement(component);
+         healthIndicatorsList.push(newAirQualityComponent);
+      } catch (error) {
+         console.log(`Il y a une erreur avec le composant qualité de l'air : ${error}`)
+      }
+     
+      // Composant "Indice UV"
+      const newUvIndexComponent = document.createElement(uvIndexComponent);
       
-      newComponent.data = {
-         uvIndex: data.uvi 
+      newUvIndexComponent.data = {
+         uvIndex: dataParameter.uvi 
       };
+      
+      healthIndicatorsList.push(newUvIndexComponent);
 
       cleanContainer(healthIndicatorsContainer);
-      healthIndicatorsContainer.appendChild(newComponent);
+      
+      healthIndicatorsList.forEach(element => {
+        healthIndicatorsContainer.appendChild(element)
+      });
    }
 }

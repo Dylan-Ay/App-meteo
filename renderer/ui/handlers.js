@@ -1,5 +1,5 @@
 import { saveNewCity } from '../../services/citiesService.js';
-import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity, renderAirQualityByCity, renderUvIndexByCity } from './displayWeather.js';
+import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity, renderHealthIndicatorsCards } from './displayWeather.js';
 import { renderCitiesHistory } from './displayCities.js';
 import { getWeather } from '../weatherCache.js';
 
@@ -28,9 +28,6 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
    // Affichage de la météo des prochains jours
    await renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7, data.daily);
 
-   // Affichage de la qualité de l'air
-   await renderAirQualityByCity('searchedCitiesList', 'air-quality-card');
-
-   // Affichage de l'indice UV
-   await renderUvIndexByCity('searchedCitiesList', 'uv-index-card', data.current)
+   // Affichage des composants "Indicateurs santé"
+   await renderHealthIndicatorsCards('searchedCitiesList', ['uv-index-card', 'air-quality-card'], data.current);
 }

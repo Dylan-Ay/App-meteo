@@ -42,7 +42,7 @@ class UvIndexCard extends HTMLElement {
 
         const data = this.#data;
         const uvIndex = Math.floor(data.uvIndex);
-        const uvPercentageBar = this.getProperIndexNorms(uvIndex).at(2);
+        const uvPercentageBar = Math.floor(this.getProperIndexNorms(uvIndex).at(2));
         
         this.innerHTML = `
             <div class="flex flex-col gap-10 p-6 bg-[#a4c5f1] dark:bg-gray-800 dark:text-[#f3f3f3] rounded-lg h-full">
