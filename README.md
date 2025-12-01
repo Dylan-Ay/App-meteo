@@ -32,13 +32,14 @@ npm run dev:css
   
 - I also created a dark theme which you can switch using the toggle situated in the top right corner of the app.
 
+- Health indicators : Air pollution and UV Index data
+
 - A cache was implemented to avoid an excess of API calls.
 
 **The functionalities in building :**
-- Air pollution data
+
 - Weather maps
 - Cities near the selected city
-- UV chart
 - Rain chart
 - Activities near the selected city
 - Resuming the weather with a description using AI
