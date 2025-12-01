@@ -1,5 +1,5 @@
 import { saveNewCity } from '../../services/citiesService.js';
-import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity, renderAirQualityByCity } from './displayWeather.js';
+import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity, renderAirQualityByCity, renderUvIndexByCity } from './displayWeather.js';
 import { renderCitiesHistory } from './displayCities.js';
 import { getWeather } from '../weatherCache.js';
 
@@ -30,4 +30,7 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
 
    // Affichage de la qualité de l'air
    await renderAirQualityByCity('searchedCitiesList', 'air-quality-card');
+
+   // Affichage de l'indice UV
+   await renderUvIndexByCity('searchedCitiesList', 'uv-index-card', data.current)
 }

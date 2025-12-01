@@ -119,6 +119,7 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
    }
 }
 
+// Permet d'afficher le composant de la qualité de l'air du jour
 export async function renderAirQualityByCity(dataName, component) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const healthIndicatorsContainer = document.getElementById('health-indicators-container');
@@ -135,11 +136,27 @@ export async function renderAirQualityByCity(dataName, component) {
             components: data.list.at(0).components
          };
          
-         cleanContainer(healthIndicatorsContainer);
          healthIndicatorsContainer.appendChild(newComponent);
         })
         .catch(err => {
         console.error(`Erreur data données météo avec le composant ${component} et le storage ${dataName} :`, err);
       });
+   }
+}
+
+// Permet d'afficher le composant de l'indice UV du jour
+export async function renderUvIndexByCity(dataName, component, data) {
+   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
+   const healthIndicatorsContainer = document.getElementById('health-indicators-container');
+   
+   if (savedData.length != 0) {
+      const newComponent = document.createElement(component);
+      
+      newComponent.data = {
+         uvIndex: data.uvi 
+      };
+
+      cleanContainer(healthIndicatorsContainer);
+      healthIndicatorsContainer.appendChild(newComponent);
    }
 }

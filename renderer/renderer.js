@@ -3,9 +3,10 @@ import './components/SearchResult.js';
 import './components/SearchedCity.js';
 import './components/HourlyForecast.js';
 import './components/DailyForecast.js';
-import './components/AirQualityCard.js'
+import './components/AirQualityCard.js';
+import './components/UvIndexCard.js';
 import { handleOutsideClick } from '.././utils/functions.js';
-import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity, renderAirQualityByCity } from './ui/displayWeather.js';
+import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity, renderAirQualityByCity, renderUvIndexByCity } from './ui/displayWeather.js';
 import { renderCitiesHistory } from './ui/displayCities.js';
 import { handleLocationSelected } from './ui/handlers.js';
 import { getLastSavedCityInfo } from '../services/citiesService.js';
@@ -31,6 +32,7 @@ async function init() {
     renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);
     renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7, data.daily); 
     renderAirQualityByCity('searchedCitiesList', 'air-quality-card');
+    renderUvIndexByCity('searchedCitiesList', 'uv-index-card', data.current)
   }
 }
 

@@ -49,7 +49,7 @@ class AirQualityCard extends HTMLElement {
     render() {
         if (!this.#data) {
             this.innerHTML = `<p>Pas de données</p>`;
-            console.log('Pas de données reçu dans le composant DailyForecast');
+            console.log('Pas de données reçu dans le composant AirQualityCard');
             return;
         }
 
@@ -57,7 +57,7 @@ class AirQualityCard extends HTMLElement {
         const colorsQuality = this.getProperQualityColors(data.airQuality);
 
         this.innerHTML = `
-            <div class="flex flex-col gap-10 p-6 bg-[#a4c5f1] dark:bg-gray-800 dark:text-[#f3f3f3] rounded-lg">
+            <div class="flex flex-col gap-10 p-6 bg-[#a4c5f1] dark:bg-gray-800 dark:text-[#f3f3f3] rounded-lg h-full">
                <h3 class="text-xl font-semibold">Qualité de l'air</h3>
                <div class="flex flex-col gap-6">
                   <div class="flex justify-between">
