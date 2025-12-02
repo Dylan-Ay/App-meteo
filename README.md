@@ -39,10 +39,8 @@ npm run dev:css
 **The functionalities in building :**
 
 - Weather maps
-- Cities near the selected city
 - Rain chart
 - Activities near the selected city
-- Resuming the weather with a description using AI
 - Maybe more informations about the city
 
 **Stacks used :**
