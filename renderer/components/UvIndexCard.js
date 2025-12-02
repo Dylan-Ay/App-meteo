@@ -58,7 +58,7 @@ class UvIndexCard extends HTMLElement {
                   <div class="uv-container">
                      <div class="uv-index-info relative">
                         <div class="gauge bg-[linear-gradient(90deg,#74cf5f,#f7d047_26.56%,#f19f3b_50%,#e94b65_73.96%,#b95cd7)] rounded-xl h-2"></div>
-                        <div class="gauge-cursor absolute border-3 border-white bg-black h-3.5 w-2.5 rounded-md left-[${uvPercentageBar}%] -top-0.5"></div>
+                        <div style="left:${uvPercentageBar}%;" class="gauge-cursor absolute border-3 border-white bg-black h-3.5 w-2.5 rounded-md -top-0.5"></div>
                      </div>
                   </div>
                   <p class="p-4 bg-gray-100 text-black rounded-lg">${ uvIndex > -1 ? this.getProperIndexNorms(uvIndex).at(1) : "L'indice UV est indisponible actuellement, veuillez nous excuser pour la gêne occasionnée."}</p>
