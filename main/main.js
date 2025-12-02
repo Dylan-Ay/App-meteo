@@ -2,6 +2,11 @@ require('dotenv').config();
 
 const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
+const translate = require('translate').default;
+
+// Configure translate
+translate.engine = 'google';
+translate.key = '';
 
 const weatherService = require('../services/weatherService');
 weatherService.initializeService(process.env.API_KEY_OPEN_WEATHER);
@@ -80,3 +85,7 @@ ipcMain.handle('fetch-air-quality', async (event, { lat, lon }) => {
     throw error;
   }
 })
+
+ipcMain.handle('translate', async (event, string) => {
+  return translate(string, { from: 'en', to: 'fr' });
+});

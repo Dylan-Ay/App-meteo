@@ -20,7 +20,7 @@ export async function handleLocationSelected(event, forecastSummaryContainer, se
    await renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
 
    // Affichage de la météo pour la ville sélectionnée
-   await renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current);
+   await renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current, data.daily.at(0).summary);
    
    // Affichage de la météo des prochaines heures de la ville sélectionnée
    await renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);

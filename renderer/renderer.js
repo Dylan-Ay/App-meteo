@@ -28,7 +28,7 @@ async function init() {
     const data = await getWeather(lastCitySaved.lat, lastCitySaved.lon);
     
     renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
-    renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current);
+    renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current, data.daily.at(0).summary);
     renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);
     renderDailyForecastByCity('searchedCitiesList', 'daily-forecast', 7, data.daily); 
     renderHealthIndicatorsCards('searchedCitiesList', ['uv-index-card', 'air-quality-card'], data.current);

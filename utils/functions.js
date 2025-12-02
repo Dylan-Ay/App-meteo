@@ -52,3 +52,19 @@ export function formatMinutesSeconds(ms) {
 
     return `${minutes}min ${seconds}s`;
 }
+
+export async function translateToFr(string) {
+   const storedCache = localStorage.getItem('translation-cache');
+   const translationCache = storedCache ? JSON.parse(storedCache) : {};
+
+   if (translationCache[string]) {
+      return translationCache[string];
+   }
+   
+   const translation = await window.weatherAPI.translate(string);
+   
+   translationCache[string] = translation;
+   localStorage.setItem('translation-cache', JSON.stringify(translationCache));
+
+   return translation;
+}

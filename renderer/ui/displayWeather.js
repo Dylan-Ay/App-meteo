@@ -1,14 +1,15 @@
-import { cleanContainer } from "../../utils/functions.js";
+import { cleanContainer, translateToFr } from "../../utils/functions.js";
 import { getLastSavedCityInfo } from "../../services/citiesService.js";
 
 // Permet d'afficher les données météo actuelles
-export async function renderCurrentForecastByCity(dataName, component, containerToAppend, data) {
+export async function renderCurrentForecastByCity(dataName, component, containerToAppend, data, summary) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    
    if (savedData.length != 0) {
       const lastCitySaved = getLastSavedCityInfo(savedData);
       const newComponent = document.createElement(component);
-      
+      const summaryTranslated = await translateToFr(summary);
+
       newComponent.data = {
          icon: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
          currentTemp: data.temp,
@@ -16,6 +17,7 @@ export async function renderCurrentForecastByCity(dataName, component, container
          cityName: lastCitySaved.name,
          timeZone: lastCitySaved.timezone,
          weather: data.weather,
+         summary: summaryTranslated,
          windSpeed: data.wind_speed,
          humidity: data.humidity,
          sunrise: data.sunrise,

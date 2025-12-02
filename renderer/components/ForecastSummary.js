@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter, mSecToKmSec, epochToLocaleTimeString, isoCountryToFullName } from '../../utils/functions.js';
+import { capitalizeFirstLetter, mSecToKmSec, epochToLocaleTimeString } from '../../utils/functions.js';
 
 class ForecastSummary extends HTMLElement {
     #data;
@@ -36,12 +36,13 @@ class ForecastSummary extends HTMLElement {
                 <span class="text-[22px] font-semibold">Météo dans les 24h</span>
             </section>
             <div id="forecast-summary" class="flex flex-col md:flex-row justify-between bg-[#a4c5f1] rounded-t-3xl p-4 dark:bg-gray-800 border-b border-b-slate-500 dark:border-b-slate-50 max-md:gap-2.5">
-                <div id="weather-main" class="flex w-lg-2/5 items-center">
+                <div id="weather-main" class="flex w-lg-2/5 md:max-w-3/5 items-center">
                     <img src="${data.icon}" alt="Weather icon">
                     <div class="flex flex-col dark:text-[#f3f3f3]">
                         <span class="text-4xl font-semibold">${Math.round(data.currentTemp)}°</span>
                         <span class="text-sm">Ressenti de l'air: ${Math.round(data.feelsLike)}°</span>
-                        <span class="font-semibold">${capitalizeFirstLetter(data.weather[0].description)}</span>
+                        <span class="font-semibold mb-1.5">${capitalizeFirstLetter(data.weather[0].description)}</span>
+                        <span class="italic text-sm">${data.summary}</span>
                     </div>
                 </div>
                 <div id="weather-details" class="bg-white p-3 flex flex-col gap-2 rounded-2xl">

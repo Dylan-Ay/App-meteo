@@ -1,7 +1,5 @@
-import { formatMinutesSeconds } from '../utils/functions.js';
-
 export async function getWeather(lat, lon) {
-   const cacheDuration = 10 * 60 * 10000; // (10 minutes de mise en cache)
+   const cacheDuration = 10 * 60 * 10000; // (10 minutes de mise en cache, 100 pour dev)
    const now = Date.now();
    
    const cache = JSON.parse(localStorage.getItem("weatherCacheCitiesList")) || {};
@@ -10,11 +8,12 @@ export async function getWeather(lat, lon) {
    const normLon = Number(lon).toFixed(4);
    const key = `${normLat},${normLon}`;
    
-   if (cache[key]) {
-      const now = Date.now();
-      const cacheLeft = Math.max(0, cacheDuration - (now - cache[key].cacheAt));
-      console.log("Cache restant :", formatMinutesSeconds(cacheLeft));
-   }
+   // En dev
+   // if (cache[key]) {
+   //    const now = Date.now();
+   //    const cacheLeft = Math.max(0, cacheDuration - (now - cache[key].cacheAt));
+   //    console.log("Cache restant :", formatMinutesSeconds(cacheLeft));
+   // }
    
    if (cache[key] && (now - cache[key].cacheAt < cacheDuration)) {
       return cache[key].data;
