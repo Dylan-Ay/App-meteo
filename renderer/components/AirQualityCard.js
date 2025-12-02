@@ -32,7 +32,7 @@ class AirQualityCard extends HTMLElement {
     }
 
     getProperQualityColors(qualityLevel) {
-        let colorsArray = ['bg-cyan-300', 'bg-teal-400', 'bg-yellow-300', 'bg-red-500', 'bg-red-800'];
+        let colorsArray = ['bg-cyan-200', 'bg-teal-400', 'bg-yellow-300', 'bg-red-500', 'bg-red-800'];
         let colorsQualityLevel = [];
 
         for (let i = 0; i != 5; i++) {
