@@ -14,6 +14,8 @@ Web Components is a suite of different technologies allowing you to create reusa
 First, run the development server:
 
 ```bash
+npm install
+# and
 npm run start
 # and
 npm run dev:css
