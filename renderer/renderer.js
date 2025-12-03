@@ -17,13 +17,14 @@ const forecastSummaryContainer = document.getElementById('forecast-summary-conta
 const searchedCitiesContainer = document.getElementById('searched-cities-container');
 
 async function init() {
+  renderSearchResults(forecastSummaryContainer, searchedCitiesContainer, cityInput);
+  
   const savedData = JSON.parse(localStorage.getItem('searchedCitiesList')) || [];
-
+  
   if (savedData.length != 0) {
     const lastCitySaved = getLastSavedCityInfo(savedData);
     const data = await getWeather(lastCitySaved.lat, lastCitySaved.lon);
     
-    renderSearchResults(forecastSummaryContainer, searchedCitiesContainer, cityInput);
     renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
     renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current, data.daily.at(0).summary);
     renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);

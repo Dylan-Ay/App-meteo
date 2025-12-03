@@ -125,6 +125,7 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
 export async function renderHealthIndicatorsCards(dataName, componentsList, dataParameter) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const healthIndicatorsContainer = document.getElementById('health-indicators-container');
+   const healthIndicatorsTitleContainer = document.getElementById('health-indicators-title');
    const healthIndicatorsList = [];
    
    let uvIndexComponent = componentsList[0];
@@ -158,6 +159,9 @@ export async function renderHealthIndicatorsCards(dataName, componentsList, data
       healthIndicatorsList.push(newUvIndexComponent);
 
       cleanContainer(healthIndicatorsContainer);
+      
+      healthIndicatorsTitleContainer.classList.contains('hidden') ?
+      healthIndicatorsTitleContainer.classList.remove('hidden') : '';
       
       healthIndicatorsList.forEach(element => {
         healthIndicatorsContainer.appendChild(element)
