@@ -18,11 +18,9 @@
       applyTheme("dark");
    }
    
-   // Fonction toggle
    window.toggleTheme = function() {
       const current = root.getAttribute("data-theme");
       const newTheme = current === "dark" ? "light" : "dark";
       applyTheme(newTheme);
    };
-
 })();

@@ -37,7 +37,7 @@ export async function renderHourlyForecastByCity(dataName, component, howManyDay
    const hourlyForecastContainer = document.getElementById('hourly-forecast-items');
    const hourlyForecastList = [];
    
-   // Convertit le nombre de jours en paramètre en nombre d'éléménts
+   // Convertit le nombre de jours en paramètre, en nombre d'éléménts
    howManyDays = howManyDays * 24 + 1;
 
    if (savedData.length != 0) {
@@ -121,7 +121,7 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
    }
 }
 
-// Permet le rendu des indicateurs santé
+// Permet d'afficher les indicateurs santé
 export async function renderHealthIndicatorsCards(dataName, componentsList, dataParameter) {
    const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
    const healthIndicatorsContainer = document.getElementById('health-indicators-container');

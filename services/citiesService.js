@@ -32,7 +32,7 @@ export async function fetchCities(value) {
     }
 }
 
-// Sauvegarde la nouvelle ville
+// Sauvegarde la nouvelle ville (la dernière recherchée)
 export function saveNewCity(dataName, newCityData) {
   const savedData = JSON.parse(localStorage.getItem(dataName)) || [];
 
