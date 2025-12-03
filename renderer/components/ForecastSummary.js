@@ -7,12 +7,10 @@ class ForecastSummary extends HTMLElement {
         super();
     }
     
-    // Ajout de l'élement au DOM
     connectedCallback() {
         this.parentElement.classList.add('container', 'mx-auto');
     }
 
-    // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
     set data(value) {
         this.#data = value;
         this.render();

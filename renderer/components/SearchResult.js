@@ -6,12 +6,10 @@ class SearchResult extends HTMLElement {
         this.wrapper = document.createElement('ul');
     }
     
-    // Ajout de l'élement au DOM
     connectedCallback() {
         this.appendChild(this.wrapper);
     }
 
-    // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
     set data(features) {
         if (!features || !features.length) {
             return;

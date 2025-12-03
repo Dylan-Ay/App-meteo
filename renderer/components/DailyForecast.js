@@ -6,12 +6,10 @@ class DailyForecast extends HTMLElement {
         super();
     }
     
-    // Ajout de l'élement au DOM
     connectedCallback() {
         this.parentElement.classList.add('p-4', 'flex', 'flex-col', 'bg-[#a4c5f1]', 'rounded-lg', 'dark:bg-gray-800', 'dark:text-[#f3f3f3]', 'w-44', 'md:min-w-44', 'min-w-36');
     }
 
-    // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
     set data(value) {
         this.#data = value;
         this.render();

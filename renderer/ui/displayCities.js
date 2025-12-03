@@ -1,5 +1,6 @@
 import { cleanContainer } from "../../utils/functions.js";
 import { getWeather } from "../weatherCache.js";
+import { handleLocationSelected } from '../ui/handlers.js';
 
 // Permet d'afficher l'historique des 5 dernières villes recherchées
 export async function renderCitiesHistory(dataName, component, containerToAppend, howMany = 5) {
@@ -49,4 +50,48 @@ export async function renderCitiesHistory(dataName, component, containerToAppend
          containerToAppend.appendChild(city);
       });
    }
+}
+
+export async function renderSearchResults (forecastSummaryContainer, searchedCitiesContainer, cityInput) {
+   const searchBarContainer = document.getElementById('search-bar-container');
+   let typingTimer;
+   let lastRequestId = 0;
+   const debounceDelay = 50;
+
+   cityInput.addEventListener("input", () => {
+     clearTimeout(typingTimer);
+   
+     const city = cityInput.value.trim();
+   
+     // Nettoie les anciens résultats
+     document.querySelectorAll("search-result").forEach(el => el.remove());
+   
+     const requestId = ++lastRequestId;
+   
+     typingTimer = setTimeout(() => {
+       if (city && city.length > 2) {
+         window.weatherAPI.fetchCities(city)
+         .then(response => {
+           // Vérifie que c'est bien la dernière requête
+           if (requestId !== lastRequestId) return;
+           
+           // Affichage de la liste déroulante des villes
+           const searchResult = document.createElement('search-result');
+           searchResult.data = response.features;
+           
+           searchBarContainer.appendChild(searchResult);
+   
+           searchResult.addEventListener("location-selected", (event) => {
+            searchResult.remove();
+            cityInput.value = "";
+
+            handleLocationSelected(event, forecastSummaryContainer, searchedCitiesContainer);
+           });
+         })
+         .catch(err => {
+           console.error("Erreur data données ville:", err);
+         });
+       }
+     }, debounceDelay);
+   });
 }

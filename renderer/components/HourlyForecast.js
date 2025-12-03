@@ -6,12 +6,10 @@ class HourlyForecast extends HTMLElement {
         super();
     }
     
-    // Ajout de l'élement au DOM
     connectedCallback() {
         this.parentElement.classList.add('px-3', 'py-4', 'flex', 'items-center', 'min-w-27');
     }
 
-    // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
     set data(value) {
         this.#data = value;
         this.render();

@@ -5,13 +5,11 @@ class SearchedCity extends HTMLElement {
         super();
     }
     
-    // Ajout de l'élement au DOM
     connectedCallback() {
         this.parentElement?.classList.add('bg-gray-50', 'dark:bg-gray-800', 'rounded-md', 'cursor-pointer');
         this.registerEvents();
     }
 
-    // Setter qui enregistre les données dans le composant et met à jour le DOM automatiquement
     set data(value) {
         this.#data = value;
         this.render();

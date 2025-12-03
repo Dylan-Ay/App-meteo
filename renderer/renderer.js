@@ -7,18 +7,14 @@ import './components/AirQualityCard.js';
 import './components/UvIndexCard.js';
 import { handleOutsideClick } from '.././utils/functions.js';
 import { renderCurrentForecastByCity, renderHourlyForecastByCity, renderDailyForecastByCity, renderHealthIndicatorsCards } from './ui/displayWeather.js';
-import { renderCitiesHistory } from './ui/displayCities.js';
+import { renderCitiesHistory, renderSearchResults } from './ui/displayCities.js';
 import { handleLocationSelected } from './ui/handlers.js';
 import { getLastSavedCityInfo } from '../services/citiesService.js';
 import { getWeather } from './weatherCache.js';
 
 const cityInput = document.getElementById('city-input');
 const forecastSummaryContainer = document.getElementById('forecast-summary-container');
-const searchBarContainer = document.getElementById('search-bar-container');
 const searchedCitiesContainer = document.getElementById('searched-cities-container');
-let typingTimer;
-let lastRequestId = 0;
-const debounceDelay = 50;
 
 async function init() {
   const savedData = JSON.parse(localStorage.getItem('searchedCitiesList')) || [];
@@ -50,7 +46,7 @@ const observer = new MutationObserver(() => {
 
 observer.observe(searchedCitiesContainer, { childList: true });
 
-// Gestion des fonctions à lancer au rechargement
+// Gestion des fonctions à lancer après que le DOM soit chargé
 window.addEventListener('DOMContentLoaded', () => {
   init();
   const savedTheme = localStorage.getItem("theme");
@@ -74,39 +70,4 @@ document.addEventListener('click', (event) => {
 });
 
 // Affichage des villes dans le menu déroulant de la barre de recherche
-cityInput.addEventListener("input", () => {
-  clearTimeout(typingTimer);
-
-  const city = cityInput.value.trim();
-
-  // Nettoie les anciens résultats
-  document.querySelectorAll("search-result").forEach(el => el.remove());
-
-  const requestId = ++lastRequestId;
-
-  typingTimer = setTimeout(() => {
-    if (city && city.length > 2) {
-      window.weatherAPI.fetchCities(city)
-      .then(response => {
-        // Vérifie que c'est bien la dernière requête
-        if (requestId !== lastRequestId) return;
-        
-        // Affichage de la liste déroulante des villes
-        const searchResult = document.createElement('search-result');
-        searchResult.data = response.features;
-        
-        searchBarContainer.appendChild(searchResult);
-
-        searchResult.addEventListener("location-selected", (event) => {
-          searchResult.remove();
-          cityInput.value = "";
-
-          handleLocationSelected(event, forecastSummaryContainer, searchedCitiesContainer);
-        });
-      })
-      .catch(err => {
-        console.error("Erreur data données ville:", err);
-      });
-    }
-  }, debounceDelay);
-});
+renderSearchResults(forecastSummaryContainer, searchedCitiesContainer, cityInput);
