@@ -12,10 +12,10 @@
    const savedTheme = localStorage.getItem("theme");
    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
    
-   if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-      applyTheme("dark");
-   } else {
+   if (savedTheme === "light" || (!savedTheme && prefersDark)) {
       applyTheme("light");
+   } else {
+      applyTheme("dark");
    }
    
    // Fonction toggle
