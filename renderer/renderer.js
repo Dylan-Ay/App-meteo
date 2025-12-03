@@ -23,6 +23,7 @@ async function init() {
     const lastCitySaved = getLastSavedCityInfo(savedData);
     const data = await getWeather(lastCitySaved.lat, lastCitySaved.lon);
     
+    renderSearchResults(forecastSummaryContainer, searchedCitiesContainer, cityInput);
     renderCitiesHistory('searchedCitiesList', 'searched-city', searchedCitiesContainer, 5);
     renderCurrentForecastByCity('searchedCitiesList', 'forecast-summary', forecastSummaryContainer, data.current, data.daily.at(0).summary);
     renderHourlyForecastByCity('searchedCitiesList', 'hourly-forecast', 1, data.hourly);
@@ -68,6 +69,3 @@ document.addEventListener('click', (event) => {
     handleOutsideClick(searchResult, cityInput, event, 'ul');
   }
 });
-
-// Affichage des villes dans le menu déroulant de la barre de recherche
-renderSearchResults(forecastSummaryContainer, searchedCitiesContainer, cityInput);
