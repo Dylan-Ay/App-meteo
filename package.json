@@ -1,18 +1,36 @@
 {
-  "name": "app-meteo",
+  "name": "ma-meteo",
   "version": "1.0.0",
-  "description": "App-météo",
+  "description": "Application de données météorologiques complète.",
   "main": "./main/main.js",
   "scripts": {
     "start": "set NODE_ENV=development&&electron .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:css": "tailwindcss -i ./style.css -o ./src/output.css --watch"
+    "dev:css": "tailwindcss -i ./style.css -o ./src/output.css --watch",
+    "package": "electron-builder"
+  },
+  "build": {
+    "appId": "com.monapp.meteo",
+    "productName": "Ma-Météo",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "win": {
+      "target": "portable",
+      "icon": "build/shortcut-icon.ico"
+    },
+    "extraResources": [
+      "keys.enc",
+      "secret.env"
+    ]
   },
   "author": "Dylan Ayache",
   "license": "MIT",
   "devDependencies": {
     "electron": "^38.2.1",
-    "electron-reload": "^2.0.0-alpha.1"
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron-builder": "^26.0.12"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.16",

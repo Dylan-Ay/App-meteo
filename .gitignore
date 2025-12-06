@@ -1,3 +1,6 @@
 /node_modules
 .env
 src/output.css
+/dist
+/build
+secret.env

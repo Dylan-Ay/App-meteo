@@ -1,30 +1,40 @@
-require('dotenv').config(); 
-
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, dialog } = require('electron');
 const path = require('node:path');
 const translate = require('translate').default;
-
-// Configure translate
 translate.engine = 'google';
 translate.key = '';
 
+const loadConfig = require('../config/config.js');
+
+let config;
+
+try {
+  config = loadConfig();
+} catch (error) {
+  dialog.showErrorBox(
+    'Configuration requise',
+    error.message
+  );
+  app.quit();
+  return;
+}
+
 const weatherService = require('../services/weatherService');
-weatherService.initializeService(process.env.API_KEY_OPEN_WEATHER);
+weatherService.initializeService(config.API_KEY_OPEN_WEATHER);
 
 const citiesService = require('../services/citiesService');
-citiesService.initializeService(process.env.API_KEY_GEOCODING);
+citiesService.initializeService(config.API_KEY_GEOCODING);
 
 const airQualityService = require('../services/airQualityService');
-airQualityService.initializeService(process.env.API_KEY_OPEN_WEATHER);
+airQualityService.initializeService(config.API_KEY_OPEN_WEATHER);
 
-const env = process.env.NODE_ENV || 'development';
-
-if (env === 'development') {
+if (!app.isPackaged) {
   require('electron-reload')(__dirname, {
     electron: path.join(__dirname, '..', 'node_modules', '.bin', 'electron'),
     hardResetMethod: 'exit'
   });
 }
+
 let win;
 
 const createWindow = () => {
@@ -33,12 +43,13 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
-    }
+    },
+    icon: path.join(__dirname, 'src', 'app-icon.png')
   })
 
   win.loadFile('./renderer/index.html')
 
-  if (env === "development") {
+  if (!app.isPackaged) {
     win.webContents.openDevTools();
   }
 }
