@@ -97,7 +97,9 @@ export async function renderDailyForecastByCity(dataName, component, howManyDays
             weatherDesc: day.weather[0].description,
             timezone: lastCitySaved.timezone,
             sunrise: day.sunrise,
-            sunset: day.sunset
+            sunset: day.sunset,
+            wind: day.wind_speed,
+            windDeg: day.wind_deg
          };
 
          newElement.appendChild(newComponent);

@@ -1,4 +1,4 @@
-import { epochToLocaleTimeString } from '../../utils/functions.js';
+import { epochToLocaleTimeString, mSecToKmSec } from '../../utils/functions.js';
 class DailyForecast extends HTMLElement {
     #data;
 
@@ -25,27 +25,24 @@ class DailyForecast extends HTMLElement {
         const data = this.#data;
         const date = data.date;
         const weatherDesc = data.weatherDesc;
+        const rotation = (data.windDeg + 180) % 360;
         
         this.innerHTML = `
-            <div class="flex flex-col gap-6">
+            <div class="flex flex-col md:gap-6 gap-3">
                 <div class="flex flex-col">
                     <span class="font-semibold">${date.charAt(0).toUpperCase() + date.slice(1)}</span> 
                     <span class="text-sm">${weatherDesc.charAt(0).toUpperCase() + weatherDesc.slice(1)}</span>
                 </div>
-                <div class="flex items-center max-md:gap-1.5">
+                <div class="flex items-center gap-1.5 max-md:flex-col">
                     <img src="${data.icon}" alt="Weather icon" class="w-14">
-                    <div class="flex flex-col text-end text-sm gap-1.5">
+                    <div class="flex flex-col text-end text-md gap-1.5">
+                    <div>
+                        <span>${Math.round(data.minTemp)}°</span> /
                         <span class="font-bold">${Math.round(data.maxTemp)}°</span>
-                        <span>${Math.round(data.minTemp)}°</span>
                     </div>
-                    <div class="md:flex hidden flex-col gap-1.5 flex-1">
-                        <div class="flex items-center self-end">
-                            <img class="dark:filter-[invert(1)] w-5" src="../src/icons/sunset.svg" alt="icon sunset">
-                            <span class="text-sm">${epochToLocaleTimeString(data.sunset, data.timezone)}</span>
-                            </div>
-                        <div class="flex items-center self-end">
-                            <img class="dark:filter-[invert(1)] w-5" src="../src/icons/sunrise.svg" alt="icon sunrise">
-                            <span class="text-sm">${epochToLocaleTimeString(data.sunrise, data.timezone)}</span>
+                       <div class="flex items-center gap-1.5">
+                        <i style="transform:rotate(${rotation}deg);" class="fa-solid fa-location-arrow fa-xs"></i>
+                            <span class="text-sm">${mSecToKmSec(data.wind).toFixed()}km/h</span>
                         </div>
                     </div>
                 </div>
