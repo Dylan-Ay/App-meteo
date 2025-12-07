@@ -26,7 +26,6 @@ class DailyForecast extends HTMLElement {
         const date = data.date;
         const weatherDesc = data.weatherDesc;
         const rotation = (data.windDeg + 180) % 360;
-        
         this.innerHTML = `
             <div class="flex flex-col md:gap-6 gap-3">
                 <div class="flex flex-col">
@@ -40,8 +39,8 @@ class DailyForecast extends HTMLElement {
                         <span>${Math.round(data.minTemp)}°</span> /
                         <span class="font-bold">${Math.round(data.maxTemp)}°</span>
                     </div>
-                       <div class="flex items-center gap-1.5">
-                        <i style="transform:rotate(${rotation}deg);" class="fa-solid fa-location-arrow fa-xs"></i>
+                        <div class="flex gap-1.5 ${rotation > 283 && rotation < 350 ? 'items-end' : 'items-center'}">
+                            <img class="dark:filter-[invert(1)] w-3.5" style="transform:rotate(${rotation}deg);" src="../src/icons/location-arrow.svg" alt="icon location-arrow">
                             <span class="text-sm">${mSecToKmSec(data.wind).toFixed()}km/h</span>
                         </div>
                     </div>
